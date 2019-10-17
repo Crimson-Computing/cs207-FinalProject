@@ -1,2 +1,2 @@
 # cat requirements.txt 
-codecov==4.4.3
+codecov==2.0.15
