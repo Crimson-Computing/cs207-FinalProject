@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject/branch/master/graph/badge.svg)](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject)
 
 
-Group 22
+# Group 22
 - Alex Spiride
 - Maja Garbulinska
 - Matthew Finney
