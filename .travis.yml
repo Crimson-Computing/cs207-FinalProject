@@ -7,7 +7,5 @@ cache: pip
 script: pytest
 install:
   - pip install -r requirements.txt
-env:
-  - CODECOV_TOKEN="06548de1-3707-49cb-b627-f4637010a881"
 after_success:
   - codecov
