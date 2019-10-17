@@ -4,7 +4,7 @@ python:
   - "3.5"
   - "3.6"
 cache: pip
-script: pytest
+script: coverage run pytest
 install:
   - pip install -r requirements.txt
 after_success:
