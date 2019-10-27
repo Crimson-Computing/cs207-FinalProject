@@ -16,6 +16,12 @@ See the following example:
 
 <img width="278" alt="Screen Shot 2019-10-27 at 15 43 09" src="https://user-images.githubusercontent.com/43005886/67640363-a5cbe580-f8d0-11e9-907f-bea69360198e.png">
 
+If we have a function such that z = f (x(t), y(t)) then the derivative is f(x(t), y(t)) * f'(x) + f(x(t), y(t)) * f'(y).
+
+See the following example: 
+
+
+
 
 ### Computational Grapth
 ### Elementry Functions
