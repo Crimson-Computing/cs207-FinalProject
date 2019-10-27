@@ -6,6 +6,20 @@ Alex Spiride, Maja Garbulinska, Matthew Finney, Zhiying Xu
 
 ## Background
 
+Our software will make it easier for the user to compute derivatives using automatic differentiation. Our software will be able to compute the values of a function as well as its derivatives at specified points. Autodifferentiation provides efficiency and numerical stability as opposed to other methods such as finate differences. 
+
+### The Chain Rule
+
+Imagine you have the following function: 
+$ 2*x$
+
+### Computational Grapth
+### Elementry Functions
+
+
+
+If you would like to know more about this topic, you should have a look [this book](https://arxiv.org/pdf/1411.0583.pdf).
+
 ## How to use the package
 
 ## Software organization
