@@ -20,7 +20,8 @@ If we have a function such that z = f (x(t), y(t)) then the derivative is f(x(t)
 
 See the following example: 
 
-<img width="311" alt="Screen Shot 2019-10-27 at 16 09 50" src="https://user-images.githubusercontent.com/43005886/67640946-3fe15d00-f8d4-11e9-844e-486f24b7b45d.png">
+
+<img width="304" alt="Screen Shot 2019-10-27 at 16 38 26" src="https://user-images.githubusercontent.com/43005886/67641393-41148900-f8d8-11e9-90f3-45ca94f2a37c.png">
 
 
 ### Computational Graphs
