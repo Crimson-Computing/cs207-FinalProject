@@ -36,6 +36,11 @@ It consists of four operations:
 - sin() 
 - multiplication 
 - addition 
+
+<img width="759" alt="Screen Shot 2019-10-27 at 16 34 09" src="https://user-images.githubusercontent.com/43005886/67641280-a1ef9180-f8d7-11e9-83d8-029c4e4c3b92.png">
+
+
+
 ### Elementry Functions
 
 If you would like to know more about this topic, you should have a look [this book](https://arxiv.org/pdf/1411.0583.pdf).
