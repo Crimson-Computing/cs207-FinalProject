@@ -14,6 +14,8 @@ According to the chain rule the derivative of f(g(x)) is f'(g(x))⋅g'(x).
 
 See the following example: 
 
+<img width="278" alt="Screen Shot 2019-10-27 at 15 43 09" src="https://user-images.githubusercontent.com/43005886/67640363-a5cbe580-f8d0-11e9-907f-bea69360198e.png">
+
 
 ### Computational Grapth
 ### Elementry Functions
