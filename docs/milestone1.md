@@ -14,7 +14,7 @@ According to the chain rule the derivative of f(g(x)) is f'(g(x))⋅g'(x).
 
 See the following example: 
 
-<img width="252" alt="Screen Shot 2019-10-27 at 16 11 16" src="https://user-images.githubusercontent.com/43005886/67640974-7cad5400-f8d4-11e9-9017-23f456397709.png">
+<img width="252" alt="Screen Shot 2019-10-27 at 16 35 05" src="https://user-images.githubusercontent.com/43005886/67641296-c3507d80-f8d7-11e9-8a03-2e80da87e26b.png">
 
 If we have a function such that z = f (x(t), y(t)) then the derivative is f(x(t), y(t)) * f'(x) + f(x(t), y(t)) * f'(y).
 
