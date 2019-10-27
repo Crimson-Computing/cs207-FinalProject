@@ -23,10 +23,19 @@ See the following example:
 <img width="311" alt="Screen Shot 2019-10-27 at 16 09 50" src="https://user-images.githubusercontent.com/43005886/67640946-3fe15d00-f8d4-11e9-844e-486f24b7b45d.png">
 
 
+### Computational Graphs
 
+Computational graph make its easier to think about mathematical operations. 
 
+Consider the following function: 
 
-### Computational Grapth
+<img width="160" alt="Screen Shot 2019-10-27 at 16 17 54" src="https://user-images.githubusercontent.com/43005886/67641073-6653c800-f8d5-11e9-9aca-fca591ff2473.png">
+
+It consists of four operations: 
+- cos()
+- sin() 
+- multiplication 
+- addition 
 ### Elementry Functions
 
 If you would like to know more about this topic, you should have a look [this book](https://arxiv.org/pdf/1411.0583.pdf).
