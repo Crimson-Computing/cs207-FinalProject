@@ -47,6 +47,24 @@ Now, let's say we would like to evaluate the function a some specific values of 
 
 ### Elementry Functions
 
+An elementary function is a function that is a finite combination of constant functions, field operations, algebraic, exponential and logarithmic functions and their inverses. The derivative of any elementary function is itself elementary. You can read more about it [here](hhttp://mathworld.wolfram.com/ElementaryFunction.html). 
+
+Field operations: 
+- addition 
+- substruction 
+- multiplication
+- devision 
+
+See the examples below: 
+
+
+<img width="84" alt="Screen Shot 2019-10-27 at 16 57 28" src="https://user-images.githubusercontent.com/43005886/67641740-e6c8f780-f8da-11e9-9a9f-a731639fe798.png">
+
+
+Click [here](https://en.wikipedia.org/wiki/Riemann_zeta_function) to see an example of a non-elementary function. 
+
+### More information
+
 If you would like to know more about this topic, you should have a look [this book](https://arxiv.org/pdf/1411.0583.pdf).
 
 ## How to use the package
