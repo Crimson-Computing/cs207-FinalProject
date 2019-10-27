@@ -23,6 +23,11 @@ See the following example:
 
 <img width="304" alt="Screen Shot 2019-10-27 at 16 38 26" src="https://user-images.githubusercontent.com/43005886/67641393-41148900-f8d8-11e9-90f3-45ca94f2a37c.png">
 
+### The Jacobian Matrix 
+
+The Jacobian Matrix is a matrix of all first order partial derivatives of an equation. Let's say we are given a complicated set of non-linear equations. If we graphed it, and zoomed closely enough, the function will be locally linear. The Jacobian Matrix can tell us more about how the function looks like locally. For functions with only 1D output the Jacobian is only the gradient. 
+
+
 
 ### Computational Graphs
 
