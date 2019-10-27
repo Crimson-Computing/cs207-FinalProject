@@ -47,7 +47,7 @@ Now, let's say we would like to evaluate the function a some specific values of 
 
 ### Elementry Functions
 
-An elementary function is a function that is a finite combination of constant functions, field operations, algebraic, exponential and logarithmic functions and their inverses. The derivative of any elementary function is itself elementary. You can read more about it [here](hhttp://mathworld.wolfram.com/ElementaryFunction.html). 
+An elementary function is a function that is a finite combination of constant functions, field operations, algebraic, exponential and logarithmic functions and their inverses. The derivative of any elementary function is itself elementary. You can read more about it [here](http://mathworld.wolfram.com/ElementaryFunction.html) .  
 
 Field operations: 
 - addition 
