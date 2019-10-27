@@ -18,8 +18,6 @@ See the following example:
 ### Computational Grapth
 ### Elementry Functions
 
-
-
 If you would like to know more about this topic, you should have a look [this book](https://arxiv.org/pdf/1411.0583.pdf).
 
 ## How to use the package
