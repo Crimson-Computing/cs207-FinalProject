@@ -6,7 +6,12 @@ Alex Spiride, Maja Garbulinska, Matthew Finney, Zhiying Xu
 
 ## Background
 
-Our software will make it easier for the user to compute derivatives using automatic differentiation. Our software will be able to compute the values of a function as well as its derivatives at specified points. Autodifferentiation provides efficiency and numerical stability as opposed to other methods such as finate differences. To work, the functions make use of the following concepts:
+
+Our software will make it easier for the user to compute derivatives using automatic differentiation. Our software will be able to compute the values of a function as well as its derivatives at specified points. Autodifferentiation provides efficiency and numerical stability as opposed to other methods such as finite differences. To work, the functions make use of the following concepts:
+
+### Forward Mode
+
+The forward mode uses the chain rule described below to compute derivatives of nested functions. The chain rule is applied to elementary operations step by step starting with the most inner operation. 
 
 ### The Chain Rule
 
