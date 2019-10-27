@@ -37,8 +37,9 @@ It consists of four operations:
 - multiplication 
 - addition 
 
-<img width="759" alt="Screen Shot 2019-10-27 at 16 34 09" src="https://user-images.githubusercontent.com/43005886/67641280-a1ef9180-f8d7-11e9-83d8-029c4e4c3b92.png">
+We can therefore construct the following graph to visualize the operations. 
 
+<img width="759" alt="Screen Shot 2019-10-27 at 16 34 09" src="https://user-images.githubusercontent.com/43005886/67641280-a1ef9180-f8d7-11e9-83d8-029c4e4c3b92.png">
 
 
 ### Elementry Functions
