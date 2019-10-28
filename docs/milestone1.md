@@ -45,7 +45,7 @@ $ Python
 4.0 4.0
 
 # Example of dual numbers
-# Expect value of , derivative of 
+# Expect value of 4.0, derivative of 4.0
 >>> x = AutoDiff.Dual(2.0, 1.0)
 >>> f = x * x
 >>> print(f.val)
