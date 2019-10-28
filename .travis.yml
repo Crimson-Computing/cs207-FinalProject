@@ -4,9 +4,8 @@ python:
   - "3.5"
   - "3.6"
 cache: pip
-script: python3 test.py
+script: coverage run -m pytest
 install:
   - pip install -r requirements.txt
-  - pip install --user codecov && codecov -t 06548de1-3707-49cb-b627-f4637010a881
-env:
-  - CODECOV_TOKEN="06548de1-3707-49cb-b627-f4637010a881"
+after_success:
+  - codecov
