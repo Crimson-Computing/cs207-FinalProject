@@ -70,7 +70,7 @@ Field operations:
 - multiplication
 - devision 
 
-See the examples below: 
+See the examples of elementary functions below: 
 
 
 <img width="84" alt="Screen Shot 2019-10-27 at 16 57 28" src="https://user-images.githubusercontent.com/43005886/67641740-e6c8f780-f8da-11e9-9a9f-a731639fe798.png">
