@@ -14,8 +14,8 @@ To work, the package makes use of the following concepts:
 
 ### Forward Mode
 
-The forward mode uses the chain rule described below to compute derivatives of nested functions. The chain rule is applied to elementary operations step by step starting with the most inner operation. 
-Our software will make it easier for the user to compute derivatives using automatic differentiation. Our software will be able to compute the values of a function as well as its derivatives at specified points. Autodifferentiation provides efficiency and numerical stability as opposed to other methods such as finate differences. To work, the functions make use of the following concepts:
+The forward mode uses the chain rule described below to compute derivatives of nested functions. The chain rule is applied to elementary operations step by step starting with the most inner operation. We then obtain a derivative trace. At every step derivative and the value of the expression is evaluated. 
+To work, the functions make use of the following concepts:
 
 ### The Chain Rule
 
