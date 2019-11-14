@@ -7,58 +7,9 @@ With the evolution of science from empirical to theoretical and now computationa
 
 ## Background
 
-
-Our software will make it easier for the user to compute derivatives using automatic differentiation. Autodifferentiation provides efficiency and numerical stability as opposed to other methods such as finite differences. A computer can perform elementary operations quickly. If we apply the chain rule to these elementary operations we can compute derivatives of functions with working precision.
+Our software will make it easier for the user to compute derivatives using automatic differentiation, which provides efficiency and numerical stability as opposed to other methods such as finite differences. A computer can perform elementary operations quickly. If we apply the chain rule to these elementary operations we can compute derivatives of functions efficiently and with working precision.
 
 To work, the package makes use of the following concepts:
-
-### Forward Mode
-
-The forward mode uses the chain rule described below to compute derivatives of nested functions. The chain rule is applied to elementary operations step by step starting with the most inner operation. 
-Our software will make it easier for the user to compute derivatives using automatic differentiation. Our software will be able to compute the values of a function as well as its derivatives at specified points. Autodifferentiation provides efficiency and numerical stability as opposed to other methods such as finate differences. To work, the functions make use of the following concepts:
-
-### The Chain Rule
-
-According to the chain rule the derivative of f(g(x)) is f'(g(x))⋅g'(x).
-
-See the following example: 
-
-<img width="252" alt="Screen Shot 2019-10-27 at 16 35 05" src="https://user-images.githubusercontent.com/43005886/67641296-c3507d80-f8d7-11e9-8a03-2e80da87e26b.png">
-
-If we have a function such that z = f (x(t), y(t)) then the derivative is f(x(t), y(t)) * f'(x) + f(x(t), y(t)) * f'(y).
-
-See the following example: 
-
-
-<img width="304" alt="Screen Shot 2019-10-27 at 16 38 26" src="https://user-images.githubusercontent.com/43005886/67641393-41148900-f8d8-11e9-90f3-45ca94f2a37c.png">
-
-### The Jacobian Matrix 
-
-The Jacobian Matrix is a matrix of all first order partial derivatives of an equation. Let's say we are given a complicated set of non-linear equations. If we graphed it, and zoomed closely enough, the function will be locally linear. The Jacobian Matrix can tell us more about how the function looks like locally. For functions with only 1D output the Jacobian is only the gradient. 
-
-
-
-### Computational Graphs
-
-Computational graph make its easier to think about mathematical operations. 
-
-
-Consider the following function: 
-
-<img width="160" alt="Screen Shot 2019-10-27 at 16 17 54" src="https://user-images.githubusercontent.com/43005886/67641073-6653c800-f8d5-11e9-9aca-fca591ff2473.png">
-
-It consists of four operations: 
-- cos()
-- sin() 
-- multiplication 
-- addition 
-
-We can therefore construct the following graph to visualize the operations. 
-
-<img width="759" alt="Screen Shot 2019-10-27 at 16 34 09" src="https://user-images.githubusercontent.com/43005886/67641280-a1ef9180-f8d7-11e9-83d8-029c4e4c3b92.png">
-
-Now, let's say we would like to evaluate the function a some specific values of x and y we just have to apply the applicable operations following the graph. 
-
 
 ### Elementry Functions
 
@@ -77,6 +28,49 @@ See the examples of elementary functions below:
 
 
 Click [here](https://en.wikipedia.org/wiki/Riemann_zeta_function) to see an example of a non-elementary function. 
+
+
+### Forward Mode
+
+The forward mode uses the chain rule described below to compute derivatives of nested functions. The chain rule is applied to elementary operations step by step starting with the most inner operation. We then obtain a derivative trace. At every step derivative and the value of the expression is evaluated. 
+
+To work, the package makes use of the following concepts:
+
+### The Chain Rule
+
+According to the chain rule the derivative of f(g(x)) is f'(g(x))⋅g'(x).
+
+See the following example: 
+
+<img width="252" alt="Screen Shot 2019-10-27 at 16 35 05" src="https://user-images.githubusercontent.com/43005886/67641296-c3507d80-f8d7-11e9-8a03-2e80da87e26b.png">
+
+If we have a function such that z = f (x(t), y(t)) then the derivative is f(x(t), y(t)) * f'(x) + f(x(t), y(t)) * f'(y).
+
+See the following example: 
+
+
+<img width="304" alt="Screen Shot 2019-10-27 at 16 38 26" src="https://user-images.githubusercontent.com/43005886/67641393-41148900-f8d8-11e9-90f3-45ca94f2a37c.png">
+
+
+### Computational Graphs
+
+Computational graph makes it easier to think about the mathematical operations that our package performs.  
+
+Consider the following function: 
+
+<img width="160" alt="Screen Shot 2019-10-27 at 16 17 54" src="https://user-images.githubusercontent.com/43005886/67641073-6653c800-f8d5-11e9-9aca-fca591ff2473.png">
+
+It consists of four operations: 
+- cos()
+- sin() 
+- multiplication 
+- addition 
+
+We can therefore construct the following graph to visualize the operations. 
+
+<img width="759" alt="Screen Shot 2019-10-27 at 16 34 09" src="https://user-images.githubusercontent.com/43005886/67641280-a1ef9180-f8d7-11e9-83d8-029c4e4c3b92.png">
+
+Now, let's say we would like to evaluate the function a some specific values of x and y we just have to apply the applicable operations following the graph. 
 
 ### More information
 
@@ -148,7 +142,7 @@ Our test suite will be in the directory `cs207-FinalProject/tests`. We will use 
 We will distribute our library using the Python Package Index (PyPI). We will distribute the software in the pythonic formats of an sdist and as a wheel to facilitate installation via Python's package installer `pip`. Given that our aim is to deliver software that another developer can use for automatic differentiation in their own applications, we are not planning to deliver a standalone application. As such we are not planning to use a distribution framework beyond Python's native packaging.
 
 ## Implementation
-Our autodiff class will be used to create an AutoDiff object, including custom methods, that will be able to work on scalars and numpy arrays. The output of this object will be another type of object: a Dual object, which represents a dual number. The AutoDiff class will then be used in our extension class, which will be an object of its own (RootFinder). Each of the math methods will be callable from an imported library of math functions.
+Our AutoDiff class will be used to create an AutoDiff object, including custom methods, that will be able to work on scalars and numpy arrays. This object's methods will mostly use Dual objects for calculations, which represent dual numbers. The AutoDiff class will then be used in our extension class, which will be an object of its own (RootFinder). Each of the math methods will be callable from an imported library of math functions.
 
 The Dual object will have several methods, including an init, add, subtract, multiply, division, positive, negative, and comparison (<, ≥) dunder methods. Dual objects will have a value and a derivative. The math functions will include functions such as log, exp, tan, power, trigonometric functions, and more. To deal with elementary functions like sin, sqrt, log, and exp and all the others, we will write methods to extend general implementations (e.g. numpy) updating the derivative at each step. Finally, the AutoDiff class will have attributes to get the derivative and value of the object.
 
