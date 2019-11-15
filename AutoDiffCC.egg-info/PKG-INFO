@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: AutoDiffCC
+Version: 0.0.2
+Summary: An AutoDifferentiation Library
+Home-page: https://github.com/Crimson-Computing/cs207-FinalProject
+Author: Crimson Computing
+Author-email: mfinney@g.harvard.edu
+License: UNKNOWN
+Description: [![Build Status](https://travis-ci.org/Crimson-Computing/cs207-FinalProject.svg?branch=master)](https://travis-ci.org/Crimson-Computing/cs207-FinalProject)
+        
+        [![codecov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject/branch/master/graph/badge.svg)](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject)
+        
+        
+        # Group 22
+        - Alex Spiride
+        - Maja Garbulinska
+        - Matthew Finney
+        - Zhiying Xu
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
