@@ -3,3 +3,4 @@
 
 # Extra PyCharm Files
 .idea
+*/__pycache__
