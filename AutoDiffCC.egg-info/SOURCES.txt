@@ -1,0 +1,10 @@
+README.md
+setup.py
+AutoDiffCC.egg-info/PKG-INFO
+AutoDiffCC.egg-info/SOURCES.txt
+AutoDiffCC.egg-info/dependency_links.txt
+AutoDiffCC.egg-info/top_level.txt
+autodiffcc/__init__.py
+autodiffcc/addition.py
+autodiffcc/autodiffcc.py
+autodiffcc/test_addition.py
