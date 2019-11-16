@@ -76,7 +76,7 @@ def tan(self):
     (array(-0.1425465430742778), array(1.020319516942427))
     """
 
-    return AD(val = np.tan(self.val), der = 1/(np.cos(self.val)*np.cos(self.val)))
+    return AD(val = np.tan(self.val), der = 1 / (np.cos(self.val) ** 2))
     
     
 def exp(self):
