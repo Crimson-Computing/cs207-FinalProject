@@ -1,4 +1,5 @@
 # PyPI Name
 name = "autodiffcc"
 
-from .autodiffcc, .ADmath import *
+from .autodiffcc import *
+from .ADmath import *
