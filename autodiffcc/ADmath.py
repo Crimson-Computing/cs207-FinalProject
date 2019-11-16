@@ -102,7 +102,7 @@ def exp(self):
     (array(20.085536923187668), array(20.085536923187668))
     """
     
-    return AD(val = np.exp(self.val), der = np.exp(self.val))
+    return AD(val = np.exp(self.val), der = self.der * np.exp(self.val))
     
     
 def sqrt(self):
