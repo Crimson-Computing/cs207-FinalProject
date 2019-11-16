@@ -283,8 +283,8 @@ class AD():
         EXAMPLES
         =========
         >>> x = AD(val = 3, der = 1)
-        >>> x ** 2
-        (1.0, 0.3333333333333333)
+        >>> 2 ** x
+        (8.0, 5.54517744)
         """
         try:
             return AD(val = other.val ** self.val, 
@@ -293,16 +293,128 @@ class AD():
             return AD(val = other, der = np.zeros(self.der.shape)) ** self
 
     def __eq__(self, other):
-        # TODO:
-        pass
+        """Returns True if self and other have the same value
+        
+        INPUTS
+        =======
+        self: AD object
+        other: AD object or regular number/numpy array
+        
+        RETURNS
+        ========
+        self == other
+        
+        EXAMPLES
+        =========
+        >>> x = AD(val = 3, der = 1)
+        >>> x == 3
+        True
+        >>> y = AD(val = 3, der = 2)
+        >>> x == y
+        True
+        """
+        try:
+            return self.val == other.val
+        except AttributeError:
+            return self.val == other
 
     def __gt__(self, other):
-        # TODO:
-        pass
+        """Returns True if self's value is greater than other's value
+        
+        INPUTS
+        =======
+        self: AD object
+        other: AD object or regular number/numpy array
+        
+        RETURNS
+        ========
+        self > other
+        
+        EXAMPLES
+        =========
+        >>> x = AD(val = 3, der = 1)
+        >>> x > 2
+        True
+        >>> y = AD(val = 3, der = 2)
+        >>> x > y
+        False
+        """
+        try:
+            return self.val > other.val
+        except AttributeError:
+            return self.val > other
+
+    def __ge__(self, other):
+        """Returns True if self's value is greater than or equal to other's value
+        
+        INPUTS
+        =======
+        self: AD object
+        other: AD object or regular number/numpy array
+        
+        RETURNS
+        ========
+        self >= other
+        
+        EXAMPLES
+        =========
+        >>> x = AD(val = 3, der = 1)
+        >>> x >= 2
+        True
+        >>> y = AD(val = 3, der = 2)
+        >>> x >= y
+        True
+        """
+        return (self > other) or (self == other)
 
     def __lt__(self, other):
-        # TODO:
-        pass
+        """Returns True if self's value is less than other's value
+        
+        INPUTS
+        =======
+        self: AD object
+        other: AD object or regular number/numpy array
+        
+        RETURNS
+        ========
+        self < other
+        
+        EXAMPLES
+        =========
+        >>> x = AD(val = 3, der = 1)
+        >>> x < 2
+        False
+        >>> y = AD(val = 4, der = 2)
+        >>> x < y
+        True
+        """
+        try:
+            return self.val < other.val
+        except AttributeError:
+            return self.val < other
+
+    def __le__(self, other):
+        """Returns True if self's value is less than or equal to other's value
+        
+        INPUTS
+        =======
+        self: AD object
+        other: AD object or regular number/numpy array
+        
+        RETURNS
+        ========
+        self <= other
+        
+        EXAMPLES
+        =========
+        >>> x = AD(val = 3, der = 1)
+        >>> x <= 3
+        True
+        >>> y = AD(val = 2, der = 2)
+        >>> x <= y
+        False
+        """
+        return (self > other) or (self == other)
 
     def __repr__(self):
         return str((self.val, self.der))
