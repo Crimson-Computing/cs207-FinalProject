@@ -1,1 +1,6 @@
+# Sassy MacOS DS Store file
 .DS_Store
+
+# Extra PyCharm Files
+.idea
+*/__pycache__
