@@ -1,8 +1,7 @@
 import pytest
 import sys
-sys.path.append('../autodiffcc')
-import addition
-import ADmath
+from autodiffcc import addition
+from autodiffcc import ADmath
 from autodiffcc import AD
 
 def test_pos():
