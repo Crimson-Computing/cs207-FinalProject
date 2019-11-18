@@ -74,6 +74,13 @@ We can therefore construct the following graph to visualize the operations.
 
 Now, let's say we would like to evaluate the function a some specific values of x and y we just have to apply the applicable operations following the graph. 
 
+### Evaluation Table
+
+As in the computational graphs, we can represent the elementary operations in an evaluation table. 
+
+<img width="1134" alt="Screen Shot 2019-11-18 at 11 45 46" src="https://user-images.githubusercontent.com/43005886/69072046-05617080-09f9-11ea-9a8e-44b2c29e31ad.png">
+
+
 ### More information
 
 If you would like to know more about this topic, you should have a look at [this book](https://arxiv.org/pdf/1411.0583.pdf).
