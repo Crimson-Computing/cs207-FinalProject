@@ -78,7 +78,8 @@ Now, let's say we would like to evaluate the function a some specific values of 
 
 As in the computational graphs, we can represent the elementary operations in an evaluation table. 
 
-<img width="1134" alt="Screen Shot 2019-11-18 at 11 45 46" src="https://user-images.githubusercontent.com/43005886/69072046-05617080-09f9-11ea-9a8e-44b2c29e31ad.png">
+<img width="772" alt="Screen Shot 2019-11-18 at 11 48 47" src="https://user-images.githubusercontent.com/43005886/69072311-6e48e880-09f9-11ea-9ba5-fd32f71fc6aa.png">
+
 
 
 ### More information
