@@ -32,9 +32,11 @@ Click [here](https://en.wikipedia.org/wiki/Riemann_zeta_function) to see an exam
 
 ### Forward Mode
 
-The forward mode uses the chain rule described below to compute derivatives of nested functions. The chain rule is applied to elementary operations step by step starting with the most inner operation. We then obtain a derivative trace. At every step derivative and the value of the expression is evaluated. 
+The forward mode uses the chain rule described below to compute derivatives of nested functions. The chain rule is applied to elementary operations step by step starting with the most inner operation changing the values for derivatives. Our final function is composed of derivatives of elementary functions which are very easy to compute. 
 
-To work, the package makes use of the following concepts:
+The foward mode requires a function, a seed vector and a vector at which the function should be evaluated.
+What the forward mode is really computing, mathematically, is the product of the gradient with a seed vector chosen for the derivatives. This is called the Jacobian-vector product. 
+
 
 ### The Chain Rule
 
