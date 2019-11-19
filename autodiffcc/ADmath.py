@@ -1,5 +1,5 @@
 import numpy as np
-from autodiffcc.autodiffcc import AD
+from autodiffcc.core import AD
 
 
 def cos(self):

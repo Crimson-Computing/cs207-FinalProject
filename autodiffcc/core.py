@@ -418,6 +418,3 @@ class AD():
 
     def __repr__(self):
         return str((self.val, self.der))
-
-a = AD(1,0)
-cos(x)

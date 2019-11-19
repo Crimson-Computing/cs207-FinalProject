@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="AutoDiffCC", # Replace with your own username
-    version="0.0.5",
+    version="0.0.6",
     author="Crimson Computing",
     author_email="majagarbulinska@hsph.harvard.edu",
     description="An AutoDifferentiation Library",

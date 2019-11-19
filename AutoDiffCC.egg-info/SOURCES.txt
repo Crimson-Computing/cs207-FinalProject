@@ -6,5 +6,5 @@ AutoDiffCC.egg-info/dependency_links.txt
 AutoDiffCC.egg-info/top_level.txt
 autodiffcc/ADmath.py
 autodiffcc/__init__.py
-autodiffcc/addition.py
-autodiffcc/autodiffcc.py
+autodiffcc/core.py
+autodiffcc/testmf.py

@@ -137,7 +137,7 @@ Given that our aim is to deliver software that another developer can use for aut
 			autodiffcc/
                 __init__.py
 				ADmath.py
-				autodiffcc.py
+				core.py
 				rootfindercc.py [Placeholder]
 			docs/
 				milestone1.md
@@ -153,7 +153,7 @@ The `autodiffcc` package will have four modules:
 
 |Module|Basic Functionality|
 |-|-|
-|autodiffcc| This is the main module, which will contain the `AD` class and methods for operator overloading (e.g., add, mult, etc.).|
+|core| This is the main module, which will contain the `AD` class and methods for operator overloading (e.g., add, mult, etc.).|
 |ADmath| This module contains elementary functions, (e.g. sin, cos, sqrt, log, exp,etc.) for the `AD` class. |
 |RootFinder| This module is a placeholder for the advanced feature.|
 
