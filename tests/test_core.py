@@ -1,8 +1,6 @@
 import pytest
 import sys
-from autodiffcc import addition
-from autodiffcc import ADmath
-from autodiffcc import AD
+from autodiffcc.core import *
 
 def test_wrong_shape():
     try:

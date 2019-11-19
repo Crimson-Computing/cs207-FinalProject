@@ -1,10 +1,10 @@
 Metadata-Version: 2.1
 Name: AutoDiffCC
-Version: 0.0.4
+Version: 0.0.6
 Summary: An AutoDifferentiation Library
 Home-page: https://github.com/Crimson-Computing/cs207-FinalProject
 Author: Crimson Computing
-Author-email: mfinney@g.harvard.edu
+Author-email: majagarbulinska@hsph.harvard.edu
 License: UNKNOWN
 Description: [![Build Status](https://travis-ci.org/Crimson-Computing/cs207-FinalProject.svg?branch=master)](https://travis-ci.org/Crimson-Computing/cs207-FinalProject)
         

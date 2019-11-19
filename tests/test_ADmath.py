@@ -1,8 +1,7 @@
 import pytest
 import sys
-from autodiffcc import addition
 from autodiffcc import ADmath
-from autodiffcc import AD
+from autodiffcc.core import AD
 
 def test_cos():
     t1 = ADmath.cos(AD(val = 3, der = 1))
