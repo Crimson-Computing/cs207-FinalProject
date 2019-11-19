@@ -1,7 +1,6 @@
 import pytest
 import sys
-from autodiffcc import ADmath
-from autodiffcc import core
+from autodiffcc.core import *
 
 def test_pos():
     t1 = +AD(val = 3, der = 1)
