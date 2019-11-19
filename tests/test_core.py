@@ -2,6 +2,11 @@ import pytest
 import sys
 from autodiffcc.core import *
 
+def test_wrong_shape():
+    try:
+        t1 = AD(val = np.array([2,3,1]), der = np.array([-1,3]))
+    except: Exception
+
 def test_pos():
     t1 = +AD(val = 3, der = 1)
     assert t1.val == 3
