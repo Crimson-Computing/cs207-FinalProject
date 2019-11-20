@@ -22,11 +22,14 @@ class AD():
     # 3.0
     """
 
+    # gives our operators priority over numpy's methods
+    __array_priority__ = 2
+
     def __init__(self, val, der):
         self.val = np.array(val)
         self.der = np.array(der)
         if self.val.shape != self.der.shape:
-            raise(Exception('The shape of val and der do not match: val is {}, der is {}.').format(self.val.shape, self.der.shape))
+            raise(Exception('The shape of val and der do not match: val is {}, der is {}.'.format(self.val.shape, self.der.shape)))
 
     def __pos__(self):
         """Returns the unary positive operator on self
