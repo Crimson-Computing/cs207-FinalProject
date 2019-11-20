@@ -26,6 +26,8 @@ See the examples of elementary functions below:
 
 <img width="84" alt="Screen Shot 2019-10-27 at 16 57 28" src="https://user-images.githubusercontent.com/43005886/67641740-e6c8f780-f8da-11e9-9a9f-a731639fe798.png">
 
+We are also considering the power function as an elementary function as well.
+
 
 Click [here](https://en.wikipedia.org/wiki/Riemann_zeta_function) to see an example of a non-elementary function. 
 
@@ -163,7 +165,9 @@ Our test suite is in the directory `cs207-FinalProject/tests`. We  use TravisCI 
 ## Implementation
 Our `AD` class is used to create an AD object, including custom methods, that work on scalars and numpy arrays. The AD class will then be used in our extension class, which will be an object of its own (RootFinder). Each of the math methods will be callable from an imported library of math functions.
 
-The AD class has several methods, including an init, add, subtract, multiply, division, positive, negative, and comparison (<, ≥) dunder methods. AD objects will have a value and a derivative. The math functions will include functions such as log, exp, tan, power, trigonometric functions, and more. To deal with elementary functions like sin, sqrt, log, and exp and all the others, we will write methods to extend general implementations (e.g. numpy) updating the derivative at each step. Finally, the AD class will have attributes to get the derivative and value of the object.
+The AD class has several methods, including an init, add, subtract, multiply, division, positive, negative, and comparison (<, ≥) dunder methods. AD objects will have a value and a derivative. The math functions will include functions such as log, exp, tan, power, trigonometric functions, and more. To deal with elementary functions like sin, sqrt, log, and exp and all the others, we will write methods to extend general implementations (e.g. numpy) updating the derivative at each step. Finally, the AD class will have attributes to get the derivative and value of the object. We are updating the derivative of our AD objects by using dual numbers in tuples, where the first element is the value and the second element (the "imaginary" part) is the derivative. 
+
+For vector-valued functiones, we will override the prioriy of numpy basic operators to ensure our AD objects are compatible with numpy arrays using our operators. Then, since the value and derivative in the AD object is stored as a numpy array, we will be using the numpy operations in our derivative updating together with the chain rule to update the derivative for vector-valued functions.
 
 We want to make our class compatible with numpy arrays, so we will need to use NumPy, as well as math. For testing, we will need doctest and pytest, and we might use scipy for the RootFinder. 
 
