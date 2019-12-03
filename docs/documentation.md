@@ -6,6 +6,7 @@ Alex Spiride, Maja Garbulinska, Matthew Finney, Zhiying Xu
 With the evolution of science from empirical to theoretical and now computational approaches, differentiation plays a critical role in a wide range of scientific and industrial applications of computer science. However, the precise computation of symbolic derivatives is computationally expensive, and not even possible in all situations, whereas the finite differencing method is not always accurate or stable. Automatic Differentiation, however, provides a computationally efficient way to calculate derivatives, particularly of complex functions, for applications where accuracy and performance at scale are important.
 
 ## Background
+// TODO  # Review CJ's comments are fully implemented 
 
 Our software will make it easier for the user to compute derivatives using automatic differentiation, which provides efficiency and numerical stability as opposed to other methods such as finite differences. A computer can perform elementary operations quickly. If we apply the chain rule to these elementary operations we can compute derivatives of functions efficiently and with working precision.
 
@@ -116,14 +117,29 @@ A simple example using overloaded operators is described below. A user wants to 
 A more complex example using custom math methods is described below. A user wants to evaluate ``g = exp(x)`` at ``x = 3``. They first instantiate an AD object  ``x`` with with ``x = ad.AD(val = 3, der = 1)``, where ``3`` is the value and ``1`` is the derivative. Then the user defines ``g = ad.exp(x)`` and prints its value and derivative.
 
 ``` AD Custom Math Methods Example
-import autodiffcc as ad
+>>> import autodiffcc as ad
 
 # Find the derivative of e^x
-x = ad.AD(val = 3, der = 1)
-g = ad.exp(x)
-print(g.val, g.der)
+>>> x = ad.AD(val = 3, der = 1)
+>>> g = ad.exp(x)
+>>> print(g.val, g.der)
 20.085536923187668 20.085536923187668
 ```
+
+### Root finding
+// TODO  # Write intro paragraph, align with actual method
+
+``` RootFinder example
+import autodiffcc as ad
+
+# Find the root of x^6 - 6x^5 + 5x^4 - 4
+x = ad.AD(val = 1, der = 1)
+h = x ** 6 - 6 * (x ** 5) + 5 * (x ** 4) - 4
+roots = ad.roots(h, solver='newton')
+print(roots)
+-0.78842 5.0016
+```
+
 
 ### Distribution and packaging
 The AutoDiffCC library using the Python Package Index (PyPI). It is distributed in the pythonic formats of an sdist and as a wheel to facilitate installation via Python's package installer `pip`. The user will install the package with `pip` and them import it in Python. Importing the package via `pip` will also ensure that the user installs required dependencies.
@@ -165,6 +181,9 @@ The `autodiffcc` package will have four modules:
 Our test suite is in the directory `cs207-FinalProject/tests`. We  use TravisCI to perform continuous integration, running these tests with each build pushed to GitHub. We use CodeCov to ensure that our software implementation has sufficient code covered by our test suite. Badges indicating test compliance and code coverage are included in `README.md`.
 
 ## Implementation
+// TODO  # Streamline/simplify existing content
+// TODO  # Discuss implementation of root finder
+
 Our `AD` class is used to create an AD object, including custom methods, that work on scalars and numpy arrays. The AD class will then be used in our extension class, which will be an object of its own (RootFinder). Each of the math methods will be callable from an imported library of math functions.
 
 The AD class has several methods, including an init, add, subtract, multiply, division, positive, negative, and comparison (<, ≥) dunder methods. AD objects will have a value and a derivative. The math functions will include functions such as log, exp, tan, power, trigonometric functions, and more. To deal with elementary functions like sin, sqrt, log, and exp and all the others, we will write methods to extend general implementations (e.g. numpy) updating the derivative at each step. Finally, the AD class will have attributes to get the derivative and value of the object. We are updating the derivative of our AD objects by using dual numbers in tuples, where the first element is the value and the second element (the "imaginary" part) is the derivative. 
@@ -174,23 +193,10 @@ For vector-valued functions, we will override the priority of numpy basic operat
 We want to make our class compatible with numpy arrays, so we will need to use NumPy, as well as math. For testing, we will need doctest and pytest, and we might use scipy for the RootFinder. 
 
 
-## Future features
+## Extension: Root finder
+// TODO  # Update tense
+// TODO  # Write about each of the three algorithms
 
-### Continuing development of autodiffcc
-Our forward mode implementation is mostly complete, however, we still need to implement support for derivatives of vector functions. Vectorizing the existing modules could be a technical challenge, but we experimenting with using array data structures in the current class and function definitions, and we foresee this approach being promising. Given that this current distribution of our package uses arrays, we don't foresee adding new classes, modules, or data structures to implement full support for derivatives of vector functions. 
-
-### Advanced feature: RootFinder
 We will develop a RootFinder for our advanced feature. Our RootFinder will implement Newton's method to approximate the roots of a real-valued function within a given tolerance. This will be in its own module, RootFinder. At this time, we don't foresee any additional modules, or data structures, but we may implement a Root class that can support real and possibly even complex roots.
 
 We select Newton's method for our RootFinder because it leverages differentiation and generalizes to high-dimensional problems and complex functions.  Our RootFinder, provided a function, will start by using `autodiffcc` to find the derivative of the function at an initial guess for a root. It will iterate through successively better approximations of the root along the function, taking the derivative with `autodiffcc` at each step, until it finds the root(s) within a given tolerance. An example of the potential use of the RootFinder is shown below. The user interaction is subject to change pending final implementation. 
-
-``` RootFinder example
-import autodiffcc as ad
-
-# Find the root of x^6 - 6x^5 + 5x^4 - 4
-x = ad.AD(val = 1, der = 1)
-h = x ** 6 - 6 * (x ** 5) + 5 * (x ** 4) - 4
-roots = ad.roots(h, solver='newton')
-print(roots)
--0.78842 5.0016
-```
