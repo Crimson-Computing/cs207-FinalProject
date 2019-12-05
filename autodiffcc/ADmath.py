@@ -4,7 +4,7 @@ from autodiffcc.core import AD
 
 def cos(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     """Returns the cos of ad_object 
         
@@ -28,7 +28,7 @@ def cos(ad_object):
 
 def sin(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     """Returns the sin of ad_object 
         
@@ -52,7 +52,7 @@ def sin(ad_object):
 
 def tan(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     """Returns the tan of ad_object 
         
@@ -76,7 +76,7 @@ def tan(ad_object):
 
 def exp(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     """Returns the exponent of ad_object 
         
@@ -100,7 +100,7 @@ def exp(ad_object):
 
 def sqrt(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     """Returns the sqrt of ad_object 
         
@@ -123,7 +123,7 @@ def sqrt(ad_object):
 
 def arcsin(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     '''Returns the arcsin of ad_object 
 
@@ -158,7 +158,7 @@ def arcsin(ad_object):
 
 def arccos(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     # TODO
     pass
@@ -166,7 +166,7 @@ def arccos(ad_object):
 
 def arctan(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     # TODO
     pass
@@ -174,7 +174,7 @@ def arctan(ad_object):
 
 def sinh(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     # TODO
     pass
@@ -182,7 +182,7 @@ def sinh(ad_object):
 
 def cosh(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     # TODO
     pass
@@ -190,7 +190,7 @@ def cosh(ad_object):
 
 def tanh(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     # TODO
     pass
@@ -198,7 +198,7 @@ def tanh(ad_object):
 
 def logistic(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     # TODO
     pass
@@ -206,7 +206,7 @@ def logistic(ad_object):
 
 def log(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     # TODO
     pass
@@ -214,7 +214,7 @@ def log(ad_object):
 
 def ln(ad_object):
     if not isinstance(ad_object, AD):
-        raise TypeError(f'This function can only take AD objects as inputs. Input of {type(ad_object).__name__} is not an AD object.')
+        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(ad_object).__name__)
 
     # TODO
     pass
