@@ -7,8 +7,7 @@ def test_cos():
     t1 = ADmath.cos(AD(val=3, der=1))
     assert t1.val == pytest.approx(-0.9899924966004454)
     assert t1.der == pytest.approx(-0.1411200080598672)
-    with pytest.raises(TypeError, match=r"This function can only take AD"
-                                        r" objects as inputs .*"):
+    with pytest.raises(TypeError, match=r"This function can only take AD objects as inputs"):
         t2 = ADmath.cos(1)
 
 
