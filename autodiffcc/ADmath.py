@@ -161,3 +161,74 @@ def arcsin(ad_object):
 
     return AD(val=val, der=der)
 
+
+def arccos(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f'This function can only take AD objects as inputs. '
+                        f'Input of {type(ad_object).__name__} is not an AD object.')
+
+    # TODO
+    pass
+
+
+def arctan(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f'This function can only take AD objects as inputs. '
+                        f'Input of {type(ad_object).__name__} is not an AD object.')
+
+    # TODO
+    pass
+
+
+def sinh(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f'This function can only take AD objects as inputs. '
+                        f'Input of {type(ad_object).__name__} is not an AD object.')
+
+    # TODO
+    pass
+
+
+def cosh(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f'This function can only take AD objects as inputs. '
+                        f'Input of {type(ad_object).__name__} is not an AD object.')
+
+    # TODO
+    pass
+
+
+def tanh(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f'This function can only take AD objects as inputs. '
+                        f'Input of {type(ad_object).__name__} is not an AD object.')
+
+    # TODO
+    pass
+
+
+def logistic(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f'This function can only take AD objects as inputs. '
+                        f'Input of {type(ad_object).__name__} is not an AD object.')
+
+    # TODO
+    pass
+
+
+def log(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f'This function can only take AD objects as inputs. '
+                        f'Input of {type(ad_object).__name__} is not an AD object.')
+
+    # TODO
+    pass
+
+
+def ln(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f'This function can only take AD objects as inputs. '
+                        f'Input of {type(ad_object).__name__} is not an AD object.')
+
+    # TODO
+    pass
