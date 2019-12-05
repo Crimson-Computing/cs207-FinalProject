@@ -2,12 +2,12 @@ import numpy as np
 from autodiffcc.core import AD
 
 
-def cos(self):
-    
-    if not isinstance(self, AD):
-            raise TypeError("ADmath cos function takes only AD objects in")
-    
-    """Returns the cos of self 
+def cos(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f"This function can only take AD objects as inputs. "
+                        f"Input of {type(ad_object).__name__} is not an AD object.")
+
+    """Returns the cos of ad_object 
         
     INPUTS
     =======
@@ -15,7 +15,7 @@ def cos(self):
         
     RETURNS
     ========
-    Returns the cos of self 
+    Returns the cos of ad_object 
         
     EXAMPLES
     =========
@@ -23,17 +23,16 @@ def cos(self):
     >>> ADmath.cos(x) 
     (array(-0.9899924966004454), array(-0.1411200080598672))
     """
-        
-    return AD(val = np.cos(self.val), der = -np.sin(self.val))
-    
-    
-def sin(self):
-    
-    if not isinstance(self, AD):
-        raise TypeError("ADmath sin function takes only AD objects in")
-    
-    
-    """Returns the sin of self 
+
+    return AD(val=np.cos(ad_object.val), der=-np.sin(ad_object.val)) * ad_object.der
+
+
+def sin(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f"This function can only take AD objects as inputs. "
+                        f"Input of {type(ad_object).__name__} is not an AD object.")
+
+    """Returns the sin of ad_object 
         
     INPUTS
     =======
@@ -41,7 +40,7 @@ def sin(self):
         
     RETURNS
     ========
-    Returns the sin of self 
+    Returns the sin of ad_object 
         
     EXAMPLES
     =========
@@ -50,17 +49,15 @@ def sin(self):
     (array(0.1411200080598672), array(-0.9899924966004454))
     """
 
-    return AD(val = np.sin(self.val), der = np.cos(self.val))
-    
-    
-    
-def tan(self):
-    
-    if not isinstance(self, AD):
-        raise TypeError("ADmath sin function takes only AD objects in")
-    
-    
-    """Returns the tan of self 
+    return AD(val=np.sin(ad_object.val), der=np.cos(ad_object.val)) * ad_object.der
+
+
+def tan(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f"This function can only take AD objects as inputs. "
+                        f"Input of {type(ad_object).__name__} is not an AD object.")
+
+    """Returns the tan of ad_object 
         
     INPUTS
     =======
@@ -68,7 +65,7 @@ def tan(self):
         
     RETURNS
     ========
-     Returns the tan of self
+    Returns the tan of ad_object
         
     EXAMPLES
     =========
@@ -77,16 +74,15 @@ def tan(self):
     (array(-0.1425465430742778), array(1.020319516942427))
     """
 
-    return AD(val = np.tan(self.val), der = 1 / (np.cos(self.val) ** 2))
-    
-    
-def exp(self):
+    return AD(val=np.tan(ad_object.val), der=(1 / (np.cos(ad_object.val) ** 2))) * ad_object.der
 
-        
-    if not isinstance(self, AD):
-        raise TypeError("ADmath exp function takes only AD objects in")
-    
-    """Returns the exponent of self 
+
+def exp(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f"This function can only take AD objects as inputs. "
+                        f"Input of {type(ad_object).__name__} is not an AD object.")
+
+    """Returns the exponent of ad_object 
         
     INPUTS
     =======
@@ -94,7 +90,7 @@ def exp(self):
         
     RETURNS
     ========
-    self to the exponent of self 
+    e to the power of ad_object 
         
     EXAMPLES
     =========
@@ -102,17 +98,16 @@ def exp(self):
     >>> ADmath.exp(x) 
     (array(20.085536923187668), array(20.085536923187668))
     """
-    
-    return AD(val = np.exp(self.val), der = self.der * np.exp(self.val))
-    
-    
-def sqrt(self):
 
-        
-    if not isinstance(self, AD):
-        raise TypeError("ADmath exp function takes only AD objects in")
-    
-    """Returns the sqrt of self 
+    return AD(val=np.exp(ad_object.val), der=np.exp(ad_object.val))*ad_object.der
+
+
+def sqrt(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f"This function can only take AD objects as inputs. "
+                        f"Input of {type(ad_object).__name__} is not an AD object.")
+
+    """Returns the sqrt of ad_object 
         
     INPUTS
     =======
@@ -120,7 +115,7 @@ def sqrt(self):
         
     RETURNS
     ========
-    self to the exponent of 1/2
+    ad_object to the exponent of 1/2
         
     EXAMPLES
     =========
@@ -128,4 +123,41 @@ def sqrt(self):
     >>> ADmath.sqrt(x) 
     (array(1.7320508075688772), array(0.28867513459481287))
     """
-    return AD(self.val, self.der).__pow__(0.5)
+    return ad_object.__pow__(0.5)
+
+
+def arcsin(ad_object):
+    if not isinstance(ad_object, AD):
+        raise TypeError(f'This function can only take AD objects as inputs. '
+                        f'Input of {type(ad_object).__name__} is not an AD object.')
+
+    '''Returns the arcsin of ad_object 
+
+    INPUTS
+    =======
+    AD object
+
+    RETURNS
+    ========
+    arcsin of an AD object
+
+    EXAMPLES
+    =========
+    >>> x = AD(val=0.5, der=1)
+    >>> print(ADmath.arcsin(x)) 
+    (array(0.52359878), array(1.15470054))
+    '''
+
+    # Check that values are in the domain of arcsin
+    # TODO: Will we need to do this when vectorized?
+    # values = map(lambda x: -1 <= x <= 1, ad_object.val)
+    # if not all(values):
+    values = ad_object.val
+    if not values:
+        raise ValueError('Values are not in the domain of arcsin [-1, 1].')
+
+    val = np.arcsin(ad_object.val)
+    der = 1 / np.sqrt(1 - (ad_object.val ** 2)) * ad_object.der
+
+    return AD(val=val, der=der)
+
