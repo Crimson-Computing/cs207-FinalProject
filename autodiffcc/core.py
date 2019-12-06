@@ -487,7 +487,6 @@ def differentiate(base_func):
     """
     def base_func_der(**kwargs):
         signature = inspect.signature(base_func).parameters
-        print(signature)
         n_vars = len(signature)
         n_keys = len(kwargs.keys())
         # check that kwargs and function signature match up
@@ -503,6 +502,8 @@ def differentiate(base_func):
         result = base_func(**var_to_AD_obj)
 
         if type(result) == AD:
+            print(results.der)
+            print(np.ravel(result.der))
             return np.ravel(result.der)
         else:
             n_fn_dim = len(result)
