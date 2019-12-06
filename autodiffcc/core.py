@@ -491,7 +491,7 @@ def differentiate(base_func):
         n_keys = len(kwargs.keys())
         # check that kwargs and function signature match up
         if n_keys != n_vars:
-            raise KeyError(f"Length of **kwargs ({n_keys}) and base function signature ({n_vars}) do not match.")
+            raise KeyError("Length of **kwargs and base function signature do not match.")
         var_to_AD_obj = {}
         for i, key in enumerate(kwargs.keys()):
             if key not in signature:
