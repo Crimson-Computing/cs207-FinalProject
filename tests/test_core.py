@@ -1,6 +1,7 @@
 import pytest
 import sys
 from autodiffcc.core import *
+from autodiffcc.ADmath import *
 
 def test_matrix_value():
     with pytest.raises(ValueError):
