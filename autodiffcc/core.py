@@ -488,13 +488,14 @@ def differentiate(base_func):
     def base_func_der(**kwargs):
         signature = inspect.signature(base_func).parameters
         n_vars = len(signature)
+        n_keys = len(kwargs.keys())
         # check that kwargs and function signature match up
-        if len(kwargs.keys()) != n_vars:
-            raise KeyError(F"Length of **kwargs ({len(kwargs.keys())}) and base function signature ({n_vars}) do not match.")
+        if n_keys != n_vars:
+            raise KeyError(f"Length of **kwargs ({n_keys}) and base function signature ({n_vars}) do not match.")
         var_to_AD_obj = {}
         for i, key in enumerate(kwargs.keys()):
             if key not in signature:
-                raise KeyError(F"**kwargs key {key} missing from base function signature.")
+                raise KeyError(f"**kwargs key {key} missing from base function signature.")
             # add key to variable
             var_to_AD_obj[key] = AD(kwargs[key], n_vars = n_vars, idx = i)
 
