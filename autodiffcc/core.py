@@ -1,3 +1,4 @@
+import inspect
 import numpy as np
 
 class AD():
@@ -25,12 +26,37 @@ class AD():
     # gives our operators priority over numpy's methods
     __array_priority__ = 2
 
-    def __init__(self, val, der):
-        self.val = np.array(val)
-        self.der = np.array(der)
-        if self.val.shape != self.der.shape:
-            raise(Exception('The shape of val and der do not match: val is {}, der is {}.'.format(self.val.shape, self.der.shape)))
-
+    def __init__(self, val, **kwargs):
+        val = np.array(val).astype(float)
+        # raise ValueError if val is a matrix
+        if len(val.shape) > 1:
+            raise ValueError("val must :be a scalar or vector, cannot be a matrix")
+        if 'der' in kwargs:
+            self.der = np.array(kwargs['der']).astype(float)
+            # check if user specifies n_vars and der, they should match
+            if 'n_vars' in kwargs:
+                if len(self.der.shape) == 0:
+                    if kwargs['n_vars'] > 1:
+                        raise ValueError('n_vars does not match shape of der')
+                elif kwargs['n_vars'] != self.der.shape[0]:
+                    raise ValueError('n_vars does not match shape of der')
+        else:
+            # if number of variables is 1
+            if kwargs['n_vars'] == 1:
+                idx = 0
+            elif 'n_vars' not in kwargs or 'idx' not in kwargs:
+                raise KeyError("If der isn't specified, need to specify n_vars and idx")
+            else:
+                idx = kwargs['idx']
+            n_vars = kwargs['n_vars']
+            if len(val.shape) == 0:
+                self.der = np.zeros(n_vars)
+                self.der[idx] = 1.0
+            else:
+                self.der = np.zeros((n_vars, val.shape[0]))
+                self.der[idx,:] = 1.0
+        self.val = val
+        
     def __pos__(self):
         """Returns the unary positive operator on self
         
@@ -268,8 +294,12 @@ class AD():
         (9.0, 6.0)
         """
         try:
-            return AD(val = self.val ** other.val, 
-                der = self.val**(other.val-1)*(self.val*other.der*np.log(self.val)+other.val*self.der))
+            if (self.val).all() == 0:
+                return AD(val = self.val ** other.val, 
+                    der = self.val ** (other.val - 1) * (self.val * other.der + other.val * self.der))
+            else:
+                return AD(val = self.val ** other.val, 
+                    der = self.val ** (other.val - 1) * (self.val * other.der * np.log(np.abs(self.val)) + other.val * self.der))
         except AttributeError:
             return self ** AD(val = other, der = np.zeros(self.der.shape))
 
@@ -292,8 +322,12 @@ class AD():
         (8.0, 5.54517744)
         """
         try:
-            return AD(val = other.val ** self.val, 
-                der = other.val**(self.val-1)*(other.val*self.der*np.log(other.val)+self.val*other.der))
+            if (self.val).all() == 0:
+                return AD(val = other.val ** self.val, 
+                    der = other.val ** (self.val - 1) * (other.val * self.der + self.val * other.der))
+            else:
+                return AD(val = other.val ** self.val, 
+                    der = other.val ** (self.val - 1) * (other.val * self.der * np.log(np.abs(other.val)) + self.val * other.der))
         except AttributeError:
             return AD(val = other, der = np.zeros(self.der.shape)) ** self
 
@@ -423,3 +457,61 @@ class AD():
 
     def __repr__(self):
         return str((self.val, self.der))
+
+def differentiate(base_func):
+    """Returns a function that takes as input a value and returns the derivative of 
+    base_func evaluated at the value
+    
+    INPUTS
+    =======
+    base_func: a function that uses autodiffcc math functions to create an output
+    
+    RETURNS
+    ========
+    a function that takes as input a value and returns the derivative of base_func
+        evaluated at the value
+    
+    NOTES
+    =====
+    PRE: 
+         - if a scalar function, base_func returns a scalar
+         - if a vector function, base_func returns tuple, list, or numpy array
+
+    EXAMPLES
+    =========
+    >>> def f(x):
+    ...     return 3*(x**2)
+    >>> dfdx = differentiate(f)
+    >>> dfdx(x=5)
+    30.0
+    """
+    def base_func_der(**kwargs):
+        signature = inspect.signature(base_func).parameters
+        n_vars = len(signature)
+        n_keys = len(kwargs.keys())
+        # check that kwargs and function signature have same values
+        if n_keys != n_vars:
+            raise KeyError("Length of **kwargs and base function signature do not match.")
+        var_to_AD_obj = {}
+        for i, key in enumerate(kwargs.keys()):
+            if key not in signature:
+                raise KeyError("**kwargs key {} missing from base function signature.".format(key))
+            # add key to variable
+            var_to_AD_obj[key] = AD(kwargs[key], n_vars = n_vars, idx = i)
+        
+        # run base_func on input values now keeping track of derivative
+        result = base_func(**var_to_AD_obj)
+
+        # if base_func is a scalar function, return 1-D flat derivative (combining multiple vector-valued inputs)
+        if type(result) == AD:
+            return result.der.flatten()
+        
+        # if base_func is vector function, return 2-D Jacobian where each row is f1, f2, ...
+        n_fn_dim = len(result)
+        final_der = []
+        for ad_obj in result:
+            final_der.append(ad_obj.der.flatten())
+
+        return np.array(final_der)
+
+    return base_func_der
