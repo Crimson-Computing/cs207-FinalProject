@@ -502,7 +502,7 @@ def differentiate(base_func):
         result = base_func(**var_to_AD_obj)
 
         if type(result) == AD:
-            print(results.der)
+            print(result.der)
             print(np.ravel(result.der))
             return np.ravel(result.der)
         else:
