@@ -502,15 +502,13 @@ def differentiate(base_func):
         result = base_func(**var_to_AD_obj)
 
         if type(result) == AD:
-            print(result.der)
-            print(np.ravel(result.der))
-            return np.ravel(result.der)
+            return np.ravel(result.der, order='C')
         else:
             n_fn_dim = len(result)
 
         final_der = []
         for ad_obj in result:
-            final_der.append(np.ravel(ad_obj.der))
+            final_der.append(np.ravel(ad_obj.der, order='C'))
 
         return np.array(final_der)
 
