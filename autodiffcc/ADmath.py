@@ -45,7 +45,7 @@ def sin(ad_object):
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
-    return AD(val=np.sin(ad_object.val), der=np.cos(ad_object.val)) * ad_object.der
+    return AD(val = np.sin(ad_object.val), der = np.cos(ad_object.val) * ad_object.der)
 
 
 def tan(ad_object):
@@ -68,7 +68,7 @@ def tan(ad_object):
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
-    return AD(val=np.tan(ad_object.val), der=(1 / (np.cos(ad_object.val) ** 2))) * ad_object.der
+    return AD(val = np.tan(ad_object.val), der = (1 / (np.cos(ad_object.val) ** 2)) * ad_object.der) 
 
 
 def exp(ad_object):
@@ -91,7 +91,7 @@ def exp(ad_object):
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
-    return AD(val=np.exp(ad_object.val), der=np.exp(ad_object.val)) * ad_object.der
+    return AD(val = np.exp(ad_object.val), der = np.exp(ad_object.val) * ad_object.der)
 
 
 def sqrt(ad_object):
@@ -147,9 +147,9 @@ def arcsin(ad_object):
         raise ValueError('Values are not in the domain of arcsin [-1, 1].')
 
     val = np.arcsin(ad_object.val)
-    der = 1 / np.sqrt(1 - (ad_object.val ** 2)) * ad_object.der
+    der = 1 / np.sqrt(1 - (ad_object.val ** 2) * ad_object.der)
 
-    return AD(val=val, der=der)
+    return AD(val = val, der = der)
 
 
 def arccos(ad_object):
