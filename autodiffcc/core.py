@@ -489,7 +489,7 @@ def differentiate(base_func):
         signature = inspect.signature(base_func).parameters
         n_vars = len(signature)
         n_keys = len(kwargs.keys())
-        # check that kwargs and function signature match up
+        # check that kwargs and function signature have same values
         if n_keys != n_vars:
             raise KeyError("Length of **kwargs and base function signature do not match.")
         var_to_AD_obj = {}
@@ -498,17 +498,19 @@ def differentiate(base_func):
                 raise KeyError("**kwargs key {} missing from base function signature.".format(key))
             # add key to variable
             var_to_AD_obj[key] = AD(kwargs[key], n_vars = n_vars, idx = i)
-
+        
+        # run base_func on input values now keeping track of derivative
         result = base_func(**var_to_AD_obj)
 
+        # if base_func is a scalar function, return 1-D flat derivative (combining multiple vector-valued inputs)
         if type(result) == AD:
-            return np.ravel(result.der, order='C')
-        else:
-            n_fn_dim = len(result)
-
+            return result.der.flatten()
+        
+        # if base_func is vector function, return 2-D Jacobian where each row is f1, f2, ...
+        n_fn_dim = len(result)
         final_der = []
         for ad_obj in result:
-            final_der.append(np.ravel(ad_obj.der, order='C'))
+            final_der.append(ad_obj.der.flatten())
 
         return np.array(final_der)
 
