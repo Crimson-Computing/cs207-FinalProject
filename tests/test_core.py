@@ -8,28 +8,28 @@ def test_matrix_value():
 
 def test_nvars_and_der():
     # test working n_vars and der
-    t1 = ad.AD(val = 3, der = 1, n_vars = 1)
-    t2 = ad.AD(val = np.array([3,1]), der = np.array([1,0]), n_vars = 2)
+    t1 = AD(val = 3, der = 1, n_vars = 1)
+    t2 = AD(val = np.array([3,1]), der = np.array([1,0]), n_vars = 2)
     
     # test scalar derivative
     with pytest.raises(ValueError):
-        t3 = ad.AD(val = 3, der = 1, n_vars = 2)
+        t3 = AD(val = 3, der = 1, n_vars = 2)
     
     # test vector derivative
     with pytest.raises(ValueError):
-        t4 = ad.AD(val = np.array([3,1]), der = 1, n_vars = 2)
+        t4 = AD(val = np.array([3,1]), der = 1, n_vars = 2)
 
 def test_missing_der_missing_nvars_idx():
     # test missing n_vars
     with pytest.raises(KeyError):
-        t1 = ad.AD(val = 3, idx = 1)
+        t1 = AD(val = 3, idx = 1)
 
     # test missing idx
     with pytest.raises(KeyError):
-        t2 = ad.AD(val = 3, n_vars = 2)
+        t2 = AD(val = 3, n_vars = 2)
 
     # test declaring with only n_vars
-    t3 = ad.AD(val = 3, n_vars = 1)
+    t3 = AD(val = 3, n_vars = 1)
 
 def test_pos():
     t1 = +AD(val = 3, der = 1)
@@ -101,8 +101,8 @@ def test_pow():
     assert t2.val == 243
     assert t2.der == pytest.approx(671.96278615)
     t3 = AD(val = 0, der = 1) ** AD(val = 5, der = 1)
-    assert t2.val == 0
-    assert t2.der == pytest.approx(0.)
+    assert t3.val == 0
+    assert t3.der == pytest.approx(0.)
 
 def test_rpow():
     t1 = 2 ** AD(val = 3, der = 1)
