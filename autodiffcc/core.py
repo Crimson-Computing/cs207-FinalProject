@@ -1,3 +1,4 @@
+import inspect
 import numpy as np
 
 class AD():
@@ -293,7 +294,7 @@ class AD():
         (9.0, 6.0)
         """
         try:
-            if self.val == 0:
+            if (self.val).all() == 0:
                 return AD(val = self.val ** other.val, 
                     der = self.val ** (other.val - 1) * (self.val * other.der + other.val * self.der))
             else:
@@ -321,7 +322,7 @@ class AD():
         (8.0, 5.54517744)
         """
         try:
-            if self.val == 0:
+            if (self.val).all() == 0:
                 return AD(val = other.val ** self.val, 
                     der = other.val ** (self.val - 1) * (other.val * self.der + self.val * other.der))
             else:
@@ -456,3 +457,58 @@ class AD():
 
     def __repr__(self):
         return str((self.val, self.der))
+
+def differentiate(base_func):
+    """Returns a function that takes as input a value and returns the derivative of 
+    base_func evaluated at the value
+    
+    INPUTS
+    =======
+    base_func: a function that uses autodiffcc math functions to create an output
+    
+    RETURNS
+    ========
+    a function that takes as input a value and returns the derivative of base_func
+        evaluated at the value
+    
+    NOTES
+    =====
+    PRE: 
+         - if a scalar function, base_func returns a scalar
+         - if a vector function, base_func returns tuple, list, or numpy array
+
+    EXAMPLES
+    =========
+    >>> def f(x):
+    ...     return 3*(x**2)
+    >>> dfdx = differentiate(f)
+    >>> dfdx(x=5)
+    30.0
+    """
+    def base_func_der(**kwargs):
+        signature = inspect.signature(base_func).parameters
+        n_vars = len(signature)
+        # check that kwargs and function signature match up
+        if len(kwargs.keys()) != n_vars:
+            raise KeyError(F"Length of **kwargs ({len(kwargs.keys())}) and base function signature ({n_vars}) do not match.")
+        var_to_AD_obj = {}
+        for i, key in enumerate(kwargs.keys()):
+            if key not in signature:
+                raise KeyError(F"**kwargs key {key} missing from base function signature.")
+            # add key to variable
+            var_to_AD_obj[key] = AD(kwargs[key], n_vars = n_vars, idx = i)
+
+        result = base_func(**var_to_AD_obj)
+
+        if type(result) == AD:
+            return np.ravel(result.der)
+        else:
+            n_fn_dim = len(result)
+
+        final_der = []
+        for ad_obj in result:
+            final_der.append(np.ravel(ad_obj.der))
+
+        return np.array(final_der)
+
+    return base_func_der
