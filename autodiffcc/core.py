@@ -495,7 +495,7 @@ def differentiate(base_func):
         var_to_AD_obj = {}
         for i, key in enumerate(kwargs.keys()):
             if key not in signature:
-                raise KeyError(f"**kwargs key {key} missing from base function signature.")
+                raise KeyError("**kwargs key {} missing from base function signature.".format(key))
             # add key to variable
             var_to_AD_obj[key] = AD(kwargs[key], n_vars = n_vars, idx = i)
 
