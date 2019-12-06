@@ -147,14 +147,14 @@ def test_combination():
 
 def test_differentiate_scalar_function():
     def f(x):
-        return ad.sin(3*(x**2)) + ad.tan(ad.sqrt(x*7))
+        return sin(3*(x**2)) + tan(sqrt(x*7))
     dfdx = differentiate(f)
     assert np.allclose(dfdx(x=5), 28.3316)
     assert np.allclose(dfdx(x=np.array([2,1,3])), np.array([11.4996,-4.2300,40.3201]))
 
 def test_differentiate_scalar_function_multiple_inputs():
     def f(x, y):
-        return ad.sin(3*(x**2)) + x * ad.tan(ad.sqrt(y*7))
+        return sin(3*(x**2)) + x * tan(sqrt(y*7))
     dfdx = differentiate(f)
     assert np.allclose(dfdx(x=4, y=2), np.array([-14.6792, 5.49340]))
     assert np.allclose(dfdx(x=np.array([1,2,3]), 
@@ -162,8 +162,8 @@ def test_differentiate_scalar_function_multiple_inputs():
 
 def test_differentiate_vector_function():
     def f(x):
-        f1 = ad.cos(2**ad.sin(x)) + 3*x*ad.sin(ad.sqrt(x))
-        f2 = x**3 - ad.sin(x)
+        f1 = cos(2**sin(x)) + 3*x*sin(sqrt(x))
+        f2 = x**3 - sin(x)
         return f1, f2
     dfdx = differentiate(f)
     assert np.allclose(dfdx(x=6), np.array([[-1.31673351], [107.03982971]]))
@@ -171,10 +171,10 @@ def test_differentiate_vector_function():
 
 def test_differentiate_scalar_function_multiple_inputs():
     def f(x, y):
-        f1 = ad.sin(3*(x**2)) + x * ad.tan(ad.sqrt(y*7))
-        f2 = y**(3*x) - ad.sin(x)
+        f1 = sin(3*(x**2)) + x * tan(sqrt(y*7))
+        f2 = y**(3*x) - sin(x)
         return f1, f2
-    dfdx = ad.differentiate(f)
+    dfdx = differentiate(f)
     result1 = np.array([[-1.46792323e+01, 5.49340116e+00], [8.51804620e+03, 2.45760000e+04]])
     assert np.allclose(dfdx(x=4, y=2), result1)
     result2 = np.array([[-5.25572314,  9.5853326 , -6.78777886,  1.37335029,  3.41986887,
