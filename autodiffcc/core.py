@@ -487,6 +487,7 @@ def differentiate(base_func):
     """
     def base_func_der(**kwargs):
         signature = inspect.signature(base_func).parameters
+        print(signature)
         n_vars = len(signature)
         n_keys = len(kwargs.keys())
         # check that kwargs and function signature match up
