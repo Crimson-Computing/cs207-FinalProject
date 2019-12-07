@@ -4,4 +4,5 @@
 # Extra PyCharm Files
 .idea
 */__pycache__
+*.pyc
 /scratch/

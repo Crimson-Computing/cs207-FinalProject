@@ -3,8 +3,9 @@ python:
   - "3.6"
   - "3.7"
 cache: pip
-script: coverage run -m pytest
 install:
   - pip install -r requirements.txt
+script: 
+  - pytest --cov autodiffcc
 after_success:
   - codecov
