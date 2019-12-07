@@ -1,7 +1,8 @@
+import sys
+sys.path.insert(1, '..')
 import pytest
 from autodiffcc import ADmath
 from autodiffcc.core import AD
-
 
 def test_cos():
     t1 = ADmath.cos(AD(val=3, der=1))
@@ -10,8 +11,9 @@ def test_cos():
     #with pytest.raises(TypeError, match=r"This function can only take AD objects as inputs"):
     #    t2 = ADmath.cos(1)
     t2 = ADmath.cos(AD(val=3, der=[1,2]))
+    print(t2.der)
     assert t2.val == pytest.approx(-0.9899924966004454)
-    assert t2.der == pytest.approx(-0.1411200080598672)
+    assert t2.der.tolist() == [pytest.approx(-0.1411200080598672), pytest.approx(-0.2822400161197344)]
 
 def test_sin():
     t1 = ADmath.sin(AD(val=3, der=1))
@@ -21,8 +23,7 @@ def test_sin():
      #   t2 = ADmath.sin(1)
     t2 = ADmath.sin(AD(val=3, der=[1,2]))
     assert t2.val == pytest.approx(0.1411200080598672, 0.1)
-    assert t2.der == pytest.approx(-0.9899924966004454)
-
+    assert t2.der.tolist() == [pytest.approx(-0.9899924966004454), pytest.approx(-1.9799849932008908)]
 
 def test_tan():
     t1 = ADmath.tan(AD(val=3, der=1))
@@ -32,7 +33,7 @@ def test_tan():
        # t2 = ADmath.tan(1)
     t2 = ADmath.tan(AD(val=3, der=[1,2]))
     assert t2.val == pytest.approx(-0.1425465430742778)
-    assert t2.der == pytest.approx(1.020319516942427)
+    assert t2.der.tolist() == [pytest.approx(1.020319516942427), pytest.approx(2.040639033884854)]
 
 def test_exp():
     t1 = ADmath.exp(AD(val=3, der=1))
