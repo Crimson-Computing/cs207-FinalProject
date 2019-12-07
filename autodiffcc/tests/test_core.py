@@ -1,5 +1,11 @@
-from autodiffcc import ADmath
-from autodiffcc import AD
+import sys, os
+sys.path.insert(1, '../')
+myPath = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, myPath + '/../')
+import pytest
+import numpy as np
+from ADmath import *
+from core import AD 
 
 def test_matrix_value():
     with pytest.raises(ValueError):
