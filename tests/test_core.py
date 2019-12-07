@@ -1,10 +1,5 @@
-import sys
-sys.path.insert(1, '../autodiffcc')
-import pytest
-import numpy as np
-from core import AD
-from core import differentiate
-from ADmath import *
+from autodiffcc import ADmath
+from autodiffcc import AD
 
 def test_matrix_value():
     with pytest.raises(ValueError):

@@ -1,7 +1,6 @@
 import numpy as np
 from autodiffcc.core import AD
 
-
 def cos(obj):
     """Returns the cos of a scalar or an AD object 
 
