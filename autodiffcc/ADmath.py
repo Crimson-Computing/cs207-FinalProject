@@ -1,18 +1,18 @@
 import numpy as np
 from autodiffcc.core import AD
 
-import numpy as np
-
-
 
 def cos(obj):
     """Returns the cos of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar
+    obj: AD object or a scalar
+    
     RETURNS
     ========
     Returns the cos of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -27,15 +27,17 @@ def cos(obj):
     if isinstance(obj, AD):
         return AD(val=np.cos(obj.val), der=-np.sin(obj.val) * obj.der)
 
-
 def sin(obj):
-    """Returns the sin of a scalar or AD object 
+    """Returns the sin of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
     RETURNS
     ========
     Returns the sin of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -51,15 +53,17 @@ def sin(obj):
     if isinstance(obj, AD):
         return AD(val = np.sin(obj.val), der = np.cos(obj.val) * obj.der)
 
-
 def tan(obj):
-    """Returns the tan of a scalar or AD object 
+    """Returns the tan of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
     RETURNS
     ========
     Returns the tan of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -74,15 +78,17 @@ def tan(obj):
     if isinstance(obj, AD):
         return AD(val = np.tan(obj.val), der = (1 / (np.cos(obj.val) ** 2)) * obj.der) 
 
-
 def exp(obj):
-    """Returns the exp of a scalar or AD object 
+    """Returns the exp of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
     RETURNS
     ========
-    Returns the exp of obj or a scalar 
+    Returns the exp of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -97,15 +103,17 @@ def exp(obj):
     if isinstance(obj, AD):
         return AD(val = np.exp(obj.val), der = np.exp(obj.val) * obj.der)
 
-
 def sqrt(obj):
-    """Returns the square root of a scalar or AD object 
+    """Returns the sqrt of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
     RETURNS
     ========
-    Returns the square root of obj
+    Returns the sqrt of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -127,21 +135,23 @@ def sqrt(obj):
         else:
             return obj.__pow__(0.5)
 
-
 def arcsin(obj):
-    '''Returns the arcsin of AD object or a scalar 
+    """Returns the arcsin of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar
+    obj: AD object or a scalar
+    
     RETURNS
     ========
-    arcsin of obj
+    Returns the arcsin of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val=0.5, der=1)
     >>> print(ADmath.arcsin(x)) 
     (array(0.52359878), array(1.15470054))
-    '''
+    """
 
     if np.isscalar(obj):
         if obj < (-1) or obj> (1):
@@ -159,21 +169,23 @@ def arcsin(obj):
 
         return AD(val = val, der = der)
 
-
 def arccos(obj):
-    '''Returns the arccos of AD object or a scalar
+    """Returns the arccos of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
     RETURNS
     ========
-    arccos of an AD object or a scalar
+    Returns the arccos of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val=0.5, der=1)
     >>> print(ADmath.arcos(x)) 
     (array(1.04719755), array(-1.15470054))
-    '''
+    """
     if np.isscalar(obj):
         if obj < (-1) or obj> (1):
             raise ValueError('Values are not in the domain of arcsin [-1, 1].')
@@ -190,17 +202,18 @@ def arccos(obj):
         # this is the negative of the derivative of the arcsin 
         der = -1 * (1 / np.sqrt(1 - (obj.val ** 2) * obj.der))
         return AD(val = val, der = der)
-    
-
 
 def arctan(obj):
-    """Returns the arctan of AD object or a scalar 
+    """Returns the arctan of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
     RETURNS
     ========
     Returns the arctan of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -215,16 +228,17 @@ def arctan(obj):
         der = 1/((obj.val**2) +1)* obj.der
         return AD(val = val, der = der)
 
-
-
 def sinh(obj):
-    """Returns the sinh of obj 
+    """Returns the sinh of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
     RETURNS
     ========
-    Returns the sinh of obj 
+    Returns the sinh of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -240,16 +254,17 @@ def sinh(obj):
         der = np.cosh(obj.val) * obj.der
         return AD(val = val, der = der)
 
-
-
 def cosh(obj):
-    """Returns the cosh of obj 
+    """Returns the cosh of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
     RETURNS
     ========
-    Returns the cosh of obj 
+    Returns the cosh of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -265,21 +280,22 @@ def cosh(obj):
         der = np.sinh(obj.val) * obj.der
         return AD(val = val, der = der)
 
-
-
 def tanh(obj):
-    """Returns the tanh of obj 
+    """Returns the tanh of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
     RETURNS
     ========
-    Returns the tanh of obj 
+    Returns the tanh of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
-    >>> ADmath.tan(x) 
-    (array(-0.14254654), array(1.02031952))
+    >>> ADmath.tanh(x) 
+    (array(0.99505475), array(0.00986604))
     """
     if np.isscalar(obj):
         return(np.tanh(obj))
@@ -291,16 +307,17 @@ def tanh(obj):
         der = ((1/np.cosh(obj.val))**2) * obj.der
         return AD(val = val, der = der)
 
-
-
-
 def logistic(obj):
-    """Returns the logit of obj or a scalar 
+    """Returns the logit of a scalar or an AD object 
+
     INPUTS
     =======
-    AD object or a scalar 
+    obj: AD object or a scalar
+    
+    RETURNS
     ========
-    Returns the logit of obj or a scalar
+    Returns the logit of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -318,16 +335,18 @@ def logistic(obj):
         
         return AD(val = val, der = der)
 
-
 def log(obj, base=None):
-    """Returns the log base 10 of obj or a scalar 
+    """Returns the log of a scalar or an AD object with any base
+
     INPUTS
     =======
-    obj: AD object or a scalar 
-    base: the base of the log. If None, then calculates the natural log
+    obj: AD object or a scalar
+    base: the base of the log, if None defaults to natural log
+    
     RETURNS
     ========
-    Returns the log of obj or a scalar
+    Returns the log of obj
+    
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
