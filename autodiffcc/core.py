@@ -453,7 +453,7 @@ class AD():
         >>> x <= y
         False
         """
-        return (self > other) or (self == other)
+        return (self < other) or (self == other)
 
     def __repr__(self):
         return str((self.val, self.der))
