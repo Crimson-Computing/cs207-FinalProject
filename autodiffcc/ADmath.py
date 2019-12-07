@@ -3,114 +3,142 @@ from autodiffcc.core import AD
 import math as math 
 
 
-def cos(ad_object):
-    """Returns the cos of ad_object 
+import numpy as np
+import math as math 
+
+
+
+def cos(obj):
+    """Returns the cos of a scalar or an ad_object 
     INPUTS
     =======
-    AD object
+    AD object or a scalar
     RETURNS
     ========
-    Returns the cos of ad_object 
+    Returns the cos of ad_object or a scalar 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
     >>> ADmath.cos(x) 
     (array(-0.9899924966004454), array(-0.1411200080598672))
     """
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    return AD(val=np.cos(ad_object.val), der=-np.sin(ad_object.val) * ad_object.der)
+    # if scalar 
+    if np.isscalar(obj):
+        return(np.cos(obj))
+     
+    # if AD object 
+    if isinstance(obj, AD):
+        return AD(val=np.cos(obj.val), der=-np.sin(obj.val) * obj.der)
 
 
-def sin(ad_object):
-    """Returns the sin of ad_object 
+def sin(obj):
+    """Returns the sin of a scalar or ad_object 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    Returns the sin of ad_object 
+    Returns the sin of ad_objector a scalar 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
     >>> ADmath.sin(x) 
     (array(0.1411200080598672), array(-0.9899924966004454))
     """
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    return AD(val = np.sin(ad_object.val), der = np.cos(ad_object.val) * ad_object.der)
+
+    # if scalar 
+    if np.isscalar(obj):
+        return(np.sin(obj))
+        
+    # if AD object 
+    if isinstance(obj, AD):
+        return AD(val = np.sin(obj.val), der = np.cos(obj.val) * obj.der)
 
 
-def tan(ad_object):
-    """Returns the tan of ad_object 
+def tan(obj):
+    """Returns the tan of a scalar or ad_object 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    Returns the tan of ad_object
+    Returns the tan of ad_objector a scalar 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
     >>> ADmath.tan(x) 
     (array(-0.1425465430742778), array(1.020319516942427))
     """
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    return AD(val = np.tan(ad_object.val), der = (1 / (np.cos(ad_object.val) ** 2)) * ad_object.der) 
+    # if scalar 
+    if np.isscalar(obj):
+        return(np.tan(obj))
+        
+    # if AD object 
+    if isinstance(obj, AD):
+        return AD(val = np.tan(obj.val), der = (1 / (np.cos(obj.val) ** 2)) * obj.der) 
 
 
-def exp(ad_object):
-    """Returns the exponent of ad_object 
+def exp(obj):
+    """Returns the exp of a scalar or ad_object 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    e to the power of ad_object 
+    Returns the exp of ad_objector a scalar 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
     >>> ADmath.exp(x) 
     (array(20.085536923187668), array(20.085536923187668))
     """
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    return AD(val = np.exp(ad_object.val), der = np.exp(ad_object.val) * ad_object.der)
+    # if scalar 
+    if np.isscalar(obj):
+        return(np.exp(obj))
+
+    # if AD object 
+    if isinstance(obj, AD):
+        return AD(val = np.exp(obj.val), der = np.exp(obj.val) * obj.der)
 
 
-def sqrt(ad_object):
-    """Returns the sqrt of ad_object 
+def sqrt(obj):
+    """Returns the square root of a scalar or ad_object 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    ad_object to the exponent of 1/2
+    Returns the square root  of ad_object or a scalar 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
     >>> ADmath.sqrt(x) 
     (array(1.7320508075688772), array(0.28867513459481287))
     """
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    return ad_object.__pow__(0.5)
+    # if scalar 
+    if np.isscalar(obj):
+        if obj <= 0 :
+            raise TypeError('Sqrt has a positive domain, input negative')
+        else: 
+            return(np.sqrt(obj))
+     
+    # if AD object 
+    if isinstance(obj, AD):
+        val = obj.val
+        if (val <= 0).any(): 
+            raise TypeError('Sqrt has a positive domain, input negative')
+        else:
+            return obj.__pow__(0.5)
 
 
-def arcsin(ad_object):
-    '''Returns the arcsin of ad_object 
+def arcsin(obj):
+    '''Returns the arcsin of ad_object or a scalar 
     INPUTS
     =======
-    AD object
+    AD object or a scalar
     RETURNS
     ========
-    arcsin of an AD object
+    arcsin of an AD object or a scalar 
     EXAMPLES
     =========
     >>> x = AD(val=0.5, der=1)
@@ -118,107 +146,113 @@ def arcsin(ad_object):
     (array(0.52359878), array(1.15470054))
     '''
 
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    values = ad_object.val 
-    if values < (-1) or values> (1):
-        raise ValueError('Values are not in the domain of arcsin [-1, 1].')
+    if np.isscalar(obj):
+        if obj < (-1) or obj> (1):
+            raise ValueError('Values are not in the domain of arcsin [-1, 1].')
+        else: 
+            return(np.arcsin(obj))
+            
+    if isinstance(obj, AD):
+        values = obj.val 
+        if (values < (-1) or values > (1)).any():
+            raise ValueError('Values are not in the domain of arcsin [-1, 1].')
 
-    val = np.arcsin(ad_object.val)
-    der = 1 / np.sqrt(1 - (ad_object.val ** 2) * ad_object.der)
+        val = np.arcsin(obj.val)
+        der = 1 / np.sqrt(1 - (obj.val ** 2) * obj.der)
 
-    return AD(val = val, der = der)
+        return AD(val = val, der = der)
 
 
-def arccos(ad_object):
-    '''Returns the arccos of ad_object 
+def arccos(obj):
+    '''Returns the arccos of ad_object or a scalar
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    arcsos of an AD object
+    arccos of an AD object or a scalar
     EXAMPLES
     =========
     >>> x = AD(val=0.5, der=1)
     >>> print(ADmath.arcos(x)) 
     (array(1.04719755), array(-1.15470054))
     '''
+    if np.isscalar(obj):
+        if obj < (-1) or obj> (1):
+            raise ValueError('Values are not in the domain of arcsin [-1, 1].')
+        else: 
+            return(np.arccos(obj))
     
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    values = ad_object.val 
-    if values < (-1) or values> (1):
-        raise ValueError('Values are not in the domain of arcsin [-1, 1].')
+
+    if isinstance(obj, AD):
+        values = obj.val 
+        if (values < (-1) or values > (1)).any():
+            raise ValueError('Values are not in the domain of arcsin [-1, 1].')
         
-    val = np.arccos(ad_object.val)
-    # this is the negative of the derivative of the arcsin 
-    der = -1 * (1 / np.sqrt(1 - (ad_object.val ** 2) * ad_object.der))
+        val = np.arccos(obj.val)
+        # this is the negative of the derivative of the arcsin 
+        der = -1 * (1 / np.sqrt(1 - (obj.val ** 2) * obj.der))
+        return AD(val = val, der = der)
+    
 
-    return AD(val = val, der = der)
 
-
-
-def arctan(ad_object):
-    """Returns the arctan of ad_object 
+def arctan(obj):
+    """Returns the arctan of ad_object or a scalar 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    Returns the cos of ad_object 
+    Returns the arctan of ad_object or a scalar 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
     >>> ADmath.arctan(x) 
     (array(1.24904577), array(0.1))
     """
+    if np.isscalar(obj):
+        return(np.arctan(obj))
     
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    
-    val = np.arctan(ad_object.val)
-    der = 1/((ad_object.val**2) +1)* ad_object.der
-    return AD(val = val, der = der)
+    if isinstance(obj, AD):
+        val = np.arctan(obj.val)
+        der = 1/((obj.val**2) +1)* obj.der
+        return AD(val = val, der = der)
 
 
 
-def sinh(ad_object):
+def sinh(obj):
     """Returns the sinh of ad_object 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    Returns the cos of ad_object 
+    Returns the sinh of ad_object 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
     >>> ADmath.sinh(x) 
     (array(10.01787493), array(10.067662))
-    """
     
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-        
-    val = np.sinh(ad_object.val)
-    der = np.cosh(ad_object.val) * ad_object.der
-    return AD(val = val, der = der)
+    """
+    if np.isscalar(obj):
+        return(np.sinh(obj))
+    
+    if isinstance(obj, AD):
+        val = np.sinh(obj.val)
+        der = np.cosh(obj.val) * obj.der
+        return AD(val = val, der = der)
 
 
 
-def cosh(ad_object):
+def cosh(obj):
     """Returns the cosh of ad_object 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    Returns the cos of ad_object 
+    Returns the cosh of ad_object 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -226,53 +260,50 @@ def cosh(ad_object):
     (array(10.067662), array(10.01787493))
     """
     
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-        
-    val = np.cosh(ad_object.val)
-
-    der = np.sinh(ad_object.val) * ad_object.der
-    return AD(val = val, der = der)
-
+    if np.isscalar(obj):
+        return(np.cosh(obj))
+    
+    if isinstance(obj, AD):
+        val = np.cosh(obj.val)
+        der = np.sinh(obj.val) * obj.der
+        return AD(val = val, der = der)
 
 
-def tanh(ad_object):
-    """Returns the tan of ad_object 
+
+def tanh(obj):
+    """Returns the tanh of ad_object 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    Returns the cos of ad_object 
+    Returns the tanh of ad_object 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
     >>> ADmath.tan(x) 
     (array(-0.14254654), array(1.02031952))
     """
-    
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
+    if np.isscalar(obj):
+        return(np.tanh(obj))
+        
     # the derivative of tanh is sech^2(x) and sech(x) can be defined as 1/cosh(x)
-    
-   
-    val = np.tanh(ad_object.val)
-    der = ((1/np.cosh(ad_object.val))**2) * ad_object.der
-    return AD(val = val, der = der)
+        
+    if isinstance(obj, AD):
+        val = np.tanh(obj.val)
+        der = ((1/np.cosh(obj.val))**2) * obj.der
+        return AD(val = val, der = der)
 
 
 
 
-def logistic(ad_object):
-    """Returns the logit of ad_object 
+def logistic(obj):
+    """Returns the logit of ad_object or a scalar 
     INPUTS
     =======
-    AD object
-    RETURNS
+    AD object or a scalar 
     ========
-    Returns the cos of ad_object 
+    Returns the logit of ad_object or a scalar
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -280,24 +311,25 @@ def logistic(ad_object):
     (array(0.95257413), array(0.04517666))
     """
     
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
+    if np.isscalar(obj):
+        return(1 / (1+ np.exp(-obj)))
     
-    val = (1 / (1+ np.exp(-ad_object.val)))
-    der = ((np.exp(-ad_object.val))/(1+np.exp(-ad_object.val))**2)*ad_object.der
+    if isinstance(obj, AD):
     
-    return AD(val = val, der = der)
+        val = (1 / (1+ np.exp(-obj.val)))
+        der = ((np.exp(-obj.val))/(1+np.exp(-obj.val))**2)*obj.der
+        
+        return AD(val = val, der = der)
 
-# this is log base 10 
-def log(ad_object):
-    """Returns the log base 10 of ad_object 
+
+def log(obj):
+    """Returns the log base 10 of ad_object or a scalar 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    Returns the cos of ad_object 
+    Returns the log base 10 of ad_object or a scalar
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -305,27 +337,32 @@ def log(ad_object):
     (array(0.47712125), array(0.14476483))
     """
     
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    values = ad_object.val 
-    if values <= 0:
-        raise ValueError('Log accepts only positive numbers')
-        
-    val = math.log(ad_object.val, 10)
-    der = (1/(ad_object.val * np.log(10)))*ad_object.der
-    return AD(val = val, der = der)
+    if np.isscalar(obj):
+        if obj <= 0:
+            raise ValueError('Log accepts only positive numbers')
+        return(math.log(obj,10))
     
 
-# this is natural log 
-def ln(ad_object):
-    """Returns the natural log of ad_object 
+    
+    if isinstance(obj, AD):
+        values = obj.val 
+        if (values <= 0).any():
+            raise ValueError('Log accepts only positive numbers')
+        
+        val = math.log(obj.val, 10)
+        der = (1/(obj.val * np.log(10)))*obj.der
+        return AD(val = val, der = der)
+    
+
+
+def ln(obj):
+    """Returns the natural log of ad_object or a scalar 
     INPUTS
     =======
-    AD object
+    AD object or a scalar 
     RETURNS
     ========
-    Returns the cos of ad_object 
+    Returns the natural log of ad_object or a scalar 
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -333,14 +370,16 @@ def ln(ad_object):
     (array(1.09861229), array(0.33333333))
     """
     
-    if not isinstance(ad_object, AD):
-        raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
-            ad_object).__name__)
-    values = ad_object.val 
-    if values <= 0:
-        raise ValueError('Ln accepts only positive numbers')
-       
-    val = np.log(ad_object.val) 
-    der = (1/(ad_object.val)) *ad_object.der
-    return AD(val = val, der = der)
+    if np.isscalar(obj):
+        if obj <= 0:
+            raise ValueError('Ln accepts only positive numbers')
+        return(np.log(obj))
 
+    
+    if isinstance(obj, AD):
+        values = obj.val 
+        if (values <= 0).any:
+            raise ValueError('Ln accepts only positive numbers')
+        val = np.log(obj.val) 
+        der = (1/(obj.val)) *obj.der
+        return AD(val = val, der = der)
