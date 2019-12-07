@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(1, '..')
+sys.path.insert(1, '../')
 import pytest
 from autodiffcc import ADmath
 from autodiffcc.core import AD

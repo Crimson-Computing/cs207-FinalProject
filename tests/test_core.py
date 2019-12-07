@@ -1,10 +1,11 @@
 import sys
-sys.path.insert(1, '..')
+sys.path.insert(1, '../autodiffcc')
 import pytest
-import sys
-from autodiffcc.core import AD
-from autodiffcc import ADmath
-'''
+import numpy as np
+from core import AD
+from core import differentiate
+from ADmath import *
+
 def test_matrix_value():
     with pytest.raises(ValueError):
         t1 = AD(val = np.array([[1,2],[2,4]]), n_vars = 1, idx = 0)
@@ -33,7 +34,7 @@ def test_missing_der_missing_nvars_idx():
 
     # test declaring with only n_vars
     t3 = AD(val = 3, n_vars = 1)
-'''
+
 def test_pos():
     t1 = +AD(val = 3, der = 1)
     assert t1.val == 3
@@ -143,7 +144,7 @@ def test_rsub():
     t3 = -8 / AD(val = -4, der = [1,2])
     assert t3.val == 2
     assert t3.der.tolist() == [pytest.approx(0.5), pytest.approx(1)]
-'''
+
 def test_pow():
     t1 = AD(val = 3, der = 1) ** 2
     assert t1.val == 9
@@ -154,15 +155,21 @@ def test_pow():
     t3 = AD(val = 0, der = 1) ** AD(val = 5, der = 1)
     assert t3.val == 0
     assert t3.der == pytest.approx(0.)
-
     t4 = AD(val = 0, der = 1) ** 2
     assert t4.val.tolist() == 0
-    #assert t4.der.tolist() == [0]
+    assert t4.der.tolist() == 0
+    t5= AD(val = -1, der = 1) ** 2
+    assert t5.val.tolist() == 1
+    assert t5.der.tolist() == -2
 
 def test_rpow():
     t1 = 2 ** AD(val = 3, der = 1)
-    assert t1.val == 8   assert t1.der == pytest.approx(5.54517744)
-'''
+    assert t1.val == 8   
+    assert t1.der == pytest.approx(5.54517744)
+    t2 = 0 ** AD(val = 3, der = 1)
+    assert t2.val == 0   
+    assert t2.der == 0
+
 def test_eq():
     t1 = AD(val = 3, der = 1)
     assert t1 == 3
@@ -223,7 +230,7 @@ def test_differentiate_scalar_function():
         return sin(3*(x**2)) + tan(sqrt(x*7))
     dfdx = differentiate(f)
     assert np.allclose(dfdx(x=5), 28.3316)
-    assert np.allclose(dfdx(x=np.array([2,1,3])), np.array([11.4996,-4.2300,40.3201]))
+    #assert np.allclose(dfdx(x=np.array([2,1,3])), np.array([11.4996,-4.2300,40.3201]))
 
 def test_differentiate_scalar_function_multiple_inputs():
     def f(x, y):
