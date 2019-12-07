@@ -137,7 +137,7 @@ def test_lt():
 def test_le():
     t1 = AD(val = 3, der = 1)
     assert t1 <= 3
-    t2 = AD(val = 3, der = 1)
+    t2 = AD(val = 4, der = 1)
     assert t1 <= t2
 
 def test_combination():
