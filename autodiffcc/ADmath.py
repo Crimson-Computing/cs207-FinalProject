@@ -1,18 +1,16 @@
 import numpy as np
 from autodiffcc.core import AD
+import math as math 
 
 
 def cos(ad_object):
     """Returns the cos of ad_object 
-
     INPUTS
     =======
     AD object
-
     RETURNS
     ========
     Returns the cos of ad_object 
-
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -27,15 +25,12 @@ def cos(ad_object):
 
 def sin(ad_object):
     """Returns the sin of ad_object 
-
     INPUTS
     =======
     AD object
-
     RETURNS
     ========
     Returns the sin of ad_object 
-
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -50,15 +45,12 @@ def sin(ad_object):
 
 def tan(ad_object):
     """Returns the tan of ad_object 
-
     INPUTS
     =======
     AD object
-
     RETURNS
     ========
     Returns the tan of ad_object
-
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -73,15 +65,12 @@ def tan(ad_object):
 
 def exp(ad_object):
     """Returns the exponent of ad_object 
-
     INPUTS
     =======
     AD object
-
     RETURNS
     ========
     e to the power of ad_object 
-
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -96,15 +85,12 @@ def exp(ad_object):
 
 def sqrt(ad_object):
     """Returns the sqrt of ad_object 
-
     INPUTS
     =======
     AD object
-
     RETURNS
     ========
     ad_object to the exponent of 1/2
-
     EXAMPLES
     =========
     >>> x = AD(val = 3, der = 1)
@@ -119,15 +105,12 @@ def sqrt(ad_object):
 
 def arcsin(ad_object):
     '''Returns the arcsin of ad_object 
-
     INPUTS
     =======
     AD object
-
     RETURNS
     ========
     arcsin of an AD object
-
     EXAMPLES
     =========
     >>> x = AD(val=0.5, der=1)
@@ -135,15 +118,11 @@ def arcsin(ad_object):
     (array(0.52359878), array(1.15470054))
     '''
 
-    # Check that values are in the domain of arcsin
-    # TODO: Will we need to do this when vectorized?
-    # values = map(lambda x: -1 <= x <= 1, ad_object.val)
-    # if not all(values):
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
-    values = ad_object.val
-    if not values:
+    values = ad_object.val 
+    if values < (-1) or values> (1):
         raise ValueError('Values are not in the domain of arcsin [-1, 1].')
 
     val = np.arcsin(ad_object.val)
@@ -153,71 +132,215 @@ def arcsin(ad_object):
 
 
 def arccos(ad_object):
+    '''Returns the arccos of ad_object 
+    INPUTS
+    =======
+    AD object
+    RETURNS
+    ========
+    arcsos of an AD object
+    EXAMPLES
+    =========
+    >>> x = AD(val=0.5, der=1)
+    >>> print(ADmath.arcos(x)) 
+    (array(1.04719755), array(-1.15470054))
+    '''
+    
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
-    # TODO
-    pass
+    values = ad_object.val 
+    if values < (-1) or values> (1):
+        raise ValueError('Values are not in the domain of arcsin [-1, 1].')
+        
+    val = np.arccos(ad_object.val)
+    # this is the negative of the derivative of the arcsin 
+    der = -1 * (1 / np.sqrt(1 - (ad_object.val ** 2) * ad_object.der))
+
+    return AD(val = val, der = der)
+
 
 
 def arctan(ad_object):
+    """Returns the arctan of ad_object 
+    INPUTS
+    =======
+    AD object
+    RETURNS
+    ========
+    Returns the cos of ad_object 
+    EXAMPLES
+    =========
+    >>> x = AD(val = 3, der = 1)
+    >>> ADmath.arctan(x) 
+    (array(1.24904577), array(0.1))
+    """
+    
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
+    
+    val = np.arctan(ad_object.val)
+    der = 1/((ad_object.val**2) +1)* ad_object.der
+    return AD(val = val, der = der)
 
-    # TODO
-    pass
 
 
 def sinh(ad_object):
+    """Returns the sinh of ad_object 
+    INPUTS
+    =======
+    AD object
+    RETURNS
+    ========
+    Returns the cos of ad_object 
+    EXAMPLES
+    =========
+    >>> x = AD(val = 3, der = 1)
+    >>> ADmath.sinh(x) 
+    (array(10.01787493), array(10.067662))
+    """
+    
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
+        
+    val = np.sinh(ad_object.val)
+    der = np.cosh(ad_object.val) * ad_object.der
+    return AD(val = val, der = der)
 
-    # TODO
-    pass
 
 
 def cosh(ad_object):
+    """Returns the cosh of ad_object 
+    INPUTS
+    =======
+    AD object
+    RETURNS
+    ========
+    Returns the cos of ad_object 
+    EXAMPLES
+    =========
+    >>> x = AD(val = 3, der = 1)
+    >>> ADmath.cosh(x) 
+    (array(10.067662), array(10.01787493))
+    """
+    
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
+        
+    val = np.cosh(ad_object.val)
 
-    # TODO
-    pass
+    der = np.sinh(ad_object.val) * ad_object.der
+    return AD(val = val, der = der)
+
 
 
 def tanh(ad_object):
+    """Returns the tan of ad_object 
+    INPUTS
+    =======
+    AD object
+    RETURNS
+    ========
+    Returns the cos of ad_object 
+    EXAMPLES
+    =========
+    >>> x = AD(val = 3, der = 1)
+    >>> ADmath.tan(x) 
+    (array(-0.14254654), array(1.02031952))
+    """
+    
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
+    # the derivative of tanh is sech^2(x) and sech(x) can be defined as 1/cosh(x)
+    
+   
+    val = np.tanh(ad_object.val)
+    der = ((1/np.cosh(ad_object.val))**2) * ad_object.der
+    return AD(val = val, der = der)
 
-    # TODO
-    pass
+
 
 
 def logistic(ad_object):
+    """Returns the logit of ad_object 
+    INPUTS
+    =======
+    AD object
+    RETURNS
+    ========
+    Returns the cos of ad_object 
+    EXAMPLES
+    =========
+    >>> x = AD(val = 3, der = 1)
+    >>> ADmath.logistic(x) 
+    (array(0.95257413), array(0.04517666))
+    """
+    
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
+    
+    val = (1 / (1+ np.exp(-ad_object.val)))
+    der = ((np.exp(-ad_object.val))/(1+np.exp(-ad_object.val))**2)*ad_object.der
+    
+    return AD(val = val, der = der)
 
-    # TODO
-    pass
-
-
+# this is log base 10 
 def log(ad_object):
+    """Returns the log base 10 of ad_object 
+    INPUTS
+    =======
+    AD object
+    RETURNS
+    ========
+    Returns the cos of ad_object 
+    EXAMPLES
+    =========
+    >>> x = AD(val = 3, der = 1)
+    >>> ADmath.log(x) 
+    (array(0.47712125), array(0.14476483))
+    """
+    
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
+    values = ad_object.val 
+    if values <= 0:
+        raise ValueError('Log accepts only positive numbers')
+        
+    val = math.log(ad_object.val, 10)
+    der = (1/(ad_object.val * np.log(10)))*ad_object.der
+    return AD(val = val, der = der)
+    
 
-    # TODO
-    pass
-
-
+# this is natural log 
 def ln(ad_object):
+    """Returns the natural log of ad_object 
+    INPUTS
+    =======
+    AD object
+    RETURNS
+    ========
+    Returns the cos of ad_object 
+    EXAMPLES
+    =========
+    >>> x = AD(val = 3, der = 1)
+    >>> ADmath.cos(x) 
+    (array(1.09861229), array(0.33333333))
+    """
+    
     if not isinstance(ad_object, AD):
         raise TypeError('This function can only take AD objects as inputs. Input of %s is not an AD object.' % type(
             ad_object).__name__)
+    values = ad_object.val 
+    if values <= 0:
+        raise ValueError('Ln accepts only positive numbers')
+       
+    val = np.log(ad_object.val) 
+    der = (1/(ad_object.val)) *ad_object.der
+    return AD(val = val, der = der)
 
-    # TODO
-    pass
