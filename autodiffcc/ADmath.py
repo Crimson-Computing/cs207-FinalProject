@@ -3,6 +3,10 @@ from autodiffcc.core import AD
 import math as math 
 
 
+import numpy as np
+import math as math 
+
+
 
 def cos(obj):
     """Returns the cos of a scalar or an ad_object 
@@ -116,12 +120,12 @@ def sqrt(obj):
         if obj <= 0 :
             raise TypeError('Sqrt has a positive domain, input negative')
         else: 
-            return(np.exp(obj))
+            return(np.sqrt(obj))
      
     # if AD object 
     if isinstance(obj, AD):
         val = obj.val
-        if val <= 0: 
+        if (val <= 0).any(): 
             raise TypeError('Sqrt has a positive domain, input negative')
         else:
             return obj.__pow__(0.5)
@@ -150,7 +154,7 @@ def arcsin(obj):
             
     if isinstance(obj, AD):
         values = obj.val 
-        if values < (-1) or values > (1):
+        if (values < (-1) or values > (1)).any():
             raise ValueError('Values are not in the domain of arcsin [-1, 1].')
 
         val = np.arcsin(obj.val)
@@ -182,7 +186,7 @@ def arccos(obj):
 
     if isinstance(obj, AD):
         values = obj.val 
-        if values < (-1) or values> (1):
+        if (values < (-1) or values > (1)).any():
             raise ValueError('Values are not in the domain of arcsin [-1, 1].')
         
         val = np.arccos(obj.val)
@@ -342,7 +346,7 @@ def log(obj):
     
     if isinstance(obj, AD):
         values = obj.val 
-        if values <= 0:
+        if (values <= 0).any():
             raise ValueError('Log accepts only positive numbers')
         
         val = math.log(obj.val, 10)
@@ -374,7 +378,7 @@ def ln(obj):
     
     if isinstance(obj, AD):
         values = obj.val 
-        if values <= 0:
+        if (values <= 0).any:
             raise ValueError('Ln accepts only positive numbers')
         val = np.log(obj.val) 
         der = (1/(obj.val)) *obj.der
