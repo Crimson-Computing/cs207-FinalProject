@@ -5,6 +5,7 @@ sys.path.insert(0, myPath + '/../')
 import pytest
 import numpy as np
 from ADmath import *
+from core import differentiate
 from core import AD 
 
 def test_matrix_value():
@@ -225,7 +226,7 @@ def test_combination():
     t1 = (AD(val = 3, der = 1) / 3  + 1) * 6 - 4
     assert t1.val == 8
     assert t1.der == 2
-'''
+
 def test_differentiate_scalar_function():
     def f(x):
         return sin(3*(x**2)) + tan(sqrt(x*7))
@@ -262,4 +263,3 @@ def test_differentiate_scalar_function_multiple_inputs():
             6.62502395], [1.60952300e+01, 4.16146837e-01, 1.09022724e+06, 1.20000000e+01,
            6.00000000e+00, 5.89824000e+05]])
     assert np.allclose(dfdx(x=np.array([1,2,3]), y=np.array([2,1,4])), result2)
-'''
