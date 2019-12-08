@@ -15,7 +15,7 @@ __contact__   = "Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>"
 
 try:
     import scipy.constants
-    from Equation.util import addConst
+    from autodiffcc.Equation.util import addConst
 
     def equation_extend():
         addConst("h",scipy.constants.h)
