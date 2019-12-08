@@ -1,5 +1,5 @@
 import numpy as np
-from core import AD
+from autodiffcc.core import AD
 
 def cos(obj):
     """Returns the cos of a scalar or an AD object 
@@ -43,13 +43,13 @@ def sin(obj):
     >>> ADmath.sin(x) 
     (array(0.1411200080598672), array(-0.9899924966004454))
     """
-
-    # if scalar 
+    # if scalar
     if np.isscalar(obj):
         return(np.sin(obj))
-        
+
     # if AD object 
     if isinstance(obj, AD):
+
         return AD(val = np.sin(obj.val), der = np.cos(obj.val) * obj.der)
 
 def tan(obj):
