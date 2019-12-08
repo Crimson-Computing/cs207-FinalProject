@@ -11,7 +11,7 @@
 
 
 try:
-    from Equation import core
+    from autodiffcc.Equation import core
 except ImportError:
     import core
 
