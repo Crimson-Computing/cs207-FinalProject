@@ -10,7 +10,7 @@ class expressioncc():
   ==========
   line : A line of the calculation expression
   fn_vars: Number of varriables in the line
-  self.fn: Function build based on the line
+  fn: Function build based on the line
   
   METHODS
   =======
@@ -58,6 +58,27 @@ class expressioncc():
     return self.fn
 
 class equationcc():
+  """
+  Return an AD object after calculations.
+    
+  ATTRIBUTES
+  ==========
+  line : A line of an equation
+  fn_vars: Number of varriables in the line
+  fn: Function build based on the line
+  
+  METHODS
+  =======
+  Calculate the value and derrivative based on an equation
+  
+  EXAMPLES
+  ========
+  # >>> fn = equationcc('3 * log(x,2) + sin(7)', ['x']).get_fn()
+  # >>> fn(AD(4, n_vars=1))
+  # (array(6.6569866), array([1.08202128]))
+  # >>> fn(AD(4, n_vars=1))
+  # (array(2.69120231), array([2.7050532]))
+  """
   def __init__(self, line, fn_vars):
     self.line = line
     self.line = line.replace('=','-(') + ')'
