@@ -15,7 +15,8 @@ __license__   = "AlphaOmega Technology Open License Version 1.0"
 __contact__   = "Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>"
 
 import numpy as np
-import autodiffcc as ad
+from core import *
+import ADmath 
 import operator as op
 from Equation.util import addOp, addFn, addConst, addUnaryOp
 from Equation.similar import sim, nsim, gsim, lsim
@@ -64,6 +65,9 @@ def equation_extend():
     addOp('>~',"({0:s} >~ {1:s})","\\left({0:s} \\gtrapprox {1:s}\\right)",False,5,gsim)
     addOp('~<',"({0:s} <~ {1:s})","\\left({0:s} \lessapprox {1:s}\\right)",False,5,lsim)
     addOp('~>',"({0:s} >~ {1:s})","\\left({0:s} \\gtrapprox {1:s}\\right)",False,5,gsim)
+#-----------------Start functions from AD--------------------
+    #addOp('log',"({0:s} log {1:s})","\\left(\\log_{0:s} {1:s}\\right)",False,1,ADmath.log)
+#-----------------End function from AD--------------------
     addUnaryOp('!',"(!{0:s})","\\neg{0:s}",op.not_)
     addUnaryOp('-',"-{0:s}","-{0:s}",op.neg)
     addFn('abs',"abs({0:s})","\\left|{0:s}\\right|",1,op.abs)
@@ -72,12 +76,22 @@ def equation_extend():
     addFn('floor',"floor({0:s})","\\lfloor {0:s} \\rfloor",1,np.floor)
     addFn('ceil',"ceil({0:s})","\\lceil {0:s} \\rceil",1,np.ceil)
     addFn('round',"round({0:s})","\\lfloor {0:s} \\rceil",1,np.round)
-    addFn('sin',"sin({0:s})","\\sin\\left({0:s}\\right)",1,ad.sin)
-    addFn('cos',"cos({0:s})","\\cos\\left({0:s}\\right)",1,ad.cos)
-    addFn('tan',"tan({0:s})","\\tan\\left({0:s}\\right)",1,ad.tan)
     addFn('re',"re({0:s})","\\Re\\left({0:s}\\right)",1,np.real)
     addFn('im',"re({0:s})","\\Im\\left({0:s}\\right)",1,np.imag)
-    addFn('sqrt',"sqrt({0:s})","\\sqrt{{{0:s}}}",1,ad.sqrt)
+#-----------------Start functions from AD--------------------
+    addFn('sqrt',"sqrt({0:s})","\\sqrt{{{0:s}}}",1,ADmath.sqrt)
+    addFn('exp',"exp({0:s})","\\exp{{{0:s}}}",1,ADmath.exp)
+    addFn('sin',"sin({0:s})","\\sin\\left({0:s}\\right)",1,ADmath.sin)
+    addFn('cos',"cos({0:s})","\\cos\\left({0:s}\\right)",1,ADmath.cos)
+    addFn('tan',"tan({0:s})","\\tan\\left({0:s}\\right)",1,ADmath.tan)
+    addFn('arcsin',"arcsin({0:s})","\\arcsin\\left({0:s}\\right)",1,ADmath.arcsin)
+    addFn('arccos',"arccos({0:s})","\\arccos\\left({0:s}\\right)",1,ADmath.arccos)
+    addFn('arctan',"arctan({0:s})","\\arctan\\left({0:s}\\right)",1,ADmath.arctan)
+    addFn('sinh',"sinh({0:s})","\\sinh\\left({0:s}\\right)",1,ADmath.sinh)
+    addFn('cosh',"cosh({0:s})","\\cosh\\left({0:s}\\right)",1,ADmath.cosh)
+    addFn('tanh',"tanh({0:s})","\\tanh\\left({0:s}\\right)",1,ADmath.tanh) 
+    addFn('logistic',"logistic({0:s})","\\logistic\\left({0:s}\\right)",1,ADmath.logistic) 
+#-----------------End function from AD--------------------
     addConst("pi",np.pi)
     addConst("e",np.e)
     addConst("Inf",np.Inf)
