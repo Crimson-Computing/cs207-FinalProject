@@ -1,8 +1,3 @@
-import sys, os
-
-sys.path.insert(1, '../')
-myPath = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, myPath + '/../')
 import pytest
 from autodiffcc.ADmath import *
 from autodiffcc.core import AD

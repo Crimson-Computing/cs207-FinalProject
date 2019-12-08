@@ -1,11 +1,6 @@
-import sys, os
 import pytest
 from autodiffcc.ADmath import *
 from autodiffcc.core import AD, differentiate
-
-sys.path.insert(1, '../')
-myPath = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, myPath + '/../')
 
 
 def test_matrix_value():

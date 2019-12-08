@@ -1,5 +1,5 @@
 # cat requirements.txt
-codecov==2.8.1
+codecov==2.0.15
 coverage
 numpy
 pytest
