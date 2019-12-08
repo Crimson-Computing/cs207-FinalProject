@@ -108,6 +108,8 @@ def sqrt(obj):
             raise TypeError('Sqrt has a positive domain, input negative')
         else:
             return obj.__pow__(0.5)
+    if (np.array(obj) <= 0).any(): 
+        raise TypeError('Sqrt has a positive domain, input negative')
     return np.sqrt(obj)
 
 def arcsin(obj):
@@ -136,6 +138,8 @@ def arcsin(obj):
         der = 1 / np.sqrt(1 - (obj.val ** 2) * obj.der)
 
         return AD(val = val, der = der)
+    if (np.array(obj) < -1 or np.array(obj) > 1).any():
+        raise ValueError('Values are not in the domain of arcsin [-1, 1].')
     return np.arcsin(obj)
 
 def arccos(obj):
@@ -164,6 +168,9 @@ def arccos(obj):
         # this is the negative of the derivative of the arcsin 
         der = -1 * (1 / np.sqrt(1 - (obj.val ** 2) * obj.der))
         return AD(val = val, der = der)
+    
+    if (np.array(obj) < -1 or np.array(obj) > 1).any():
+        raise ValueError('Values are not in the domain of arcsin [-1, 1].')
     return np.arccos(obj)
 
 def arctan(obj):
@@ -310,4 +317,7 @@ def log(obj, base=None):
         val = np.log(obj.val) / np.log(base)
         der = (1 / (obj.val * np.log(base))) * obj.der
         return AD(val = val, der = der)
+
+    if obj <= 0:
+        raise ValueError('Log accepts only positive numbers')
     return np.log(obj) / np.log(base)
