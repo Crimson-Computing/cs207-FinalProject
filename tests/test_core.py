@@ -137,7 +137,7 @@ def test_truediv():
     assert t4.der.tolist() == [-0.265625, -0.296875]
 
 
-def test_rsub():
+def test_rtruediv():
     t1 = 3 / AD(val=3, der=1)
     assert t1.val == 1
     assert t1.der == pytest.approx(-0.3333333333333333)
@@ -171,7 +171,9 @@ def test_rpow():
     t2 = 0 ** AD(val=3, der=1)
     assert t2.val == 0
     assert t2.der == 0
-
+    t2 = 1 ** AD(val=0, der=1)
+    assert t2.val == 1
+    assert t2.der == 0
 
 def test_eq():
     t1 = AD(val=3, der=1)
