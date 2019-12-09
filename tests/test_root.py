@@ -142,7 +142,7 @@ def test_bisect_noroot_in_interval():
         return(x+y-100)
         
     interval  = [[1, 2], [3, 1]]
-    with pytest.raises(Exeption, match= "No change in sign, please try different intervals"):
+    with pytest.raises(Exception, match= "No change in sign, please try different intervals"):
         find_root(function=f, method='bisection', interval=interval)
     
 def test_bisect():
@@ -175,6 +175,6 @@ def test_newton_fourier_no_solution():
     def f1var(x):
         return x ** 2 + 1
 
-    with pytest.raises(Exeption,
+    with pytest.raises(Exception,
                        match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
         find_root(function=f1var, method='newton-fourier', interval=[-1, 1])
