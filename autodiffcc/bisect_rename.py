@@ -4,7 +4,7 @@ import numpy as np
 import itertools
   
 
-def bisect(fun, interval): 
+def _bisect(fun, interval):
     
     
     """Perfroms the bisection method on a function of one or more variables to find a root
@@ -56,13 +56,15 @@ def bisect(fun, interval):
        # points.append(interval)
        # print(points)
     points = np.asarray(interval)
-
+    print(points)
         
     #### PLOT if can do 2D graph
     if nParam==1:
         # x axis values 
         a = points[0][0]
+        print(a)
         b = points[0][1]
+        print(b)
         interval = np.linspace(a, b, num = 1000)
         # corresponding y axis values 
         values = fun(interval)
@@ -155,5 +157,13 @@ def bisect(fun, interval):
                     asign = np.sign(results)
                     # detect sign change
                     signchange = sum(((np.roll(asign, 1) - asign) != 0).astype(int)) > 0
-                        
-        
+
+
+
+def f(x, y):
+    return (2 * x * y - 2)
+
+def f(x):
+    return (2 * x - 2)
+
+_bisect(f, interval=[[-10, 10]])
