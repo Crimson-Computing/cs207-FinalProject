@@ -26,9 +26,9 @@ def _check_start_values(start_values, signature):
             try:
                 values.append(start_values[key])
             except KeyError:
-                raise KeyError(f"key {key} in function signature missing from start_values")
+                raise KeyError(f"key {key} in function signature missing from start_values.")
         if len(start_values.keys()) != len(signature):
-            raise KeyError("Too many keys passed in start_values dictionary")
+            raise KeyError("Too many keys passed in start_values dictionary.")
     elif isinstance(start_values, (list, np.ndarray)):
         # if list-like
         values = start_values
@@ -71,16 +71,16 @@ def _check_interval(interval, signature):
         end_dict = interval[1]
 
         if len(start_dict.keys()) != len(end_dict.keys()):
-            raise KeyError("The interval_start and interval_end dictionaries must have the same number of keys")
+            raise KeyError("The interval_start and interval_end dictionaries must have the same number of keys.")
 
         for key in signature:
             try:
                 interval_start_values.append(start_dict[key])
                 interval_end_values.append(end_dict[key])
             except KeyError:
-                raise KeyError(f"key {key} in function signature missing from interval dictionary")
+                raise KeyError(f"key {key} in function signature missing from interval dictionary.")
         if len(start_dict.keys()) != len(signature):
-            raise KeyError("Too many keys passed in interval dictionary")
+            raise KeyError("Too many keys passed in interval dictionary.")
 
         interval_start = np.asarray(interval_start_values)
         interval_end = np.asarray(interval_end_values)
