@@ -497,6 +497,8 @@ def differentiate(base_func):
                     variables.append(kwvars[key])
                 except KeyError:
                     raise KeyError(f"key {key} in base_func signature missing from kwvars")
+            if len(kwvars.keys()) != n_vars_base_func:
+                raise KeyError("Too many keys passed in kwvars")
         else:
             # using positional variables
             variables = list(posvars)
