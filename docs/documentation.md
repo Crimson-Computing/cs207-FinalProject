@@ -7,9 +7,9 @@ With the evolution of science and the growing computational possibilities, diffe
 
 ## Background
 
-Authomatic differentiation(AD) is also known as computational differentiation, algorithmic differentation and differentiation of algorithms. Authomatic differentiation does not use symbolic expressions but rather exact formulas and floating-point values. It provides a great way to avoid approximation errors. It easier for the user to compute derivatives using automatic differentiation, which provides efficiency and numerical stability as opposed to other methods such as finite differences. 
+Automatic Differentiation (AD) is also known as computational differentiation, algorithmic differentiation and differentiation of algorithms. Automatic differentiation does not use symbolic expressions but rather exact formulas and floating-point values. It provides a great way to avoid approximation errors. It easier for the user to compute derivatives using automatic differentiation, which provides efficiency and numerical stability as opposed to other methods such as finite differences. 
 
-The most important idea that AD benefits from is the chain rule and the fact that it can be implemented in a numerical program. Deferentiation is applied to elementary function step by step to get the final results. A computer can perform elementary operations quickly. If we apply the chain rule to these elementary operations we can compute derivatives of functions efficiently and with working precision.
+The most important idea that AD benefits from is the chain rule and the fact that it can be implemented in a numerical program. Differentiation is applied to elementary functions step by step to get the final results. A computer can perform elementary operations quickly. If we apply the chain rule to these elementary operations we can compute derivatives of functions efficiently and with working precision.
 
 To work, the package makes use of the following concepts:
 
@@ -95,21 +95,21 @@ If you would like to know more about this topic, you should have a look at [this
 ### Installation
 AutoDiffCC supports package installation via `pip`. Users can install the package in the command line with the following command.
 
-```buildoutcfg
+``` buildoutcfg
 pip install autodiffcc
 ```
 
 ### Automatic differentiation
 In order to use the package, the user will instantiate an object of the automatic-differentiation class, which includes methods for different functions. The new object will keep in its internal state the value and derivative. 
 
-A simple example using overloaded operators is described below. A user wants to evaluate ``f = x * x`` at ``x = 2``. They first instantiate an AD object  ``x`` with ``x = ad.AD(2.0, 1.0)``, where ``2`` is the value and ``1`` is the derivative. Then the user defines ``f = x * x`` and prints its value and derivative.
+A simple example using overloaded operators is described below. A user wants to evaluate ``f = x * x`` at ``x = 2``. They first instantiate an AD object  ``x`` with ``x = ad.AD(val=2.0, der=1.0)``, where ``2`` is the value and ``1`` is the derivative. Then the user defines ``f = x * x`` and prints its value and derivative.
 
-``` AD Overloaded Operators Example
+``` python AD Overloaded Operators Example
 # Import the autodiffcc package
 >>> import autodiffcc as ad 
 
 # Overload basic arithmetic operations
->>> x = ad.AD(2.0, 1.0) 
+>>> x = ad.AD(val=2.0, der=1.0) 
 >>> f = x * x
 >>> print(f.val, f.der)
 4.0 4.0
@@ -117,7 +117,7 @@ A simple example using overloaded operators is described below. A user wants to 
 
 A more complex example using custom math methods is described below. A user wants to evaluate ``g = exp(x)`` at ``x = 3``. They first instantiate an AD object  ``x`` with with ``x = ad.AD(val = 3, der = 1)``, where ``3`` is the value and ``1`` is the derivative. Then the user defines ``g = ad.exp(x)`` and prints its value and derivative.
 
-``` AD Custom Math Methods Example
+``` python AD Custom Math Methods Example
 >>> import autodiffcc as ad
 
 # Find the derivative of e^x
@@ -128,27 +128,53 @@ A more complex example using custom math methods is described below. A user want
 ```
 
 ### Root finding
+Our Root Finder implementation requires that the user first define the function for which they would like to find the root, and an `interval` in which to look or `start_values` that are arbitrarily close to the real root.
 
-def f(x, y):
-    return(x+y-100)
-    
-interval  = [[1, 2], [3, 100]]
-find_root(function=f, method='bisection', interval=interval)
+The user then passes the `function`, `method` and `interval` or `start_values` arguments to the `find_root` function. The user may also provide the optional `max_iter` and `threshold` arguments. `max_iter` specifies the maximum number of iterations the algorithm should attempt to find a converging solution, and `threshold` sets the minimum threshold to declare convergence, such that lower thresholds return finer approximations.
+
+ 
+|Root finding algorithms|Accepted `method` strings|Required arguments|
+|Bisection|\['bisect', 'bisection', 'b'\]| `function`, `interval`, `method`|
+|Newton-Fourier|\['newton-fourier', 'n-f'\]|`function`, `interval`, `method`|
+|Newton-Raphson|\['newton', 'newton-raphson', 'n-r'\]|`function`, `start_values`, `method`|
 
 
-``` RootFinder example for the bisection method 
-# find the foot of a function with two variables
+See below for an example of how to find a root with `find_root` using the 'bisection' method.
+
+``` python RootFinder example for the bisection method 
+# Find the foot of a function with two variables using the bisection method
 >>> def f(x, y):
->>>    return(x+y-100)
->>>    interval  = [[1, 2], [3, 100]]
->>> find_root(function=f, method='bisection', interval=interval)
+>>>    return x + y - 100
+>>> interval  = [[1, 2], [3, 100]]
+>>> my_root = find_root(function=f, method='bisection', interval=interval)
+>>> print(my_root)
 [1.999999999999993, 98.0]
 ```
-### Expression
 
+The next example shows how to find a root with `find_root` using the 'newton-fourier' method and a vector function of two variables.
+
+``` python
+    >>> interval = [[3, -3], [3, -3]]
+    >>> my_root = find_root(lambda x, y: (2 * x + y - 2, y + 2), interval=interval, method='newton-fourier', max_iter=150)
+    >>> print(my_root)
+    [ 2. -2.]
+```
+
+A final example demonstrates how a user can find a root with `find_root` using the 'newton-raphson' method and a function of one variables.
+
+``` python
+    >>> def f1var(x):
+    >>>     return (x + 2) * (x - 3)
+
+    >>> my_root = find_root(function=f1var, method='newton', start_values=1, threshold=1e-8)
+    >>> print(my_root)
+    3.
+```
+
+### Expression parsing
 Two simple examples are shown as follows. In the first example, a user wants to parse ``'log(x,2) + sin(y)'``. They first instantiate an expressioncc object  ``fn`` with ``'log(x,2) + sin(y)'`` and corresponding variables in the string ``['x','y']``. Then the user can use the returned function for calculation based on ``AD`` objects. The second example is quite similar to the first one. The only change is the expression is now an equation ``'log(x,2) = -sin(y)'``
 
-``` AD Overloaded Operators Example
+``` python AD Overloaded Operators Example
 # Import the autodiffcc package
 >>> import autodiffcc as ad
 
@@ -173,7 +199,7 @@ Two simple examples are shown as follows. In the first example, a user wants to 
 
 
 ### Distribution and packaging
-The AutoDiffCC library using the Python Package Index (PyPI). It is distributed in the pythonic formats of an sdist and as a wheel to facilitate installation via Python's package installer `pip`. The user will install the package with `pip` and them import it in Python. Importing the package via `pip` will also ensure that the user installs required dependencies.
+The AutoDiffCC library can be installed using the Python Package Index (PyPI). It is distributed in the pythonic formats of an sdist and as a wheel to facilitate installation via Python's package installer `pip`. The user will install the package with `pip` and them import it in Python. Importing the package via `pip` will also ensure that the user installs required dependencies.
 
 Given that our aim is to deliver software that another developer can use for automatic differentiation in their own applications, we are not planning to deliver a standalone application. As such we are not planning to use a distribution framework beyond Python's native packaging.
 
@@ -188,7 +214,15 @@ Given that our aim is to deliver software that another developer can use for aut
                 __init__.py
 				ADmath.py
 				core.py
-				rootfindercc.py [Placeholder]
+                parser.py
+				root.py
+                Equation/
+                    __init__.py
+                    core.py
+                    equation_base.py
+                    equation_scipy.py
+                    similar.py
+                    util.py
 			docs/
 				milestone1.md
 				milestone2.md
@@ -196,6 +230,8 @@ Given that our aim is to deliver software that another developer can use for aut
 			tests/
 				test_ADmath.py
                 test_core.py
+				test_parser.py
+                test_root.py
 			...
 ```
 
@@ -204,16 +240,28 @@ The `autodiffcc` package will have four modules:
 
 |Module|Basic Functionality|
 |-|-|
-|core| This is the main module, which will contain the `AD` class and methods for operator overloading (e.g., add, mult, etc.).|
+|core| This is the main module, which contains the `AD` class and methods for operator overloading (e.g., add, mult, etc.).|
 |ADmath| This module contains elementary functions, (e.g. sin, cos, sqrt, log, exp,etc.) for the `AD` class. |
-|RootFinder| This module is a placeholder for the advanced feature.|
+|parser| This module contains our expression extension, which extends the [Equation](https://github.com/glenfletcher/Equation) library to work with AD objects and methods.\*|
+|Root| This module contains our root finding extension, which leverages out AD class and methods to find roots of vector equations using the Newton-Raphson, Newton-Fourier, and Bisection algorithms.|\
+\* Given that we extended an existing [Equation](https://github.com/glenfletcher/Equation) library, content from that library which we forked and adapted for our extension is located in the /autodiffcc/Equation directory
 
 ### Test suite
-Our test suite is in the directory `cs207-FinalProject/tests`. We  use TravisCI to perform continuous integration, running these tests with each build pushed to GitHub. We use CodeCov to ensure that our software implementation has sufficient code covered by our test suite. Badges indicating test compliance and code coverage are included in `README.md`.
+Our test suite is in the directory `cs207-FinalProject/tests`. We  use [TravisCI](https://travis-ci.org/Crimson-Computing/cs207-FinalProject) to perform continuous integration, running these tests with each build pushed to GitHub. We use [CodeCov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject) to ensure that our software implementation has sufficient code covered by our test suite. Badges indicating test compliance and code coverage are included in `README.md`. You can also view reports here: [TravisCI](https://travis-ci.org/Crimson-Computing/cs207-FinalProject) and [CodeCov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject).
 
-## Implementation
-// TODO  # Streamline/simplify existing content
-// TODO  # Discuss implementation of root finder
+## Implementation (Base Automatic Differentiation Object and Methods)
+
+### `AD` class
+Our core module contains an `AD` class.
+
+### Basic/Comparison operators
+
+
+
+### Elementary functions
+Our ADmath module contains elementary functions for use with our AD class.
+
+We developed an `AD` class for automatic differentiation
 
 Our `AD` class is used to create an AD object, including custom methods, that work on scalars and numpy arrays. The AD class will then be used in our extension class, which will be an object of its own (RootFinder). Each of the math methods will be callable from an imported library of math functions.
 
@@ -225,12 +273,9 @@ We want to make our class compatible with numpy arrays, so we will need to use N
 
 
 ## Extension: Root finder
-// TODO  # Update tense
-// TODO  # Write about each of the three algorithms
+Our first extension is a root finding module, which leverages the `AD` class and methods to find a function or vector function's root. To find the root of a function means to find the values of its arguments for which the function's value is zero, This is, for example, useful in optimization tasks or in solving systems of equations. Over the years, a variety of methods have been proposed for this very common task. We have implemented three numerical root finding algorithms which leverage our `AD` object and `differentiate` methods: Newton-Raphson, Newton-Fourier, or Bisection algorithms.
 
-To find a root of a function means to find the values for it's parameters that make the function's value be 0. A variety of methods have been proposed over the years. We have decided to implement three of them. 
-
-### Newton
+### Newton-Raphson
 //// TO DO ALEX
 
 ///OLD TEXT BUT CAN BE USEFUL: 
@@ -259,6 +304,6 @@ Our method works not only on functions with one variable, but it returns the roo
 
 ## Extension: Expression
 
-We also developed another extension named expression, which parse a string into a funcion for ``AD`` objects. Our implementation is build on a [previous parser](https://github.com/glenfletcher/Equation) on GitHub. We extend it for AD objects as input/outputs as well as more mathematical function such as ``arcsin`` and ``log``.
+We also developed another extension named expression, which parse a string into a function for ``AD`` objects. Our implementation is build on a [previous parser](https://github.com/glenfletcher/Equation) on GitHub. We extend it for AD objects as input/outputs as well as more mathematical function such as ``arcsin`` and ``log``.
 
 The input string for the parser can not be only normal expression such ``'log(x,2) + sin(y)'``, but also equation expression such as ``'log(x,2) = -sin(y)'``. The output of latter one will be the left side of the equation minus the right side of the equation, on which we can apply rooting finding for the solutions of the equation.
