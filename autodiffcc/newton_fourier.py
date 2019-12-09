@@ -1,6 +1,7 @@
 import inspect
 import numpy as np
 from autodiffcc.core import differentiate
+from autodiffcc.ADmath import sin
 
 
 def _newton_fourier(function, start_interval_posvars: list, end_interval_posvars: list, threshold, max_iter):
@@ -57,11 +58,18 @@ def _newton_fourier(function, start_interval_posvars: list, end_interval_posvars
     Warning("Maximum number of iterations exceeded before converging.")
 
 
-def test_func_2d(x, y):
+def test_func(x, y):
     return x + 2 * y, x * y + 2
 
 
 start = [-3, 2]
 end = [0, 0]
+print(_newton_fourier(test_func, start_interval_posvars=start, end_interval_posvars=end, threshold=1e-8, max_iter=2000))
 
-print(_newton_fourier(test_func_2d, start_interval_posvars=start, end_interval_posvars=end, threshold=1e-8, max_iter=2000))
+def test_func(x, y, z):
+    return x + 2 * y, x * y + 2, sin(z)
+
+
+start = [-3, 2, 5]
+end = [0, 0, 0]
+print(_newton_fourier(test_func, start_interval_posvars=start, end_interval_posvars=end, threshold=1e-8, max_iter=2000))
