@@ -338,9 +338,9 @@ The Newton Fourier method, developed by Joseph Fourier, is an generalization of 
 Starting with a function `f` and an initial guess of the interval on which a root lies `[s,t]`, the function iteratively updates the end points of the interval such that iterations of `s` increase towards the root and iterations of `t` decrease towards the root.
 
 The algorithm finds a root this in the following steps:
-1. Calculate `t<sub>n+1</sub>` = `t<sub>n</sub>` - `(f(t<sub>n</sub>)/f't<sub>n</sub>)`
-2. Calculate `s<sub>n+1</sub>` = `s<sub>n</sub>` - `(f(s<sub>n</sub>)/f't<sub>n</sub>)`
-3. Calculate the distance between `t<sub>n+1</sub>` and `s<sub>n+1</sub>` scaled to the quadratic distance between `t<sub>n</sub>` and `s<sub>n</sub>`
+1. Calculate t<sub>n+1</sub> = t<sub>n</sub> - (f(t<sub>n</sub>)/f't<sub>n</sub>)
+2. Calculate s<sub>n+1</sub> = s<sub>n</sub> - (f(s<sub>n</sub>)/f't<sub>n</sub>)
+3. Calculate the distance between t<sub>n+1</sub> and s<sub>n+1</sub> scaled to the quadratic distance between t<sub>n</sub> and s<sub>n</sub>
 4. Loop through steps 1, 2, and 3 until the distance measure is less than the `threshold` or if the number of iterations reaches `max_iter`
 5. If the threshold criteria is reached, return the mean of t<sub>n+1</sub> and s<sub>n+1</sub> as the value of the root, otherwise if `max_iter` is reached raise an `Exception` for failure to converge. 
 
