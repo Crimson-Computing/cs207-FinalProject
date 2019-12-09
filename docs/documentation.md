@@ -335,16 +335,16 @@ Our first extension is a root finding module, which leverages the `AD` class and
 ### Newton-Fourier method
 The Newton Fourier method, developed by Joseph Fourier, is an generalization of the Newton-Raphson method. Like the Newton-Raphson method, it iterates to produce successively better approximations of a function's root until it reaches quadratic convergence, but differs in that it provides a bound on the absolute error of the approximations.
 
-Starting with a function `f` and an initial guess of the interval on which a root lies `[s,t]`, the function iteratively updates the end points of the interval such that iterations of 's' increase towards the root and iterations of 't' decrease towards the root.
+Starting with a function `f` and an initial guess of the interval on which a root lies `[s,t]`, the function iteratively updates the end points of the interval such that iterations of `s` increase towards the root and iterations of `t` decrease towards the root.
 
 The algorithm finds a root this in the following steps:
-1. Calculate t<sub>n+1</sub> = t<sub>n</sub> - (f(t<sub>n</sub>)/f't<sub>n</sub>)
-2. Calculate s<sub>n+1</sub> = s<sub>n</sub> - (f(s<sub>n</sub>)/f't<sub>n</sub>)
-3. Calculate the distance between t<sub>n+1</sub> and s<sub>n+1</sub> scaled to the quadratic distance between t<sub>n</sub> and s<sub>n</sub>
+1. Calculate `t<sub>n+1</sub>` = `t<sub>n</sub>` - `(f(t<sub>n</sub>)/f't<sub>n</sub>)`
+2. Calculate `s<sub>n+1</sub>` = `s<sub>n</sub>` - `(f(s<sub>n</sub>)/f't<sub>n</sub>)`
+3. Calculate the distance between `t<sub>n+1</sub>` and `s<sub>n+1</sub>` scaled to the quadratic distance between `t<sub>n</sub>` and `s<sub>n</sub>`
 4. Loop through steps 1, 2, and 3 until the distance measure is less than the `threshold` or if the number of iterations reaches `max_iter`
 5. If the threshold criteria is reached, return the mean of t<sub>n+1</sub> and s<sub>n+1</sub> as the value of the root, otherwise if `max_iter` is reached raise an `Exception` for failure to converge. 
 
-Where t<sub>n</sub> is the value of `t` at iteration `n`, s<sub>n</sub> is the value of `s` at iteration `n`, f(t) is the function `f` evaluated at value `t`, and f'(t) is the derivative of the function `f` evaluated at `t`.
+Where t<sub>n</sub> is the value of `t` at iteration `n`, s<sub>n</sub> is the value of `s` at iteration `n`, `f(t)` is the function `f` evaluated at value `t`, and `f'(t)` is the derivative of the function `f` evaluated at `t`.
 
 As the number of iterations increases, this algorithm converges to the root of the function, with accuracy bounded within the user-specified threshold.
 
