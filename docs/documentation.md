@@ -132,6 +132,27 @@ A more complex example using custom math methods is described below. A user want
 20.085536923187668 20.085536923187668
 ```
 
+#### Differentiation closure
+The `differentiate` function is a closure which takes a user defined base function as an input, and returns another function which can evaluate the base function's derivative.
+
+
+For example, consider the task of repeatedly differentiating the function `f(x) = 3*x^2` at different values. The user defines their function `f(x)` in python and calls `diffentiate(f)` to get the function `dfdx` which can be used to differentiate `f` at various values.
+
+``` python 
+>>> import autodiffcc as ad
+
+# Find the numeric derivative of 3*x^2
+>>> def f(x):
+>>>     return 3*(x**2)
+
+>>> dfdx = differentiate(f)
+>>> print(dfdx(x=5))
+[30.]
+
+>>> print(dfdx(x=[1,1,2,3,5,8]))
+[ 6.  6. 12. 18. 30. 48.]
+```
+
 ### Root finding
 Our Root Finder implementation requires that the user first define the function for which they would like to find the root, and an `interval` in which to look or `start_values` that are arbitrarily close to the real root.
 
@@ -278,7 +299,10 @@ Our core module contains an `AD` class, including custom methods, that work on s
 
 Our `AD` class is used to create an `AD` object, which has a value and a derivative. These are stored as attributes of the object in its internal state, and can be represented as a tuple.
 
-As operations or functions are applied to an `AD` object, we update the value and the derivative of the `AD` objects by using dual numbers in tuples, where the first element is the value and the second element (the "imaginary" part) is the derivative. 
+As operations or functions are applied to an `AD` object, we update the value and the derivative of the `AD` objects by using dual numbers in tuples, where the first element is the value and the second element (the "imaginary" part) is the derivative.
+
+#### Differentiate
+To facilitate use by the user and in other applications that leverage the `AD` class, such as our root finder, we developed a `differentiate` function. `differentiate` is a closure which takes a user defined base function as an input, and returns another function which can evaluate the base function's derivative at for a provided value.
 
 #### Support for vector-valued functions
 For vector-valued functions, we override the priority of numpy basic operators to ensure our `AD` objects are compatible with numpy arrays using our operators. Then, since the value and derivative in the `AD` object is stored as a numpy array, we use leverage vectorized numpy operations together with the chain rule to update the derivative for vector-valued functions.
@@ -298,7 +322,7 @@ Our testing suite is dependent on the `pytest` and `coverage` libraries for test
 ## Extension: Root finder
 Our first extension is a root finding module, which leverages the `AD` class and methods to find a function or vector function's root. To find the root of a function means to find the values of its arguments for which the function's value is zero, This is, for example, useful in optimization tasks or in solving systems of equations. Over the years, a variety of methods have been proposed for this very common task. We have implemented three numerical root finding algorithms which leverage our `AD` object and `differentiate` methods: Newton-Raphson, Newton-Fourier, or Bisection algorithms.
 
-### Newton-Raphson
+### Newton-Raphson Method
 //// TO DO ALEX
 
 ///OLD TEXT BUT CAN BE USEFUL: 
@@ -306,8 +330,10 @@ Our first extension is a root finding module, which leverages the `AD` class and
 
 ///We select Newton's method for our RootFinder because it leverages differentiation and generalizes to high-dimensional problems and complex functions.  Our RootFinder, provided a function, will start by using `autodiffcc` to find the derivative of the function at an initial guess for a root. It will iterate through successively better approximations of the root along the function, taking the derivative with `autodiffcc` at each step, until it finds the root(s) within a given tolerance. An example of the potential use of the RootFinder is shown below. The user interaction is subject to change pending final implementation. 
 
+### Newton-Fourier method
+/// TO DO MATT
 
-### Bisection (interval halving, binary search method)
+### Bisection method (interval halving, binary search method)
 The bisection method is a root-finding algorithm that can be applied to any continuous function for which there exist values with opposite signs. If, for example, f(a)<0 and f(b)>0 there must exist at least one point c between a and b such that f(c)=0 The method is implemented by splitting an interval in half and then checking in which of the two halves the sign changes. This method finds the approximations of roots instead of the real value of the root. It is also relatively slow but very robust. 
 
 For a function with only one argument for example f(x)=2+x the pseudocode is pretty straight forward: 
@@ -319,13 +345,8 @@ For a function with only one argument for example f(x)=2+x the pseudocode is pre
 
 Our method works not only on functions with one variable, but it returns the root for multivariate functions. If the dimension is higher, the process is implemented in the same way but dividing n-D spaces into smaller parts instead of dividing an interval. 
 
-### Fourier - Matt 
-/// TO DO MATT
-
-
 
 ## Extension: Expression
-
 We also developed another extension named expression, which parse a string into a function for ``AD`` objects. Our implementation is build on a [previous parser](https://github.com/glenfletcher/Equation) on GitHub. We extend it for AD objects as input/outputs as well as more mathematical function such as ``arcsin`` and ``log``.
 
 The input string for the parser can not be only normal expression such ``'log(x,2) + sin(y)'``, but also equation expression such as ``'log(x,2) = -sin(y)'``. The output of latter one will be the left side of the equation minus the right side of the equation, on which we can apply rooting finding for the solutions of the equation.
