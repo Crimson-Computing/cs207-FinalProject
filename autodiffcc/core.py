@@ -34,12 +34,8 @@ class AD():
         if 'der' in kwvars:
             self.der = np.array(kwvars['der']).astype(float)
             # check if user specifies n_vars and der, they should match
-            if 'n_vars' in kwvars:
-                if len(self.der.shape) == 0:
-                    if kwvars['n_vars'] > 1:
-                        raise ValueError('n_vars does not match shape of der')
-                elif kwvars['n_vars'] != self.der.shape[0]:
-                    raise ValueError('n_vars does not match shape of der')
+            if 'n_vars' in kwvars or 'idx' in kwvars:
+                raise ValueError('Either specify der or n_vars and idx, but not both')
         else:
             # if number of variables is 1
             if kwvars['n_vars'] == 1:
