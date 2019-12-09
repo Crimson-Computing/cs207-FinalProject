@@ -26,29 +26,25 @@ class AD():
     # gives our operators priority over numpy's methods
     __array_priority__ = 2
 
-    def __init__(self, val, **kwargs):
+    def __init__(self, val, **kwvars):
         val = np.array(val).astype(float)
         # raise ValueError if val is a matrix
         if len(val.shape) > 1:
             raise ValueError("val must :be a scalar or vector, cannot be a matrix")
-        if 'der' in kwargs:
-            self.der = np.array(kwargs['der']).astype(float)
+        if 'der' in kwvars:
+            self.der = np.array(kwvars['der']).astype(float)
             # check if user specifies n_vars and der, they should match
-            if 'n_vars' in kwargs:
-                if len(self.der.shape) == 0:
-                    if kwargs['n_vars'] > 1:
-                        raise ValueError('n_vars does not match shape of der')
-                elif kwargs['n_vars'] != self.der.shape[0]:
-                    raise ValueError('n_vars does not match shape of der')
+            if 'n_vars' in kwvars or 'idx' in kwvars:
+                raise ValueError('Either specify der or n_vars and idx, but not both')
         else:
             # if number of variables is 1
-            if kwargs['n_vars'] == 1:
+            if kwvars['n_vars'] == 1:
                 idx = 0
-            elif 'n_vars' not in kwargs or 'idx' not in kwargs:
+            elif 'n_vars' not in kwvars or 'idx' not in kwvars:
                 raise KeyError("If der isn't specified, need to specify n_vars and idx")
             else:
-                idx = kwargs['idx']
-            n_vars = kwargs['n_vars']
+                idx = kwvars['idx']
+            n_vars = kwvars['n_vars']
             if len(val.shape) == 0:
                 self.der = np.zeros(n_vars)
                 self.der[idx] = 1.0
@@ -485,22 +481,36 @@ def differentiate(base_func):
     >>> dfdx(x=5)
     30.0
     """
-    def base_func_der(**kwargs):
+    def base_func_der(*posvars, **kwvars):
         signature = inspect.signature(base_func).parameters
-        n_vars = len(signature)
-        n_keys = len(kwargs.keys())
-        # check that kwargs and function signature have same values
-        if n_keys != n_vars:
-            raise KeyError("Length of **kwargs and base function signature do not match.")
-        var_to_AD_obj = {}
-        for i, key in enumerate(kwargs.keys()):
-            if key not in signature:
-                raise KeyError("**kwargs key {} missing from base function signature.".format(key))
+        n_vars_base_func = len(signature)
+
+        if len(posvars) != 0 and len(kwvars.keys()) != 0:
+            raise KeyError("Cannot include both posvars and kwvars. Must include only one.")
+        elif len(posvars) == 0 and len(kwvars.keys()) == 0:
+            raise KeyError("Must include one of posvars or kwvars.")
+        elif len(posvars) == 0:
+            # turn keyword variables into positional variables matching function signature
+            variables = []
+            for key in signature:
+                try:
+                    variables.append(kwvars[key])
+                except KeyError:
+                    raise KeyError(f"key {key} in base_func signature missing from kwvars")
+        else:
+            # using positional variables
+            variables = list(posvars)
+        n_vars_inner = len(variables)
+        # check to make sure there are no extra arguments passed
+        if n_vars_inner != n_vars_base_func:
+            raise KeyError("Incorrect number of variables passed in arguments.")
+
+        for i in range(len(variables)):
             # add key to variable
-            var_to_AD_obj[key] = AD(kwargs[key], n_vars = n_vars, idx = i)
+            variables[i] = AD(variables[i], n_vars = n_vars_base_func, idx = i)
         
         # run base_func on input values now keeping track of derivative
-        result = base_func(**var_to_AD_obj)
+        result = base_func(*variables)
 
         # if base_func is a scalar function, return 1-D flat derivative (combining multiple vector-valued inputs)
         if type(result) == AD:
