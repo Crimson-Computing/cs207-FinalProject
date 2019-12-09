@@ -16,7 +16,7 @@ def _check_start_values(start_values, signature):
     ========
     Returns an array of values to pass to the specific root finding method
     """
-    if not start_values:
+    if start_values is None:
         raise ValueError("Must include start_values as dict or list/array for this method.")
 
     if isinstance(start_values, dict):
