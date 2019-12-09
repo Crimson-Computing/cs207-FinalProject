@@ -162,7 +162,7 @@ Note that the user-defined functions do not need to explicitly use the `AD` basi
 
 #### Root finding algorithms implemented
  
-| Root finding algorithms | Accepted `method` strings | Required arguments |
+| Root finding algorithm | Accepted `method` strings | Required arguments |
 | - | - | - |
 | Bisection | \['bisect', 'bisection', 'b'\] | `function`, `interval`, `method` |
 | Newton-Fourier | \['newton-fourier', 'n-f'\] | `function`, `interval`, `method`|
@@ -333,9 +333,25 @@ Our first extension is a root finding module, which leverages the `AD` class and
 ///We select Newton's method for our RootFinder because it leverages differentiation and generalizes to high-dimensional problems and complex functions.  Our RootFinder, provided a function, will start by using `autodiffcc` to find the derivative of the function at an initial guess for a root. It will iterate through successively better approximations of the root along the function, taking the derivative with `autodiffcc` at each step, until it finds the root(s) within a given tolerance. An example of the potential use of the RootFinder is shown below. The user interaction is subject to change pending final implementation. 
 
 ### Newton-Fourier method
-/// TO DO MATT
+The Newton Fourier method, developed by Joseph Fourier, is an generalization of the Newton-Raphson method. Like the Newton-Raphson method, it iterates to produce successively better approximations of a function's root until it reaches quadratic convergence, but differs in that it provides a bound on the absolute error of the approximations.
 
-### Bisection method (interval halving, binary search method)
+Starting with a function `f` and an initial guess of the interval on which a root lies `[s,t]`, the function iteratively updates the end points of the interval such that iterations of 's' increase towards the root and iterations of 't' decrease towards the root.
+
+The algorithm finds a root this in the following steps:
+1. Calculate t<sub>n+1</sub> = t<sub>n</sub> - (f(t<sub>n</sub>)/f't<sub>n</sub>)
+2. Calculate s<sub>n+1</sub> = s<sub>n</sub> - (f(s<sub>n</sub>)/f't<sub>n</sub>)
+3. Calculate the distance between t<sub>n+1</sub> and s<sub>n+1</sub> scaled to the quadratic distance between t<sub>n</sub> and s<sub>n</sub>
+4. Loop through steps 1, 2, and 3 until the distance measure is less than the `threshold` or if the number of iterations reaches `max_iter`
+5. If the threshold criteria is reached, return the mean of t<sub>n+1</sub> and s<sub>n+1</sub> as the value of the root, otherwise if `max_iter` is reached raise an `Exception` for failure to converge. 
+
+Where t<sub>n</sub> is the value of `t` at iteration `n`, s<sub>n</sub> is the value of `s` at iteration `n`, f(t) is the function `f` evaluated at value `t`, and f'(t) is the derivative of the function `f` evaluated at `t`.
+
+As the number of iterations increases, this algorithm converges to the root of the function, with accuracy bounded within the user-specified threshold.
+
+#### Support for vector-valued functions
+We've adapted steps one and two of this general algorithm to support vector-valued functions. In place of the quotient of the function and its derivative evaluated at a value, we implement the product of the pseudoinverse of the Jacobian matrix and the function evaluated at the vector-values.
+
+### Bisection method with interval halving and binary search
 The bisection method is a root-finding algorithm that can be applied to any continuous function for which there exist values with opposite signs. If, for example, f(a)<0 and f(b)>0 there must exist at least one point c between a and b such that f(c)=0 The method is implemented by splitting an interval in half and then checking in which of the two halves the sign changes. This method finds the approximations of roots instead of the real value of the root. It is also relatively slow but very robust. 
 
 For a function with only one argument for example f(x)=2+x the pseudocode is pretty straight forward: 
@@ -346,6 +362,8 @@ For a function with only one argument for example f(x)=2+x the pseudocode is pre
 5) Repeat 2, 3, 4 until convergence. 
 
 Our method works not only on functions with one variable, but it returns the root for multivariate functions. If the dimension is higher, the process is implemented in the same way but dividing n-D spaces into smaller parts instead of dividing an interval. 
+
+**Note:** The `autodiffcc.find_root` methods only return the function argument values for one root at a time. To find additional roots, if any, rerun `find_root` by initializing at a different `interval` or `start_values`. 
 
 
 ## Extension: Expression
