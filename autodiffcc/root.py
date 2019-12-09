@@ -27,10 +27,11 @@ def _newton_raphson(function, values, threshold, max_iter):
     """#TODO
     """
     jacobian = differentiate(function)
+    output_shape = len(np.array(function(*values)).flatten())
 
     for i in range(max_iter):
         flat_variables = values.flatten()
-        if len(flat_variables) == 1:
+        if len(flat_variables) == 1 and output_shape == 1:
             flat_variables = flat_variables - function(*values) / jacobian(*values)
         else:
             flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian(*values)), function(*values))
