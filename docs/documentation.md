@@ -214,7 +214,7 @@ A final example demonstrates how a user can find a root with `find_root` using t
 
 The below are two examples of parsing string expressions to function objects `fn` corresponding to the expressions. 
 
-``` 
+``` python 
 >>> x = AD(2, der = [1, 0])
 >>> y = AD(3, der = [0, 1])
 
