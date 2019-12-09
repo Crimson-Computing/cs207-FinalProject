@@ -171,9 +171,11 @@ Given that our aim is to deliver software that another developer can use for aut
 			LICENSE
             requirements.txt
 			autodiffcc/
+				Equation/
                 __init__.py
 				ADmath.py
 				core.py
+				parser.py
 				rootfindercc.py [Placeholder]
 			docs/
 				milestone1.md
@@ -182,6 +184,8 @@ Given that our aim is to deliver software that another developer can use for aut
 			tests/
 				test_ADmath.py
                 test_core.py
+				test_parser.py
+				test_root.py
 			...
 ```
 
@@ -244,8 +248,37 @@ Our method works not only on functions with one variable, but it returns the roo
 
 
 
-## Extension: Expression
+### Expression
 
-We also developed another extension named expression, which parses a string into a funcion for ``AD`` objects. Our implementation is build on a [previous parser](https://github.com/glenfletcher/Equation) on GitHub. We extend it for AD objects as input/outputs as well as more mathematical function such as ``arcsin`` and ``log``.
+We also developed expression extension, which parses a string of expression into the function object corresponding to the expression. The returned function object takes AD objects as inputs and outputs. For example, the result for string expression ``'cosh(x,2) + 3 * arctan(y)'`` will be ``f(x,y) = cosh(x,2) + 3 * arctan(y)``.
 
-The input string for the parser can be not only normal expression such ``'log(x,2) + sin(y)'``, but also equation such as ``'log(x,2) = -sin(y)'``. The output of latter one will be the left side of the equation minus the right side of that, on which we can apply rooting finding for the solutions of the equation.
+Our implementation is build on a previous parser named [Equation](https://github.com/glenfletcher/Equation) on GitHub. We extend it by
+- Returning function object with our AD objects as inputs/outputs.  
+- Adding other mathematical operations defined in AD objects, such as ``arcsin`` and ``log``.
+
+The input string for the parser can be normal expression such as ``'cosh(x,2) + 3 * arctan(y)'``, as well as equation such as ``'log(x,2) = sin(y)'``. The output of the equation will be the left side of it minus the right side of it (``'log(x,2) - sin(y)'`` for the example equation), on which we can apply rooting finding for the solutions of the equation. 
+
+## Future work/possible extensions	
+
+### LaTeX format
+
+Now our parser only support normal string, but we hope that in the future, it could string in the latex format. This will make our parser more flexible to use.
+
+### Graphical User Interface 
+
+We also notice that not only computer engineers will use such kind of package, but also people in other areas. Some of them even don’t know how to code with python. We think building a graphical user interface would also be a useful extension,  which make this package easier to learn.
+
+### Visualization
+
+Our third extension is visualization. Although we could get the values and derivatives of a function, we have no knowledge about how the function look likes. Simple visualization in 2 dimension and 3 dimension would give users a more vivid picture of the function.
+
+### Extensibility
+
+We notice that people in other areas, such as mathematics, may need more operations than we have thought about. Another extension would be making the package extensible so that they could define new operations by themselves.
+
+### Reverse Mode
+
+The final possible extension is the reverse mode. Forward mode can be super inefficient when the number of independent variables increases. But the reverse mode computes the transpose of the Jacobian, so that it is independent of the number of variables and can be more efficient. 
+
+
+
