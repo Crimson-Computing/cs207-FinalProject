@@ -124,3 +124,10 @@ def test_check_interval_output():
     # Check 1-D interval is np.array
     with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
         interval_start, interval_end = _check_interval(interval1var, signature2var)
+
+def test_newton_fourier_no_solution():
+    def f1var(x):
+        return x ** 2 + 1
+
+    with pytest.raises(Exception, match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
+        find_root(function=f1var, method='newton-fourier', interval=[-1, 1])
