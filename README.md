@@ -2,6 +2,10 @@
 
 [![codecov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject/branch/master/graph/badge.svg)](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject)
 
+
+Click [here](https://github.com/Crimson-Computing/cs207-FinalProject/blob/master/docs/documentation.md) to see full documentation
+
+
 ## Final Project - AutoDiffCC Python Package
 ## CS207: Systems Development for Computational Science in Fall 2019 
 #### Group 22
