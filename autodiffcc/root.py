@@ -362,7 +362,7 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
     raise Exception("Newton-Fourier did not converge, try another interval or increasing max_iter.")
 
 
-def find_root(function, start_values=None, interval=None, method='newton-raphson', threshold=1e-8, max_iter=2000, verbose=False):
+def find_root(function, start_values=None, interval=None, method='newton-raphson', threshold=1e-8, max_iter=2000):
     """Returns the root of a function defined using the autodiffcc.ADmath methods
 
     INPUTS
