@@ -17,7 +17,7 @@ To work, the package makes use of the following concepts:
 
 ### Elementary functions
 
-An elementary function is a function that is a finite combination of constant functions, field operations, algebraic, exponential and logarithmic functions and their inverses. The derivative of any elementary function is itself elementary. You can read more about it [here](http://mathworld.wolfram.com/ElementaryFunction.html) .  
+An elementary function is a function that is a finite combination of constant functions, field operations, algebraic, exponential and logarithmic functions and their inverses. The derivative of any elementary function is itself elementary. You can read more about it [here](http://mathworld.wolfram.com/ElementaryFunction.html).  
 
 Field operations: 
 - addition 
@@ -162,10 +162,11 @@ Note that the user-defined functions do not need to explicitly use the `AD` basi
 
 #### Root finding algorithms implemented
  
-|Root finding algorithms|Accepted `method` strings|Required arguments|
-|Bisection|\['bisect', 'bisection', 'b'\]| `function`, `interval`, `method`|
-|Newton-Fourier|\['newton-fourier', 'n-f'\]|`function`, `interval`, `method`|
-|Newton-Raphson|\['newton', 'newton-raphson', 'n-r'\]|`function`, `start_values`, `method`|
+| Root finding algorithms | Accepted `method` strings | Required arguments |
+| - | - | - |
+| Bisection | \['bisect', 'bisection', 'b'\] | `function`, `interval`, `method` |
+| Newton-Fourier | \['newton-fourier', 'n-f'\] | `function`, `interval`, `method`|
+| Newton-Raphson | \['newton', 'newton-raphson', 'n-r'\] |`function`, `start_values`, `method` |
 
 
 See below for an example of how to find a root with `find_root` using the 'bisection' method.
