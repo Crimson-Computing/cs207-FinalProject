@@ -202,3 +202,33 @@ We will develop a RootFinder for our advanced feature. Our RootFinder will imple
 We select Newton's method for our RootFinder because it leverages differentiation and generalizes to high-dimensional problems and complex functions.  Our RootFinder, provided a function, will start by using `autodiffcc` to find the derivative of the function at an initial guess for a root. It will iterate through successively better approximations of the root along the function, taking the derivative with `autodiffcc` at each step, until it finds the root(s) within a given tolerance. An example of the potential use of the RootFinder is shown below. The user interaction is subject to change pending final implementation. 
 
 ## Extension: Expression
+
+We also developed another extension named expression, which parse a string into a funcion for ``AD`` objects. Our implementation is build on a [previous parser](https://github.com/glenfletcher/Equation) on GitHub. We extend it for AD objects as input/outputs as well as more mathematical function such as ``arcsin`` and ``log``.
+
+The input string for the parser can not be only normal expression such ``'log(x,2) + sin(y)'``, but also equation expression such as ``'log(x,2) = -sin(y)'``. The output of latter one will be the left side of the equation minus the right side of the equation, on which we can apply rooting finding for the solutions of the equation.
+
+### How to use the expression
+Two simple examples are shown as follows. In the first example, a user wants to parse ``'log(x,2) + sin(y)'``. They first instantiate an expressioncc object  ``fn`` with ``'log(x,2) + sin(y)'`` and corresponding variables in the string ``['x','y']``. Then the user can use the returned function for calculation based on ``AD`` objects. The second case is quite similar to the first one. The only change is the expression is now an equation ``'log(x,2) = -sin(y)'``
+
+``` AD Overloaded Operators Example
+# Import the autodiffcc package
+>>> import autodiffcc as ad
+
+# Use expressioncc with a normal expression
+>>> fn = ad.expressioncc('log(x,2) + sin(y)', ['x', 'y']).get_fn()
+>>> x = AD(4, der = [1, 0], n_vars=2)
+>>> y = AD(3, der = [0, 1], n_vars=2)
+>>> res = fn(x,y)
+>>> print(res.val)
+2.1411200080598674
+>>> print(res.der)
+[ 0.36067376 -0.9899925 ]
+
+# Use expressioncc with a equation expression
+>>> fn = ad.expressioncc('log(x,2) = -sin(y)', ['x', 'y']).get_fn()
+>>> res = fn(x,y)
+>>> print(res.val)
+2.1411200080598674
+>>> print(res.der)
+[ 0.36067376 -0.9899925 ]
+```
