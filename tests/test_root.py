@@ -35,13 +35,13 @@ def test_root_bad_inputs_newton_fourier():
     def f1var(x):
         return (x + 2) * (x - 3)
 
-    this_root = find_root(function=f1var, method='newton-fourier', start_values=1)
+    this_root = find_root(function=f1var, method='newton-fourier', interval=[2, 4])
     assert np.isclose(this_root, 3.0)
 
     def f2var(x, y):
         return 2 * x + y, x - 1
 
-    this_root = find_root(function=f2var, method='newton-fourier', interval=[[1, 2],[3,4]])
+    this_root = find_root(function=f2var, method='newton-fourier', interval=[[1, 2], [3, 4]])
     assert np.allclose(this_root, np.array([1, -2]))
 
     # Incorrect number of variables
