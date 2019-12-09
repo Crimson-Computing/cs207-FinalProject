@@ -1,5 +1,5 @@
 import numpy as np
-from autodiffcc.root import root
+from autodiffcc.root import find_root
 
 
 def solver(base_function, start, threshold, max_iter, method='newton-raphson', **kwargs):
@@ -23,7 +23,7 @@ def solver(base_function, start, threshold, max_iter, method='newton-raphson', *
     # TODO: Write Examples
     """
 
-    result = root(function=base_function, start=start, method=method, threshold=threshold, max_iter=max_iter, **kwargs)
+    result = find_root(function=base_function, start=start, method=method, threshold=threshold, max_iter=max_iter, **kwargs)
 
     return result
 
@@ -34,6 +34,6 @@ def solver(lhs, rhs, start, method='newton-raphson', **kwargs):
 
     base_function = zero(lhs=lhs, rhs=rhs, **kwargs)
     print(base_function(**kwargs))
-    result = root(function=base_function, start=start, method=method, threshold=1e-6)
+    result = find_root(function=base_function, start=start, method=method, threshold=1e-6)
     return result
 '''
