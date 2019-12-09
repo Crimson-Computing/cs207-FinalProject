@@ -35,16 +35,49 @@ To use **AutoDiffCC** you first have to import it. If you already have it instal
 ```
 
 #### Basic Applications
-There are several ways in which you can take advantage of **AutoDiffCC**. A simple example using overloaded operators is described below. If you would like to evaluate ``f = x * x`` at ``x = 2``, first initiate an AD object ``x`` with ``x = ad.AD(2.0, 1.0)``, where ``2`` is the value and ``1`` is the derivative. Then simply define your function ``f = x * x`` and enjoy the results. You can see this example implemented below. 
+There are several ways in which you can take advantage of **AutoDiffCC**. Below we present some examples.
+
+##### Example 1  
+A simple example using overloaded operators is described below. If you would like to evaluate ``f = x * x`` at ``x = 2``, first initiate an AD object ``x`` with ``x = ad.AD(2.0, 1.0)``, where ``2`` is the value and ``1`` is the derivative. Then simply define your function ``f = x * x`` and enjoy the results. You can see this example implemented below. 
 
 ``` 
 # Overload basic arithmetic operations
->>> x = ad.AD(2.0, 1.0) 
+>>> x = ad.AD(val = 2.0, 1.0) 
 >>> f = x * x
 >>> print(f.val, f.der)
 4.0 4.0
 ```
 
+Alternativelly, if you can just proceed as follows: 
+
+``` 
+>>> def f(x):
+>>>   return x*x
+>>> dfdx = differentiate(f)
+>>> dfdx(x= 2.0)
+4.0 # this is the derivative value at x=2 
+```
+
+##### Example 2
+
+To use more complex function like cos(x) follow this example using our built-in module ADmath: 
+
+``` 
+>>> x = AD(val = 3.0, der = 1.0)
+>>> ADmath.cos(x) 
+(array(-0.9899924966004454), array(-0.1411200080598672))
+ ```    
+ 
+ Again, you can also do: 
+ 
+ ``` 
+>>> def f(x):
+>>>   return ADmath.cos(x) 
+>>> dfdx = differentiate(f)
+>>> dfdx( x = 3.0)
+-0.1411200080598672 # this is the derivative value evaluated at 3.0.
+```
+ 
 
 #### Offered Extentions
 
