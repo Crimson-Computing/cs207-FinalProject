@@ -269,7 +269,7 @@ cs207-FinalProject/
         test_core.py
         test_parser.py
         test_root.py
-			...
+	...
 ```
 
 ### Modules
