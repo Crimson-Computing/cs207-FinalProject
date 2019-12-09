@@ -7,6 +7,9 @@ def test_root_bad_inputs_newton_raphson():
     def f2var(x, y):
         return 2 * x + y, x - 1
 
+    this_root = find_root(function=f2var, method='newton', start_values=[1, 2])
+    assert np.allclose(this_root, np.array([1, -2]))
+
     # Incorrect number of vars in start_values
     with pytest.raises(KeyError, match="Incorrect number of variables passed in start_values."):
         find_root(function=f2var, method='newton', start_values=2)
@@ -30,10 +33,16 @@ def test_root_bad_inputs_newton_raphson():
 
 def test_root_bad_inputs_newton_fourier():
     def f1var(x):
-        return 2 * x
+        return (x + 2) * (x - 3)
+
+    this_root = find_root(function=f1var, method='newton', start_values=1)
+    assert np.isclose(this_root, 3.0)
 
     def f2var(x, y):
         return 2 * x + y, x - 1
+
+    this_root = find_root(function=f2var, method='newton-fourier', interval=[[1, 2],[3,4]])
+    assert np.allclose(this_root, np.array([1, -2]))
 
     # Incorrect number of variables
     with pytest.raises(ValueError, match="Incorrect number of elements passed in interval."):
