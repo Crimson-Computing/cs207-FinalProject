@@ -69,7 +69,7 @@ def test_root_bad_inputs_newton_fourier():
         find_root(function=f2var, method='newton-fourier', interval=[1, {'x': 2}])
 
     # Argument interval not passed
-    with pytest.raises(ValueError, match="Must provide interval for this method."):
+    with pytest.raises(TypeError, match="Must include interval as list of two dicts or list/array."):
         find_root(function=f2var, method='newton-fourier', start_values=[1, 2])
 
 
