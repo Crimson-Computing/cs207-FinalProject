@@ -59,8 +59,8 @@ def _check_interval(interval, signature):
     Returns two arrays interval_start, interval_end to pass to the specific root finding method
     """
 
-    if interval is None:
-        raise ValueError("Must provide interval for this method.")
+    if not isinstance(interval, (list, np.ndarray)):
+        raise TypeError("Must include interval as list of two dicts or list/array.")
 
     elif not isinstance(interval[0], type(interval[1])):
         raise TypeError("Must include interval as list of two dicts or numeric list/array.")
@@ -88,7 +88,7 @@ def _check_interval(interval, signature):
         interval_start = np.asarray(interval_start_values)
         interval_end = np.asarray(interval_end_values)
 
-    elif isinstance(interval, (list, np.ndarray)):
+    else:
         # if list-like, check shape
         values = np.asarray(interval) # 2-D array, multivar
         if len(values.shape) == 2:
@@ -99,9 +99,6 @@ def _check_interval(interval, signature):
             interval_end = np.asarray([values[1]])
         else:
             raise ValueError("Incorrect number of elements passed in interval.")
-
-    else:
-        raise TypeError("Must include interval as list of two dicts or list/array.")
 
     # check to make sure have correct number of variables
     print(len(interval_start))
