@@ -39,7 +39,7 @@ pip install autodiffcc
 ### How To Use 
 To use **AutoDiffCC** you first have to import it. If you already have it installed, you can do it by just running:
 
-```
+``` python 
 # Import the autodiffcc package
 >>> import autodiffcc as ad 
 ```
@@ -50,7 +50,7 @@ There are several ways in which you can take advantage of **AutoDiffCC**. Below 
 ##### Example 1  
 A simple example using overloaded operators is described below. If you would like to evaluate ``f = x * x`` at ``x = 2``, first initiate an AD object ``x`` with ``x = ad.AD(2.0, 1.0)``, where ``2`` is the value and ``1`` is the derivative. Then simply define your function ``f = x * x`` and enjoy the results. You can see this example implemented below. 
 
-``` 
+``` python 
 # Overload basic arithmetic operations
 >>> x = ad.AD(val = 2.0, 1.0) 
 >>> f = x * x
@@ -60,7 +60,7 @@ A simple example using overloaded operators is described below. If you would lik
 
 Alternatively, you can just proceed as follows: 
 
-``` 
+``` python 
 >>> def f(x):
 >>>   return x*x
 >>> dfdx = differentiate(f)
@@ -72,7 +72,7 @@ Alternatively, you can just proceed as follows:
 
 To use more complex function like cos(x) follow this example using our built-in module ADmath: 
 
-``` 
+``` python 
 >>> x = AD(val = 3.0, der = 1.0)
 >>> ADmath.cos(x) 
 (array(-0.9899924966004454), array(-0.1411200080598672))
