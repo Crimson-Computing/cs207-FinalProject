@@ -141,7 +141,7 @@ print(roots)
 ```
 ### Expression
 
-Two simple examples are shown as follows. In the first example, a user wants to parse ``'log(x,2) + sin(y)'``. They first instantiate an expressioncc object  ``fn`` with ``'log(x,2) + sin(y)'`` and corresponding variables in the string ``['x','y']``. Then the user can use the returned function for calculation based on ``AD`` objects. The second case is quite similar to the first one. The only change is the expression is now an equation ``'log(x,2) = -sin(y)'``
+Two simple examples are shown as follows. In the first example, a user wants to parse ``'log(x,2) + sin(y)'``. They first instantiate an expressioncc object  ``fn`` with ``'log(x,2) + sin(y)'`` and corresponding variables in the string ``['x','y']``. Then the user can use the returned function for calculation based on ``AD`` objects. The second example is quite similar to the first one. The only change is the expression is now an equation ``'log(x,2) = -sin(y)'``
 
 ``` AD Overloaded Operators Example
 # Import the autodiffcc package
