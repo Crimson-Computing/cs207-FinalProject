@@ -175,6 +175,6 @@ def test_newton_fourier_no_solution():
     def f1var(x):
         return x ** 2 + 1
 
-    with pytest.raises(Exception,
+    with pytest.raises(Exeption,
                        match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
         find_root(function=f1var, method='newton-fourier', interval=[-1, 1])
