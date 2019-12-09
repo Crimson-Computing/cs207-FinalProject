@@ -149,8 +149,8 @@ Two simple examples are shown as follows. In the first example, a user wants to 
 
 # Use expressioncc with a normal expression
 >>> fn = ad.expressioncc('log(x,2) + sin(y)', ['x', 'y']).get_fn()
->>> x = AD(4, der = [1, 0], n_vars=2)
->>> y = AD(3, der = [0, 1], n_vars=2)
+>>> x = AD(4, der = [1, 0])
+>>> y = AD(3, der = [0, 1])
 >>> res = fn(x,y)
 >>> print(res.val)
 2.1411200080598674

@@ -19,12 +19,11 @@ class expressioncc():
   EXAMPLES
   ========
   # >>> fn = expressioncc('3 * log(x,2) + sin(7)', ['x']).get_fn()
-  # (array(6.6569866), array([1.08202128]))
   # >>> fn(AD(4, n_vars=1))
-  # (array(2.69120231), array([2.7050532]))
-  # >>> fn = expressioncc('3 * log(x,2) + sin(7)', ['x']).get_fn()
+  #  (array(6.6569866), array([1.08202128]))
+  # >>> fn = expressioncc('3 * log(x,2) = -sin(7)', ['x']).get_fn()
   #  >>> fn(AD(4, n_vars=1)) 
-  #  (array(2.69120231), array([2.7050532]))
+  #  (array(6.6569866), array([1.08202128]))
   """
   def __init__(self, line, fn_vars):
     self.line = line
@@ -36,15 +35,11 @@ class expressioncc():
   def equation_parsing(self):
     """Returns left - right if string is equation
     
-    RETURNS
-    ========
-    Returns the function
-    
     EXAMPLES
     =========
-    >>> fn = expressioncc('3 * log(x,2) = - sin(7)', ['x']).get_fn()
-    >>> fn(AD(4, n_vars=1)) 
-    (array(2.69120231), array([2.7050532]))
+    >>> self.line = 'sin(x) = x'
+    # after parsing
+    >>> self.line = 'sin(x) - x'
     """
     if '=' in self.line:
       self.line = self.line.replace('=','-(') + ')'
@@ -54,9 +49,9 @@ class expressioncc():
     
     EXAMPLES
     =========
-    >>> self.line = log(x,2) + 5
+    >>> self.line = 'log(x,2) + 5'
     # after parsing
-    >>> self.line = (x log 2) + 5
+    >>> self.line = '(x log 2) + 5'
     """
     self.line = self.line.replace('log', '')
     self.line = self.line.replace(',', ' log ')
@@ -72,6 +67,6 @@ class expressioncc():
     =========
     >>> fn = expressioncc('3 * log(x,2) + sin(7)', ['x']).get_fn()
     >>> fn(AD(4, n_vars=1)) 
-    (array(2.69120231), array([2.7050532]))
+    (array(6.6569866), array([1.08202128]))
     """
     return self.fn
