@@ -1,2 +1,0 @@
-ignore:
-  - "autodiffcc/Equation"  # This folder is from https://github.com/glenfletcher/Equation 
