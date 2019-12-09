@@ -91,3 +91,69 @@ To use more complex function like cos(x) follow this example using our built-in 
 
 #### Offered Extentions
 
+Our package offers three root finding methods. The bisection method, the newton-fourier method and the newton-raphson method.
+
+##### Example 1 
+
+``` python RootFinder example for the bisection method 
+# Import the autodiffcc package
+>>> import autodiffcc as ad
+
+# Find the foot of a function with two variables using the bisection method
+
+>>> def f(x, y):
+>>>    return x + y - 100
+>>> interval  = [[1, 2], [3, 100]]
+>>> my_root = ad.find_root(function=f, method='bisection', interval=interval)
+>>> print(my_root)
+[1.999999999999993, 98.0]
+```
+
+##### Example 2
+
+``` python
+# Import the autodiffcc package
+>>> import autodiffcc as ad
+    >>> interval = [[3, -3], [3, -3]]
+    >>> my_root = ad.find_root(lambda x, y: (2 * x + y - 2, y + 2), interval=interval, method='newton-fourier', max_iter=150)
+    >>> print(my_root)
+    [ 2. -2.]
+```
+
+##### Example 3
+
+``` python
+# Import the autodiffcc package
+>>> import autodiffcc as ad
+    >>> def f1var(x):
+    >>>     return (x + 2) * (x - 3)
+
+    >>> my_root = ad.find_root(function=f1var, method='newton', start_values=1, threshold=1e-8)
+    >>> print(my_root)
+    3.
+```
+
+### Expression parsing
+
+Another extension we offer is expression parsing. The below are two examples of parsing string expressions to function objects `fn` corresponding to the expressions. 
+
+``` python 
+>>> x = AD(2, der = [1, 0])
+>>> y = AD(3, der = [0, 1])
+
+# Use expressioncc to parse a normal expression
+>>> fn = ad.expressioncc('x+y+1', ['x', 'y']).get_fn()
+>>> print(fn(x,y).val)
+6.0
+>>> print(fn(x,y).der)
+[1. 1.]
+
+# Use expressioncc to parse an equation (left - right)
+>>> fn = ad.expressioncc('x = -y-1', ['x', 'y']).get_fn()
+>>> print(fn(x,y).val)
+6.0
+>>> print(fn(x,y).der)
+[1. 1.]
+```
+
+
