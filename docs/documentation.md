@@ -243,32 +243,32 @@ Given that our aim is to deliver software that another developer can use for aut
 ## Software organization
 ### Directory structure
 ```
-	cs207-FinalProject/
-			README.md
-			LICENSE
-            requirements.txt
-			autodiffcc/
-                __init__.py
-				ADmath.py
-				core.py
-                parser.py
-				root.py
-                Equation/
-                    __init__.py
-                    core.py
-                    equation_base.py
-                    equation_scipy.py
-                    similar.py
-                    util.py
-			docs/
-				milestone1.md
-				milestone2.md
-                documentation.md
-			tests/
-				test_ADmath.py
-                test_core.py
-				test_parser.py
-                test_root.py
+cs207-FinalProject/
+    README.md
+	LICENSE
+    requirements.txt
+    autodiffcc/
+        __init__.py
+        ADmath.py
+        core.py
+        parser.py
+        root.py
+        Equation/
+            __init__.py
+            core.py
+            equation_base.py
+            equation_scipy.py
+            similar.py
+            util.py
+    docs/
+        milestone1.md
+        milestone2.md
+        documentation.md
+    tests/
+        test_ADmath.py
+        test_core.py
+        test_parser.py
+        test_root.py
 			...
 ```
 
