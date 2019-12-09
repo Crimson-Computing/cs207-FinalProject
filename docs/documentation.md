@@ -5,6 +5,8 @@ Alex Spiride, Maja Garbulinska, Matthew Finney, Zhiying Xu
 ## Introduction
 With the evolution of science and the growing computational possibilities, differentiation plays a critical role in a wide range of scientific and industrial applications of computer science. However, the precise computation of symbolic derivatives is computationally expensive, and not even possible in all situations, whereas the finite differencing method is not always accurate or stable. Automatic Differentiation, however, provides a computationally efficient way to calculate derivatives, particularly of complex functions, for applications where accuracy and performance at scale are important.
 
+Our main extension is a module which can be used to find a real- or vector-valued function's root. Root finding, or finding the values of a function's arguments for which the function's value is 0, useful in many practical applications including optimization tasks or solving systems of equations.
+
 ## Background
 
 Automatic Differentiation (AD) is also known as computational differentiation, algorithmic differentiation and differentiation of algorithms. Automatic differentiation does not use symbolic expressions but rather exact formulas and floating-point values. It provides a great way to avoid approximation errors. It easier for the user to compute derivatives using automatic differentiation, which provides efficiency and numerical stability as opposed to other methods such as finite differences. 
@@ -84,11 +86,14 @@ As in the computational graphs, we can represent the elementary operations in an
 
 <img width="772" alt="Screen Shot 2019-11-18 at 11 48 47" src="https://user-images.githubusercontent.com/43005886/69072311-6e48e880-09f9-11ea-9ba5-fd32f71fc6aa.png">
 
-
-
 ### More information
 
-If you would like to know more about this topic, you should have a look at [this book](https://arxiv.org/pdf/1411.0583.pdf).
+If you would like to know more about Automatic Differentiation, you should have a look at [this book](https://arxiv.org/pdf/1411.0583.pdf).
+
+### Background on our root finding extension
+Our main extension is a module which can be used to find a real- or vector-valued function's root. Root finding, or finding the values of a function's arguments for which the function's value is 0, useful in many practical applications including optimization tasks or solving systems of equations. For full details on root-finding and the mathematical background on the algorithms implemented, see the *Extension: Root finder* section below.
+
+
 
 ## How to use the package
 
@@ -132,6 +137,9 @@ Our Root Finder implementation requires that the user first define the function 
 
 The user then passes the `function`, `method` and `interval` or `start_values` arguments to the `find_root` function. The user may also provide the optional `max_iter` and `threshold` arguments. `max_iter` specifies the maximum number of iterations the algorithm should attempt to find a converging solution, and `threshold` sets the minimum threshold to declare convergence, such that lower thresholds return finer approximations.
 
+Note that the user-defined functions do not need to explicitly use the `AD` basic or comparison operators. However, for elemental and trigonometric functions like `sin` or `log` the user would need to define their function with the `ADmath` methods `ad.sin` and `ad.log`.
+
+#### Root finding algorithms implemented
  
 |Root finding algorithms|Accepted `method` strings|Required arguments|
 |Bisection|\['bisect', 'bisection', 'b'\]| `function`, `interval`, `method`|
@@ -142,11 +150,14 @@ The user then passes the `function`, `method` and `interval` or `start_values` a
 See below for an example of how to find a root with `find_root` using the 'bisection' method.
 
 ``` python RootFinder example for the bisection method 
+# Import the autodiffcc package
+>>> import autodiffcc as ad
+
 # Find the foot of a function with two variables using the bisection method
 >>> def f(x, y):
 >>>    return x + y - 100
 >>> interval  = [[1, 2], [3, 100]]
->>> my_root = find_root(function=f, method='bisection', interval=interval)
+>>> my_root = ad.find_root(function=f, method='bisection', interval=interval)
 >>> print(my_root)
 [1.999999999999993, 98.0]
 ```
@@ -154,8 +165,10 @@ See below for an example of how to find a root with `find_root` using the 'bisec
 The next example shows how to find a root with `find_root` using the 'newton-fourier' method and a vector function of two variables.
 
 ``` python
+# Import the autodiffcc package
+>>> import autodiffcc as ad
     >>> interval = [[3, -3], [3, -3]]
-    >>> my_root = find_root(lambda x, y: (2 * x + y - 2, y + 2), interval=interval, method='newton-fourier', max_iter=150)
+    >>> my_root = ad.find_root(lambda x, y: (2 * x + y - 2, y + 2), interval=interval, method='newton-fourier', max_iter=150)
     >>> print(my_root)
     [ 2. -2.]
 ```
@@ -163,10 +176,12 @@ The next example shows how to find a root with `find_root` using the 'newton-fou
 A final example demonstrates how a user can find a root with `find_root` using the 'newton-raphson' method and a function of one variables.
 
 ``` python
+# Import the autodiffcc package
+>>> import autodiffcc as ad
     >>> def f1var(x):
     >>>     return (x + 2) * (x - 3)
 
-    >>> my_root = find_root(function=f1var, method='newton', start_values=1, threshold=1e-8)
+    >>> my_root = ad.find_root(function=f1var, method='newton', start_values=1, threshold=1e-8)
     >>> print(my_root)
     3.
 ```
@@ -180,8 +195,8 @@ Two simple examples are shown as follows. In the first example, a user wants to 
 
 # Use expressioncc with a normal expression
 >>> fn = ad.expressioncc('log(x,2) + sin(y)', ['x', 'y']).get_fn()
->>> x = AD(4, der = [1, 0])
->>> y = AD(3, der = [0, 1])
+>>> x = ad.AD(4, der = [1, 0])
+>>> y = ad.AD(3, der = [0, 1])
 >>> res = fn(x,y)
 >>> print(res.val)
 2.1411200080598674
@@ -236,7 +251,7 @@ Given that our aim is to deliver software that another developer can use for aut
 ```
 
 ### Modules
-The `autodiffcc` package will have four modules:
+The `autodiffcc` package has four modules:
 
 |Module|Basic Functionality|
 |-|-|
@@ -249,28 +264,36 @@ The `autodiffcc` package will have four modules:
 ### Test suite
 Our test suite is in the directory `cs207-FinalProject/tests`. We  use [TravisCI](https://travis-ci.org/Crimson-Computing/cs207-FinalProject) to perform continuous integration, running these tests with each build pushed to GitHub. We use [CodeCov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject) to ensure that our software implementation has sufficient code covered by our test suite. Badges indicating test compliance and code coverage are included in `README.md`. You can also view reports here: [TravisCI](https://travis-ci.org/Crimson-Computing/cs207-FinalProject) and [CodeCov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject).
 
+### Installation
+AutoDiffCC supports package installation via `pip`. Consumers and developers can install the package in the command line with the following command.
+
+``` buildoutcfg
+pip install autodiffcc
+```
+
 ## Implementation (Base Automatic Differentiation Object and Methods)
 
 ### `AD` class
-Our core module contains an `AD` class.
+Our core module contains an `AD` class, including custom methods, that work on scalars and numpy arrays. These methods include an init, add, subtract, multiply, division, positive, negative, and comparison (<, ≥) dunder methods. 
 
-### Basic/Comparison operators
+Our `AD` class is used to create an `AD` object, which has a value and a derivative. These are stored as attributes of the object in its internal state, and can be represented as a tuple.
 
+As operations or functions are applied to an `AD` object, we update the value and the derivative of the `AD` objects by using dual numbers in tuples, where the first element is the value and the second element (the "imaginary" part) is the derivative. 
 
+#### Support for vector-valued functions
+For vector-valued functions, we override the priority of numpy basic operators to ensure our `AD` objects are compatible with numpy arrays using our operators. Then, since the value and derivative in the `AD` object is stored as a numpy array, we use leverage vectorized numpy operations together with the chain rule to update the derivative for vector-valued functions.
 
 ### Elementary functions
-Our ADmath module contains elementary functions for use with our AD class.
+We've developed custom elementary functions that support objects in our `AD` class and their structure, which stores the value and derivative as a dual number. Each of these is callable from the `ADmath` module, but a user who imports `autodiffcc` module does not need to import `ADmath` separately in order to use the `ADmath` elementary functions.
 
-We developed an `AD` class for automatic differentiation
+Implemented elementary math functions include log, exp, tan, power, trigonometric functions, and more.These are implemented by methods in the `ADmath` module which specifically extend the `numpy` implementations to apply the chain rule to update the derivative at each step.
 
-Our `AD` class is used to create an AD object, including custom methods, that work on scalars and numpy arrays. The AD class will then be used in our extension class, which will be an object of its own (RootFinder). Each of the math methods will be callable from an imported library of math functions.
+### External Dependencies
+Our core `AD` class, `ADmath` methods, and `find_root` function are dependent on `NumPy` for use of the `ndarray` class as a data structure and the elementary functions like `sin` and `log` from which we've constructed the `ADmath` methods.
 
-The AD class has several methods, including an init, add, subtract, multiply, division, positive, negative, and comparison (<, ≥) dunder methods. AD objects will have a value and a derivative. The math functions will include functions such as log, exp, tan, power, trigonometric functions, and more. To deal with elementary functions like sin, sqrt, log, and exp and all the others, we will write methods to extend general implementations (e.g. numpy) updating the derivative at each step. Finally, the AD class will have attributes to get the derivative and value of the object. We are updating the derivative of our AD objects by using dual numbers in tuples, where the first element is the value and the second element (the "imaginary" part) is the derivative. 
+Additionally, our `find_root` function's `bisection` method is dependent on the `matplotlib` library, for its feature which plots the user-defined function on the interval on which it search for a root.
 
-For vector-valued functions, we will override the priority of numpy basic operators to ensure our AD objects are compatible with numpy arrays using our operators. Then, since the value and derivative in the AD object is stored as a numpy array, we will be using the numpy operations in our derivative updating together with the chain rule to update the derivative for vector-valued functions.
-
-We want to make our class compatible with numpy arrays, so we will need to use NumPy, as well as math. For testing, we will need doctest and pytest, and we might use scipy for the RootFinder. 
-
+Our testing suite is dependent on the `pytest` and `coverage` libraries for testing and reporting.
 
 ## Extension: Root finder
 Our first extension is a root finding module, which leverages the `AD` class and methods to find a function or vector function's root. To find the root of a function means to find the values of its arguments for which the function's value is zero, This is, for example, useful in optimization tasks or in solving systems of equations. Over the years, a variety of methods have been proposed for this very common task. We have implemented three numerical root finding algorithms which leverage our `AD` object and `differentiate` methods: Newton-Raphson, Newton-Fourier, or Bisection algorithms.
@@ -285,17 +308,16 @@ Our first extension is a root finding module, which leverages the `AD` class and
 
 
 ### Bisection (interval halving, binary search method)
-
-The bisection method is a root-finding algorithm that can be applied to any continous function for which there exist values with opposite signs. If, for example, f(a)<0 and f(b)>0 there must exist at least one point c between a and b such that f(c)=0 The method is implemented by splitting an interval in half and then checking in which of the two halfs the sign changes. This method finds the approximations of roots instead of the real value of the root. It is also relatively slow but very robust. 
+The bisection method is a root-finding algorithm that can be applied to any continuous function for which there exist values with opposite signs. If, for example, f(a)<0 and f(b)>0 there must exist at least one point c between a and b such that f(c)=0 The method is implemented by splitting an interval in half and then checking in which of the two halves the sign changes. This method finds the approximations of roots instead of the real value of the root. It is also relatively slow but very robust. 
 
 For a function with only one argument for example f(x)=2+x the pseudocode is pretty straight forward: 
 1) Choose an interval starting at a and ending at b.
 2) Calculate point c that is placed in the middle, between a and b. 
 3) Calculate f(x) 
 4) If f(x) is close to zero (precision to be defined depending on the application) return c as the root and stop the iteration, otherwise, choose the new interval to be from a to c or from c to b depending on where the sign changes
-5) Repeat 2, 3, 4 until convergance. 
+5) Repeat 2, 3, 4 until convergence. 
 
-Our method works not only on functions with one variable, but it returns the root for multivariable functions. If the dimention is higher, the process is implemented in the same way but dividing n-D spaces into smaller parts instead of dividing an interval. 
+Our method works not only on functions with one variable, but it returns the root for multivariate functions. If the dimension is higher, the process is implemented in the same way but dividing n-D spaces into smaller parts instead of dividing an interval. 
 
 ### Fourier - Matt 
 /// TO DO MATT
