@@ -89,15 +89,21 @@ def _check_interval(interval, signature):
         interval_end = np.asarray(interval_end_values)
 
     elif isinstance(interval, (list, np.ndarray)):
-        # if list-like
+        # if list-like, check shape
         values = np.asarray(interval)
-        interval_start = values[:, 0]
-        interval_end = values[:, 1]
+        if len(values.shape) == 2:
+            interval_start = values[:, 0]
+            interval_end = values[:, 1]
+        else:
+            interval_start = np.asarray([values[0]])
+            interval_end = np.asarray([values[1]])
 
     else:
         raise TypeError("Must include interval as list of two dicts or list/array.")
 
     # check to make sure have correct number of variables
+    print(len(interval_start))
+    print(interval_start)
     if len(interval_start) != len(signature):
         raise KeyError("Incorrect number of variables passed in interval.")
 
@@ -356,6 +362,7 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
             flat_z = flat_z - np.matmul(common_jacobian, function(*z_vars))
 
         limit_denominator = limit_numerator
+        # limit_denominator = threshold if limit_denominator == 0 else limit_denominator
         limit_numerator = flat_x - flat_z
         limit = limit_numerator/limit_denominator
 
@@ -365,7 +372,7 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
         if limit.all() < threshold:
             return np.mean(np.vstack([x_vars, z_vars]), axis=0)
 
-    raise Exception("Newton-Fourier did not converge, try increasing max_iter.")
+    raise Exception("Newton-Fourier did not converge, try another interval or increasing max_iter.")
 
 
 def find_root(function, start_values=None, interval=None, method='newton-raphson', threshold=1e-8, max_iter=2000):
