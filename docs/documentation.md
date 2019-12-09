@@ -211,31 +211,27 @@ A final example demonstrates how a user can find a root with `find_root` using t
 ```
 
 ### Expression parsing
-Two simple examples are shown as follows. In the first example, a user wants to parse ``'log(x,2) + sin(y)'``. They first instantiate an expressioncc object  ``fn`` with ``'log(x,2) + sin(y)'`` and corresponding variables in the string ``['x','y']``. Then the user can use the returned function for calculation based on ``AD`` objects. The second example is quite similar to the first one. The only change is the expression is now an equation ``'log(x,2) = -sin(y)'``
 
-``` python AD Overloaded Operators Example
-# Import the autodiffcc package
->>> import autodiffcc as ad
+The below are two examples of parsing string expressions to function objects `fn` corresponding to the expressions. 
 
-# Use expressioncc with a normal expression
->>> fn = ad.expressioncc('log(x,2) + sin(y)', ['x', 'y']).get_fn()
->>> x = ad.AD(4, der = [1, 0])
->>> y = ad.AD(3, der = [0, 1])
->>> res = fn(x,y)
->>> print(res.val)
-2.1411200080598674
->>> print(res.der)
-[ 0.36067376 -0.9899925 ]
+``` 
+>>> x = AD(2, der = [1, 0])
+>>> y = AD(3, der = [0, 1])
 
-# Use expressioncc with a equation expression
->>> fn = ad.expressioncc('log(x,2) = -sin(y)', ['x', 'y']).get_fn()
->>> res = fn(x,y)
->>> print(res.val)
-2.1411200080598674
->>> print(res.der)
-[ 0.36067376 -0.9899925 ]
+# Use expressioncc to parse a normal expression
+>>> fn = ad.expressioncc('x+y+1', ['x', 'y']).get_fn()
+>>> print(fn(x,y).val)
+6.0
+>>> print(fn(x,y).der)
+[1. 1.]
+
+# Use expressioncc to parse an equation (left - right)
+>>> fn = ad.expressioncc('x = -y-1', ['x', 'y']).get_fn()
+>>> print(fn(x,y).val)
+6.0
+>>> print(fn(x,y).der)
+[1. 1.]
 ```
-
 
 ### Distribution and packaging
 The AutoDiffCC library can be installed using the Python Package Index (PyPI). It is distributed in the pythonic formats of an sdist and as a wheel to facilitate installation via Python's package installer `pip`. The user will install the package with `pip` and them import it in Python. Importing the package via `pip` will also ensure that the user installs required dependencies.
@@ -282,7 +278,7 @@ The `autodiffcc` package has four modules:
 |-|-|
 |core| This is the main module, which contains the `AD` class and methods for operator overloading (e.g., add, mult, etc.).|
 |ADmath| This module contains elementary functions, (e.g. sin, cos, sqrt, log, exp,etc.) for the `AD` class. |
-|parser| This module contains our expression extension, which extends the [Equation](https://github.com/glenfletcher/Equation) library to work with AD objects and methods.\*|
+|parser| This module contains our expression extension, which parses an expression string into the function object by extending the [Equation](https://github.com/glenfletcher/Equation) library for AD objects and more methods.\*|
 |root| This module contains our root finding extension, which leverages out AD class and methods to find roots of vector equations using the Newton-Raphson, Newton-Fourier, and Bisection algorithms.|\
 
 \* Given that we extended an existing [Equation](https://github.com/glenfletcher/Equation) library, content from that library which we forked and adapted for our extension is located in the `/autodiffcc/Equation/` directory
@@ -369,7 +365,37 @@ Our method works not only on functions with one variable, but it returns the roo
 **Note:** The `autodiffcc.find_root` methods only return the function argument values for one root at a time. To find additional roots, if any, rerun `find_root` by initializing at a different `interval` or `start_values`. 
 
 
-## Extension: Expression
-We also developed another extension named expression, which parse a string into a function for ``AD`` objects. Our implementation is build on a [previous parser](https://github.com/glenfletcher/Equation) on GitHub. We extend it for AD objects as input/outputs as well as more mathematical function such as ``arcsin`` and ``log``.
+### Expression parsing
 
-The input string for the parser can not be only normal expression such ``'log(x,2) + sin(y)'``, but also equation expression such as ``'log(x,2) = -sin(y)'``. The output of latter one will be the left side of the equation minus the right side of the equation, on which we can apply rooting finding for the solutions of the equation.
+We also developed expression extension, which parses a string of expression into the function object corresponding to the expression. The returned function object takes AD objects as inputs and outputs. For example, the result for string expression ``'cosh(x,2) + 3 * arctan(y)'`` will be ``f(x,y) = cosh(x,2) + 3 * arctan(y)``.
+
+Our implementation is build on an existing parser named [Equation](https://github.com/glenfletcher/Equation) on GitHub. We extend it by
+- Returning function object with our AD objects as inputs/outputs.  
+- Adding other mathematical operations defined in AD objects, such as ``arcsin`` and ``log``.
+
+The input string for the parser can be either normal expressions such as ``'cosh(x,2) + 3 * arctan(y)'`` or equations such as ``'log(x,2) = sin(y)'``. The output of the equation will be the left side of it minus the right side of it (``'log(x,2) - sin(y)'`` for the example equation), on which we can apply rooting finding for the solutions of the equation. 
+
+## Future work/possible extensions	
+
+### LaTeX format
+
+The parser of the package should be able to support LaTeX format apart from the normal format. Since people in academia may use LaTeX for writing papers and documentations, supporting LaTeX format will increase the flexibility of our package.
+
+### Graphical User Interface 
+
+We hope that people in other areas as well as computer engineers will be able use our package. However, people in other areas may not even know how to writing code with Python. Building a graphical user interface allows users to interact with packages through graphical icons, which makes this package easier to learn and use.
+
+### Visualization
+
+Although we can get the numeric results of values and derivatives for functions, we have no knowledge about how the function looks like. Simple visualization in 2 dimensions or 3 dimensions provides users a more vivid view of the function. For example, people in economic area will be able to analyze economic models with a big picture in mind.
+
+### Extensibility
+
+People in other areas, such as mathematics and statistics, may need more operations than we have thought about. Thus, another extension can be making the package extensible so that they could define new operations by themselves.
+
+### Reverse Mode
+
+We also suggest reverse mode be a future extension. Forward mode can be quite inefficient when the number of independent variables increases. On the other hand, the reverse mode computes the transpose of the Jacobian and is independent of the number of variables. When people deal with a huge amount of variables, such as machine learning or data mining, reverse mode is a more efficient choice compared to forward mode.
+
+
+
