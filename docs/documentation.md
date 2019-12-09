@@ -245,7 +245,7 @@ Given that our aim is to deliver software that another developer can use for aut
 ```
 cs207-FinalProject/
     README.md
-	LICENSE
+    LICENSE
     requirements.txt
     autodiffcc/
         __init__.py
