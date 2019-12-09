@@ -90,13 +90,15 @@ def _check_interval(interval, signature):
 
     elif isinstance(interval, (list, np.ndarray)):
         # if list-like, check shape
-        values = np.asarray(interval)
+        values = np.asarray(interval) # 2-D array, multivar
         if len(values.shape) == 2:
             interval_start = values[:, 0]
             interval_end = values[:, 1]
-        else:
+        elif len(interval) == 2: # 1-D Array, 1 var
             interval_start = np.asarray([values[0]])
             interval_end = np.asarray([values[1]])
+        else:
+            raise ValueError("Incorrect number of elements passed in interval.")
 
     else:
         raise TypeError("Must include interval as list of two dicts or list/array.")
@@ -106,9 +108,6 @@ def _check_interval(interval, signature):
     print(interval_start)
     if len(interval_start) != len(signature):
         raise KeyError("Incorrect number of variables passed in interval.")
-
-    # interval_start = interval_start.reshape(-1,1)
-    # interval_end = interval_end.reshape(-1,1)
 
     return interval_start, interval_end
 
@@ -362,7 +361,6 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
             flat_z = flat_z - np.matmul(common_jacobian, function(*z_vars))
 
         limit_denominator = limit_numerator
-        # limit_denominator = threshold if limit_denominator == 0 else limit_denominator
         limit_numerator = flat_x - flat_z
         limit = limit_numerator/limit_denominator
 
