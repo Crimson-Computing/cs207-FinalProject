@@ -299,4 +299,8 @@ def test_differentiate_args_issues():
     with pytest.raises(KeyError):
         dfdx(x=2)
 
+    # test too many keys
+    with pytest.raises(KeyError):
+        dfdx(x=2, y=3, z=3)
+
 
