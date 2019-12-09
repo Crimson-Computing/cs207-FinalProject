@@ -280,7 +280,7 @@ The `autodiffcc` package has four modules:
 |core| This is the main module, which contains the `AD` class and methods for operator overloading (e.g., add, mult, etc.).|
 |ADmath| This module contains elementary functions, (e.g. sin, cos, sqrt, log, exp,etc.) for the `AD` class. |
 |parser| This module contains our expression extension, which extends the [Equation](https://github.com/glenfletcher/Equation) library to work with AD objects and methods.\*|
-|Root| This module contains our root finding extension, which leverages out AD class and methods to find roots of vector equations using the Newton-Raphson, Newton-Fourier, and Bisection algorithms.|\
+|root| This module contains our root finding extension, which leverages out AD class and methods to find roots of vector equations using the Newton-Raphson, Newton-Fourier, and Bisection algorithms.|\
 
 \* Given that we extended an existing [Equation](https://github.com/glenfletcher/Equation) library, content from that library which we forked and adapted for our extension is located in the `/autodiffcc/Equation/` directory
 
