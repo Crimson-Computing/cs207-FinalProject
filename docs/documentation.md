@@ -3,12 +3,13 @@ CS207 Final Project, Group 22
 Alex Spiride, Maja Garbulinska, Matthew Finney, Zhiying Xu
 
 ## Introduction
-With the evolution of science from empirical to theoretical and now computational approaches, differentiation plays a critical role in a wide range of scientific and industrial applications of computer science. However, the precise computation of symbolic derivatives is computationally expensive, and not even possible in all situations, whereas the finite differencing method is not always accurate or stable. Automatic Differentiation, however, provides a computationally efficient way to calculate derivatives, particularly of complex functions, for applications where accuracy and performance at scale are important.
+With the evolution of science and the growing computational possibilities, differentiation plays a critical role in a wide range of scientific and industrial applications of computer science. However, the precise computation of symbolic derivatives is computationally expensive, and not even possible in all situations, whereas the finite differencing method is not always accurate or stable. Automatic Differentiation, however, provides a computationally efficient way to calculate derivatives, particularly of complex functions, for applications where accuracy and performance at scale are important.
 
 ## Background
-// TODO  # Review CJ's comments are fully implemented 
 
-Our software will make it easier for the user to compute derivatives using automatic differentiation, which provides efficiency and numerical stability as opposed to other methods such as finite differences. A computer can perform elementary operations quickly. If we apply the chain rule to these elementary operations we can compute derivatives of functions efficiently and with working precision.
+Authomatic differentiation(AD) is also known as computational differentiation, algorithmic differentation and differentiation of algorithms. Authomatic differentiation does not use symbolic expressions but rather exact formulas and floating-point values. It provides a great way to avoid approximation errors. It easier for the user to compute derivatives using automatic differentiation, which provides efficiency and numerical stability as opposed to other methods such as finite differences. 
+
+The most important idea that AD benefits from is the chain rule and the fact that it can be implemented in a numerical program. Deferentiation is applied to elementary function step by step to get the final results. A computer can perform elementary operations quickly. If we apply the chain rule to these elementary operations we can compute derivatives of functions efficiently and with working precision.
 
 To work, the package makes use of the following concepts:
 
@@ -127,17 +128,21 @@ A more complex example using custom math methods is described below. A user want
 ```
 
 ### Root finding
-// TODO  # Write intro paragraph, align with actual method
 
-``` RootFinder example
-import autodiffcc as ad
+def f(x, y):
+    return(x+y-100)
+    
+interval  = [[1, 2], [3, 100]]
+find_root(function=f, method='bisection', interval=interval)
 
-# Find the root of x^6 - 6x^5 + 5x^4 - 4
-x = ad.AD(val = 1, der = 1)
-h = x ** 6 - 6 * (x ** 5) + 5 * (x ** 4) - 4
-roots = ad.roots(h, solver='newton')
-print(roots)
--0.78842 5.0016
+
+``` RootFinder example for the bisection method 
+# find the foot of a function with two variables
+>>> def f(x, y):
+>>>    return(x+y-100)
+>>>    interval  = [[1, 2], [3, 100]]
+>>> find_root(function=f, method='bisection', interval=interval)
+[1.999999999999993, 98.0]
 ```
 ### Expression
 
@@ -223,9 +228,34 @@ We want to make our class compatible with numpy arrays, so we will need to use N
 // TODO  # Update tense
 // TODO  # Write about each of the three algorithms
 
-We will develop a RootFinder for our advanced feature. Our RootFinder will implement Newton's method to approximate the roots of a real-valued function within a given tolerance. This will be in its own module, RootFinder. At this time, we don't foresee any additional modules, or data structures, but we may implement a Root class that can support real and possibly even complex roots.
+To find a root of a function means to find the values for it's parameters that make the function's value be 0. A variety of methods have been proposed over the years. We have decided to implement three of them. 
 
-We select Newton's method for our RootFinder because it leverages differentiation and generalizes to high-dimensional problems and complex functions.  Our RootFinder, provided a function, will start by using `autodiffcc` to find the derivative of the function at an initial guess for a root. It will iterate through successively better approximations of the root along the function, taking the derivative with `autodiffcc` at each step, until it finds the root(s) within a given tolerance. An example of the potential use of the RootFinder is shown below. The user interaction is subject to change pending final implementation. 
+### Newton
+//// TO DO ALEX
+
+///OLD TEXT BUT CAN BE USEFUL: 
+////We will develop a RootFinder for our advanced feature. Our RootFinder will implement Newton's method to approximate the roots of a real-valued function within a given tolerance. This will be in its own module, RootFinder. At this time, we don't foresee any additional modules, or data structures, but we may implement a Root class that can support real and possibly even complex roots.
+
+///We select Newton's method for our RootFinder because it leverages differentiation and generalizes to high-dimensional problems and complex functions.  Our RootFinder, provided a function, will start by using `autodiffcc` to find the derivative of the function at an initial guess for a root. It will iterate through successively better approximations of the root along the function, taking the derivative with `autodiffcc` at each step, until it finds the root(s) within a given tolerance. An example of the potential use of the RootFinder is shown below. The user interaction is subject to change pending final implementation. 
+
+
+### Bisection (interval halving, binary search method)
+
+The bisection method is a root-finding algorithm that can be applied to any continous function for which there exist values with opposite signs. If, for example, f(a)<0 and f(b)>0 there must exist at least one point c between a and b such that f(c)=0 The method is implemented by splitting an interval in half and then checking in which of the two halfs the sign changes. This method finds the approximations of roots instead of the real value of the root. It is also relatively slow but very robust. 
+
+For a function with only one argument for example f(x)=2+x the pseudocode is pretty straight forward: 
+1) Choose an interval starting at a and ending at b.
+2) Calculate point c that is placed in the middle, between a and b. 
+3) Calculate f(x) 
+4) If f(x) is close to zero (precision to be defined depending on the application) return c as the root and stop the iteration, otherwise, choose the new interval to be from a to c or from c to b depending on where the sign changes
+5) Repeat 2, 3, 4 until convergance. 
+
+Our method works not only on functions with one variable, but it returns the root for multivariable functions. If the dimention is higher, the process is implemented in the same way but dividing n-D spaces into smaller parts instead of dividing an interval. 
+
+### Fourier - Matt 
+/// TO DO MATT
+
+
 
 ## Extension: Expression
 
