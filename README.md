@@ -80,7 +80,7 @@ To use more complex function like cos(x) follow this example using our built-in 
  
  Again, you can also do: 
  
- ``` 
+``` python 
 >>> def f(x):
 >>>   return ADmath.cos(x) 
 >>> dfdx = differentiate(f)
