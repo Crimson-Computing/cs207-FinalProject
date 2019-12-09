@@ -55,7 +55,7 @@ def test_root_bad_inputs_newton_fourier():
 
     # Function signature variable missing from dictionary keys
     with pytest.raises(KeyError, match="key y in function signature missing from interval dictionary."):
-        find_root(function=f2var, method='newton-fourier', interval=[{'x': 2}, {'x':4}])
+        find_root(function=f2var, method='newton-fourier', interval=[{'x': 2}, {'x': 4}])
 
     # Too many interval_dict keys passed
     with pytest.raises(KeyError, match="Too many keys passed in interval dictionary."):
@@ -106,16 +106,24 @@ def test_newton_raphson_no_solution_scalar():
     with pytest.raises(Exception, match="Newton-Raphson did not converge, try increasing max_iter."):
         find_root(function=f1var, method='newton', start_values=1)
 
+
 def test_check_interval_output():
+    # Check 2-D interval is np.array
     interval2var = [[1, 2], [3, 4]]
     signature2var = inspect.signature(lambda x, y: 2 * x + y).parameters.keys()
+    assert len(signature2var) == 2
 
-    # Check 2-D interval is np.array
     interval_start, interval_end = _check_interval(interval2var, signature2var)
+    assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
+
+    # Check 2-D dict interval is np.array
+    interval2vardict = [{'x': 1, 'y': 2}, {'x': 3, 'y': 4}]
+    interval_start, interval_end = _check_interval(interval2vardict, signature2var)
     assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
 
     interval1var = [1, 2]
     signature1var = inspect.signature(lambda x: x ** 2 + 1).parameters.keys()
+    assert len(signature1var) == 1
 
     # Check 1-D interval is np.array
     interval_start, interval_end = _check_interval(interval1var, signature1var)
@@ -125,9 +133,27 @@ def test_check_interval_output():
     with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
         interval_start, interval_end = _check_interval(interval1var, signature2var)
 
+
+def test_newton_fourier_scalar():
+    def f1var(x):
+        return (x + 2) * (x - 3)
+
+    this_root = find_root(function=f1var, method='newton-fourier', interval=[2, 4])
+    assert np.isclose(this_root, 3.0)
+
+
+def test_newton_fourier_vector():
+    def f2var(x, y):
+        return 2 * x + y, x - 1
+
+    this_root = find_root(function=f2var, method='newton-fourier', interval=[[1, 2], [3, 4]])
+    assert np.allclose(this_root, np.array([1, -2]))
+
+
 def test_newton_fourier_no_solution():
     def f1var(x):
         return x ** 2 + 1
 
-    with pytest.raises(Exception, match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
+    with pytest.raises(Exception,
+                       match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
         find_root(function=f1var, method='newton-fourier', interval=[-1, 1])
