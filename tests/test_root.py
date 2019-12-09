@@ -1,5 +1,6 @@
 import pytest
-from autodiffcc.root import *
+import inspect
+from autodiffcc.root import find_root, _check_interval
 from autodiffcc.ADmath import *
 
 
@@ -35,13 +36,13 @@ def test_root_bad_inputs_newton_fourier():
     def f1var(x):
         return (x + 2) * (x - 3)
 
-    this_root = find_root(function=f1var, method='newton', start_values=1)
+    this_root = find_root(function=f1var, method='newton-fourier', interval=[2, 4])
     assert np.isclose(this_root, 3.0)
 
     def f2var(x, y):
         return 2 * x + y, x - 1
 
-    this_root = find_root(function=f2var, method='newton-fourier', interval=[[1, 2],[3,4]])
+    this_root = find_root(function=f2var, method='newton-fourier', interval=[[1, 2], [3, 4]])
     assert np.allclose(this_root, np.array([1, -2]))
 
     # Incorrect number of variables
@@ -104,3 +105,22 @@ def test_newton_raphson_no_solution_scalar():
 
     with pytest.raises(Exception, match="Newton-Raphson did not converge, try increasing max_iter."):
         find_root(function=f1var, method='newton', start_values=1)
+
+def test_check_interval_output():
+    interval2var = [[1, 2], [3, 4]]
+    signature2var = inspect.signature(lambda x, y: 2 * x + y).parameters.keys()
+
+    # Check 2-D interval is np.array
+    interval_start, interval_end = _check_interval(interval2var, signature2var)
+    assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
+
+    interval1var = [1, 2]
+    signature1var = inspect.signature(lambda x: x ** 2 + 1).parameters.keys()
+
+    # Check 1-D interval is np.array
+    interval_start, interval_end = _check_interval(interval1var, signature1var)
+    assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
+
+    # Check 1-D interval is np.array
+    with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
+        interval_start, interval_end = _check_interval(interval1var, signature2var)
