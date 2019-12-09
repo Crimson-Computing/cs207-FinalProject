@@ -135,6 +135,24 @@ def test_check_interval_output():
     # Check 1-D interval is np.array
     with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
         interval_start, interval_end = _check_interval(interval1var, signature2var)
+        
+def test_bisect_noroot_in_interval():
+    
+    def f(x, y):
+        return(x+y-100)
+        
+    interval  = [[1, 2], [3, 1]]
+    with pytest.raises(Exception, match= "No change in sign, please try different intervals"):
+        find_root(function=f, method='bisection', interval=interval)
+    
+def test_bisect():
+    def f(x, y):
+        return x + y
+    interval  = [[-1, 1], [-1, 1]]
+
+    this_root = find_root(function=f, method='bisection', interval=interval)
+    assert np.allclose(this_root, [0.0, 0.0])
+       
 
 
 def test_newton_fourier_scalar():
