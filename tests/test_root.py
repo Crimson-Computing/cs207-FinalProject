@@ -23,6 +23,10 @@ def test_root_bad_inputs_newton_raphson():
     with pytest.raises(TypeError, match="Must include start_values as dict or list/array."):
         find_root(function=f2var, method='newton', start_values=f2var)
 
+    # Argument start_values not passed
+    with pytest.raises(ValueError, match="Must include start_values as dict or list/array for this method."):
+        find_root(function=f2var, method='newton', interval=[1, 2])
+
 
 def test_root_bad_inputs_newton_fourier():
     def f2var(x, y):
@@ -33,7 +37,7 @@ def test_root_bad_inputs_newton_fourier():
         find_root(function=f2var, method='newton-fourier', interval=[1, 2, 3])
 
     # Function signature variable missing from dictionary keys
-    with pytest.raises(KeyError, match="key y in function signature missing from start_values."):
+    with pytest.raises(KeyError, match="key y in function signature missing from interval dictionary."):
         find_root(function=f2var, method='newton-fourier', interval=[{'x': 2}, {'x':4}])
 
     # Too many interval_dict keys passed
@@ -41,16 +45,25 @@ def test_root_bad_inputs_newton_fourier():
         interval_dict = [{'x': 0, 'y': -1, 'z': 6}, {'x': 2, 'y': -3, 'z': 6}]
         find_root(function=f2var, method='newton-fourier', interval=interval_dict)
 
+    # Number of interval_dict keys don't match for start_interval and end_interval
+    with pytest.raises(KeyError, match="The interval_start and interval_end dictionaries must have the same number of "
+                                       "keys."):
+        interval_dict = [{'x': 0, 'y': -1}, {'x': 2, 'y': -3, 'z': 6}]
+        find_root(function=f2var, method='newton-fourier', interval=interval_dict)
+
     # Incorrect type for interval
     with pytest.raises(TypeError, match="Must include interval as list of two dicts or list/array."):
         find_root(function=f2var, method='newton-fourier', interval={'x': 2})
-
     with pytest.raises(TypeError, match="Must include interval as list of two dicts or list/array."):
         find_root(function=f2var, method='newton-fourier', interval=f2var)
 
-    # Incorrect number of variables
-    with pytest.raises(KeyError, match="Incorrect number of variables passed in start_values."):
-        find_root(function=f2var, method='newton', start_values=[1, 2, 3])
+    # Different types for start_interval and end_interval
+    with pytest.raises(TypeError, match="Must include interval as list of two dicts or numeric list/array."):
+        find_root(function=f2var, method='newton-fourier', interval=[1, {'x': 2}])
+
+    # Argument interval not passed
+    with pytest.raises(ValueError, match="Must provide interval for this method."):
+        find_root(function=f2var, method='newton-fourier', start_values=[1, 2])
 
 
 def test_newton_raphson_scalar():

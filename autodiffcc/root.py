@@ -62,7 +62,10 @@ def _check_interval(interval, signature):
     if interval is None:
         raise ValueError("Must provide interval for this method.")
 
-    if isinstance(interval[0], dict) and isinstance(interval[1], dict):
+    elif not isinstance(interval[0], type(interval[1])):
+        raise TypeError("Must include interval as list of two dicts or numeric list/array.")
+
+    elif isinstance(interval[0], dict) and isinstance(interval[1], dict):
         # turn keyword values into positional values matching function signature
         interval_start_values = []
         start_dict = interval[0]
