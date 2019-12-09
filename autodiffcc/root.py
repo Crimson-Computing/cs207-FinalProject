@@ -159,8 +159,8 @@ def _bisect(function, interval_start, interval_end, max_iter, signature, verbose
     >>> _bisect(f, interval_start = [-10, 10], interval_end = [-4, 10])
     [0.12999772724065328, 7.692442177460448]
     """
-
-    print("Please note that this function uses approximations")
+    if verbose == True: 
+        print("Please note that this function uses approximations")
 
     # check how many parameters there are in the function
     nParam = len(signature)
@@ -196,7 +196,7 @@ def _bisect(function, interval_start, interval_end, max_iter, signature, verbose
         # function to show the plot
         plt.show()
 
-        # get the starting points of each variable
+    # get the starting points of each variable
     # get the ending points for each variable
     # get their combinations. Should be 4 different combinations
 
@@ -218,13 +218,14 @@ def _bisect(function, interval_start, interval_end, max_iter, signature, verbose
         raise Exception("No change in sign, please try different intervals")
 
     if signchange:
-        print("Root between in the specified intervals")
+        if verbose == True: 
+            print("Root between in the specified intervals")
         i = 1
         # if signs are different
         while signchange:
-            # TODO: Implement "Verbose" argument.
-            print("----------------------")
-            print("iteration", i)
+            if verbose == True: 
+                print("----------------------")
+                print("iteration", i)
 
             i = i + 1
 
@@ -246,11 +247,14 @@ def _bisect(function, interval_start, interval_end, max_iter, signature, verbose
 
                 for n in results:
                     if (n * middlePointResult < 0):
-                        print("root between", c, "and", allpoints[j])
+                        if verbose == True: 
+                            print("root between", c, "and", allpoints[j])
                         corner1 = list(allpoints[j])
                         corner2 = c
                     j = j + 1
-                print("choosing to look in the area between", corner1, "and", corner2)
+                    
+                if verbose == True: 
+                    print("choosing to look in the area between", corner1, "and", corner2)
 
                 # update points for intervals
                 if corner1 > corner2:
