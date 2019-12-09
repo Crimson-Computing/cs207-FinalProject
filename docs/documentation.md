@@ -129,13 +129,6 @@ A more complex example using custom math methods is described below. A user want
 
 ### Root finding
 
-def f(x, y):
-    return(x+y-100)
-    
-interval  = [[1, 2], [3, 100]]
-find_root(function=f, method='bisection', interval=interval)
-
-
 ``` RootFinder example for the bisection method 
 # find the foot of a function with two variables
 >>> def f(x, y):
