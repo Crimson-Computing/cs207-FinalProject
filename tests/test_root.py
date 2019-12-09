@@ -1,5 +1,6 @@
 import pytest
-from autodiffcc.root import *
+import inspect
+from autodiffcc.root import find_root, _check_interval
 from autodiffcc.ADmath import *
 
 
@@ -119,3 +120,7 @@ def test_check_interval_output():
     # Check 1-D interval is np.array
     interval_start, interval_end = _check_interval(interval1var, signature1var)
     assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
+
+    # Check 1-D interval is np.array
+    with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
+        interval_start, interval_end = _check_interval(interval1var, signature2var)

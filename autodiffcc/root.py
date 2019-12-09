@@ -83,7 +83,7 @@ def _check_interval(interval, signature):
                 interval_end_values.append(end_dict[key])
             except KeyError:
                 raise KeyError(f"key {key} in function signature missing from interval dictionary.")
-        if len(start_dict.keys()) != len(signature):
+        if not len(start_dict.keys()) == len(signature):
             raise KeyError("Too many keys passed in interval dictionary.")
 
         interval_start = np.asarray(interval_start_values)
@@ -102,7 +102,7 @@ def _check_interval(interval, signature):
             raise ValueError("Incorrect number of elements passed in interval.")
 
     # check to make sure have correct number of variables
-    if len(interval_start) != len(signature):
+    if not len(interval_start) == len(signature):
         raise KeyError("Incorrect number of variables passed in interval.")
 
     return interval_start, interval_end
