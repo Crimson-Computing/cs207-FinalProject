@@ -102,8 +102,6 @@ def _check_interval(interval, signature):
             raise ValueError("Incorrect number of elements passed in interval.")
 
     # check to make sure have correct number of variables
-    print(len(interval_start))
-    print(interval_start)
     if len(interval_start) != len(signature):
         raise KeyError("Incorrect number of variables passed in interval.")
 
@@ -130,7 +128,7 @@ def _norm(vector):
     return np.sum(np.abs(vector))
 
 
-def _bisect(function, interval_start, interval_end, max_iter, signature):
+def _bisect(function, interval_start, interval_end, max_iter, signature, verbose):
     """Performs the bisection method on a function of one or more variables to find a root
 
     INPUTS
@@ -224,6 +222,7 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
         i = 1
         # if signs are different
         while signchange:
+            # TODO: Implement "Verbose" argument.
             print("----------------------")
             print("iteration", i)
 
@@ -371,7 +370,7 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
     raise Exception("Newton-Fourier did not converge, try another interval or increasing max_iter.")
 
 
-def find_root(function, start_values=None, interval=None, method='newton-raphson', threshold=1e-8, max_iter=2000):
+def find_root(function, start_values=None, interval=None, method='newton-raphson', threshold=1e-8, max_iter=2000, verbose=False):
     """Returns the root of a function defined using the autodiffcc.ADmath methods
 
     INPUTS
@@ -383,6 +382,7 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
     method: Root-finding algorithm to use ['newton-raphson', 'newton-fourier', 'bisection']
     threshold: Minimum threshold to declare convergence for the newton-raphson and newton-fourier methods
     max_iter: Maximum number of iterations taken for the algorithm to converge
+    verbose: Boolean. Whether or not to print intermediate iteration values in the bisection algorithm.
 
     RETURNS
     ========
@@ -410,7 +410,7 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
         return _newton_raphson(function, values, threshold, max_iter)
 
     if method.lower() in ['bisect', 'bisection', 'b']:
-        interval_start, interval_end = _check_interval(interval=interval, signature=signature)
+        interval_start, interval_end = _check_interval(interval=interval, signature=signature, verbose=verbose)
         return _bisect(function, interval_start, interval_end, max_iter, signature)
 
     if method.lower() in ['newton-fourier', 'n-f']:
