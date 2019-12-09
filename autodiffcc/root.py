@@ -59,6 +59,7 @@ def _check_interval(interval, signature):
     Returns two arrays interval_start, interval_end to pass to the specific root finding method
     """
 
+    # Check interval is provided and list-like
     if not isinstance(interval, (list, np.ndarray)):
         raise TypeError("Must include interval as list of two dicts or list/array.")
 
