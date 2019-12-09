@@ -1,7 +1,6 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
-# Code from https://github.com/glenfletcher/Equation
 omit = autodiffcc/Equation/* 
 
 [report]
