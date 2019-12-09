@@ -256,29 +256,29 @@ Our implementation is build on a previous parser named [Equation](https://github
 - Returning function object with our AD objects as inputs/outputs.  
 - Adding other mathematical operations defined in AD objects, such as ``arcsin`` and ``log``.
 
-The input string for the parser can be normal expression such as ``'cosh(x,2) + 3 * arctan(y)'``, as well as equation such as ``'log(x,2) = sin(y)'``. The output of the equation will be the left side of it minus the right side of it (``'log(x,2) - sin(y)'`` for the example equation), on which we can apply rooting finding for the solutions of the equation. 
+The input string for the parser can be either normal expressions such as ``'cosh(x,2) + 3 * arctan(y)'`` or equations such as ``'log(x,2) = sin(y)'``. The output of the equation will be the left side of it minus the right side of it (``'log(x,2) - sin(y)'`` for the example equation), on which we can apply rooting finding for the solutions of the equation. 
 
 ## Future work/possible extensions	
 
 ### LaTeX format
 
-Now our parser only support normal string, but we hope that in the future, it could string in the latex format. This will make our parser more flexible to use.
+The parser of the package should be able to support LaTeX format apart from the normal format. Since people in academia may use LaTeX for writing papers and documentations, supporting LaTeX format will increase the flexibility of our package.
 
 ### Graphical User Interface 
 
-We also notice that not only computer engineers will use such kind of package, but also people in other areas. Some of them even don’t know how to code with python. We think building a graphical user interface would also be a useful extension,  which make this package easier to learn.
+We hope that people in other areas as well as computer engineers will be able use our package. However, people in other areas may not even know how to writing code with Python. Building a graphical user interface allows users to interact with packages through graphical icons, which makes this package easier to learn and use.
 
 ### Visualization
 
-Our third extension is visualization. Although we could get the values and derivatives of a function, we have no knowledge about how the function look likes. Simple visualization in 2 dimension and 3 dimension would give users a more vivid picture of the function.
+Although we can get the numeric results of values and derivatives for functions, we have no knowledge about how the function looks like. Simple visualization in 2 dimensions or 3 dimensions provides users a more vivid view of the function. For example, people in economic area will be able to analyze economic models with a big picture in mind.
 
 ### Extensibility
 
-We notice that people in other areas, such as mathematics, may need more operations than we have thought about. Another extension would be making the package extensible so that they could define new operations by themselves.
+People in other areas, such as mathematics and statistics, may need more operations than we have thought about. Thus, another extension can be making the package extensible so that they could define new operations by themselves.
 
 ### Reverse Mode
 
-The final possible extension is the reverse mode. Forward mode can be super inefficient when the number of independent variables increases. But the reverse mode computes the transpose of the Jacobian, so that it is independent of the number of variables and can be more efficient. 
+We also suggest reverse mode be a future extension. Forward mode can be quite inefficient when the number of independent variables increases. On the other hand, the reverse mode computes the transpose of the Jacobian and is independent of the number of variables. When people deal with a huge amount of variables, such as machine learning or data mining, reverse mode is a more efficient choice compared to forward mode.
 
 
 
