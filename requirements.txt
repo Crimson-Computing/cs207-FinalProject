@@ -1,6 +1,6 @@
-matplotlib
 # cat requirements.txt
 codecov==2.0.15
 coverage
+matplotlib
 numpy
 pytest

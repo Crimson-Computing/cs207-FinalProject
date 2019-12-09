@@ -7,3 +7,5 @@
 *.pyc
 /demo/
 /scratch/
+/upload_pypi.sh
+/upload_test_pypi.sh
