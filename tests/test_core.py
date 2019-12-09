@@ -308,4 +308,8 @@ def test_differentiate_scalar_function_0_der():
         return 2
     assert np.isclose(differentiate(f)(3), 0)
 
+def test_differentiate_vector_function_0_der():
+    def f(x, y):
+        return 2, 3
+    assert np.allclose(differentiate(f)(3,1), 0)
 
