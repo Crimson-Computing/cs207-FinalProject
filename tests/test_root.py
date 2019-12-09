@@ -11,6 +11,9 @@ def test_root_bad_inputs_newton_raphson():
     this_root = find_root(function=f2var, method='newton', start_values=[1, 2])
     assert np.allclose(this_root, np.array([1, -2]))
 
+    this_root = find_root(function=f2var, method='newton', start_values={'x': 1, 'y': 2})
+    assert np.allclose(this_root, np.array([1, -2]))
+
     # Incorrect number of vars in start_values
     with pytest.raises(KeyError, match="Incorrect number of variables passed in start_values."):
         find_root(function=f2var, method='newton', start_values=2)
