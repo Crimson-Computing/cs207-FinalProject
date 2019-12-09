@@ -282,7 +282,7 @@ The `autodiffcc` package has four modules:
 |parser| This module contains our expression extension, which extends the [Equation](https://github.com/glenfletcher/Equation) library to work with AD objects and methods.\*|
 |Root| This module contains our root finding extension, which leverages out AD class and methods to find roots of vector equations using the Newton-Raphson, Newton-Fourier, and Bisection algorithms.|\
 
-\* Given that we extended an existing [Equation](https://github.com/glenfletcher/Equation) library, content from that library which we forked and adapted for our extension is located in the /autodiffcc/Equation directory
+\* Given that we extended an existing [Equation](https://github.com/glenfletcher/Equation) library, content from that library which we forked and adapted for our extension is located in the `/autodiffcc/Equation/` directory
 
 ### Test suite
 Our test suite is in the directory `cs207-FinalProject/tests`. We  use [TravisCI](https://travis-ci.org/Crimson-Computing/cs207-FinalProject) to perform continuous integration, running these tests with each build pushed to GitHub. We use [CodeCov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject) to ensure that our software implementation has sufficient code covered by our test suite. Badges indicating test compliance and code coverage are included in `README.md`. You can also view reports here: [TravisCI](https://travis-ci.org/Crimson-Computing/cs207-FinalProject) and [CodeCov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject).
