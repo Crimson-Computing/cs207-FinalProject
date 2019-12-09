@@ -303,4 +303,9 @@ def test_differentiate_args_issues():
     with pytest.raises(KeyError):
         dfdx(x=2, y=3, z=3)
 
+def test_differentiate_scalar_function_0_der():
+    def f(x):
+        return 2
+    assert np.isclose(differentiate(f)(3), 0)
+
 
