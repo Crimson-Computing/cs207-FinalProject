@@ -23,40 +23,20 @@ def _norm(vector):
     return np.sum(np.abs(vector))
 
 
-def _newton_raphson(function, start_posvars: list, start_kwvars: dict, threshold, max_iter):
+def _newton_raphson(function, values, threshold, max_iter):
     """#TODO
     """
-    signature = inspect.signature(function).parameters.keys()
-    n_vars_function = len(signature)
-
-    if start_posvars and start_kwvars:
-        raise KeyError("Cannot pass both start_posvars and start_kwvars. Must only choose one.")
-    elif not (start_posvars or start_kwvars):
-        raise KeyError("Must include either start_posvars or start_kwvars.")
-    elif start_kwvars:
-        # turn keyword variables into positional variables matching function signature
-        variables = []
-        for key in signature:
-            try:
-                variables.append(start_kwvars[key])
-            except KeyError:
-                raise KeyError(f"key {key} in function signature missing from start_kwvars")
-    else:
-        # using positional variables
-        variables = start_posvars
-    variables = np.array(variables)
-
     jacobian = differentiate(function)
 
     for i in range(max_iter):
-        flat_variables = variables.flatten()
+        flat_variables = values.flatten()
         if len(flat_variables) == 1:
-            flat_variables = flat_variables - function(*variables) / jacobian(*variables)
+            flat_variables = flat_variables - function(*values) / jacobian(*values)
         else:
-            flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian(*variables)), function(*variables))
-        variables = flat_variables.reshape(variables.shape)
-        if _norm(function(*variables)) < threshold:
-            return variables
+            flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian(*values)), function(*values))
+        values = flat_variables.reshape(values.shape)
+        if _norm(function(*values)) < threshold:
+            return values
     raise Exception()
 
     Warning("Maximum number of iterations exceeded before converging.")
@@ -70,7 +50,7 @@ def _method_3(function, start, threshold):
     pass
 
 
-def root(function, method, start_posvars: list = None, start_kwvars: dict = None, threshold=1e-8, max_iter=2000):
+def root(function, method, start_values, threshold=1e-8, max_iter=2000):
     """Returns the root of the function found using the specified method
 
     INPUTS
@@ -92,5 +72,31 @@ def root(function, method, start_posvars: list = None, start_kwvars: dict = None
     >>> 2 ** x
     (8.0, 5.54517744)
     """
+    # process variable inputs
+    signature = inspect.signature(function).parameters.keys()
+
+    if isinstance(start_values, dict):
+        # turn keyword values into positional values matching function signature
+        values = []
+        for key in signature:
+            try:
+                values.append(start_values[key])
+            except KeyError:
+                raise KeyError(f"key {key} in function signature missing from start_values")
+        if len(start_values.keys()) != len(signature):
+            raise KeyError("Too many keys passed in start_values dictionary")
+    elif isinstance(start_values, (list, np.ndarray)):
+        # if list-like
+        values = start_values
+    elif np.isscalar(start_values):
+        values = [start_values]
+    else:
+        raise TypeError("Must include start_values as dict or list/array.")
+    values = np.array(values)
+    # check to make sure have correct number of variables
+    if len(values) != len(signature):
+        raise KeyError("Incorrect number of variables passed in start_values.")
+
+    # find roots
     if method.lower() in ['newton', 'newton-raphson', 'n-r']:
-        return _newton_raphson(function, start_posvars, start_kwvars, threshold, max_iter)
+        return _newton_raphson(function, values, threshold, max_iter)
