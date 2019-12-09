@@ -516,7 +516,7 @@ def differentiate(base_func):
 
         # if base_func returns a scalar and not an AD object
         if np.isscalar(result):
-            return AD(result, der=0)
+            return AD(result, der=0).der
         # if base_func is a scalar function, return 1-D flat derivative (combining multiple vector-valued inputs)
         if isinstance(result, AD):
             return result.der.flatten()
@@ -526,8 +526,9 @@ def differentiate(base_func):
         final_der = []
         for ad_obj in result:
             if not isinstance(ad_obj, AD):
-                ad_obj = AD(ad_obj, der=np.zeros((1, n_vars_inner)))
-            final_der.append(ad_obj.der.flatten())
+                final_der.append(np.zeros(n_vars_inner))
+            else:
+                final_der.append(ad_obj.der.flatten())
 
         return np.array(final_der)
 
