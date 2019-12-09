@@ -128,7 +128,7 @@ def _norm(vector):
     return np.sum(np.abs(vector))
 
 
-def _bisect(function, interval_start, interval_end, max_iter, signature, verbose):
+def _bisect(function, interval_start, interval_end, max_iter, signature):
     """Performs the bisection method on a function of one or more variables to find a root
 
     INPUTS
@@ -159,8 +159,6 @@ def _bisect(function, interval_start, interval_end, max_iter, signature, verbose
     >>> _bisect(f, interval_start = [-10, 10], interval_end = [-4, 10])
     [0.12999772724065328, 7.692442177460448]
     """
-    if verbose == True: 
-        print("Please note that this function uses approximations")
 
     # check how many parameters there are in the function
     nParam = len(signature)
@@ -218,17 +216,11 @@ def _bisect(function, interval_start, interval_end, max_iter, signature, verbose
         raise Exception("No change in sign, please try different intervals")
 
     if signchange:
-        if verbose == True: 
-            print("Root between in the specified intervals")
+
         i = 1
         # if signs are different
         while signchange:
-            if verbose == True: 
-                print("----------------------")
-                print("iteration", i)
-
             i = i + 1
-
             # middle points
             c = []
             for k in range(0, nParam):
@@ -247,15 +239,11 @@ def _bisect(function, interval_start, interval_end, max_iter, signature, verbose
 
                 for n in results:
                     if (n * middlePointResult < 0):
-                        if verbose == True: 
-                            print("root between", c, "and", allpoints[j])
+  
                         corner1 = list(allpoints[j])
                         corner2 = c
                     j = j + 1
                     
-                if verbose == True: 
-                    print("choosing to look in the area between", corner1, "and", corner2)
-
                 # update points for intervals
                 if corner1 > corner2:
                     points = np.c_[corner2, corner1]
@@ -374,7 +362,7 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
     raise Exception("Newton-Fourier did not converge, try another interval or increasing max_iter.")
 
 
-def find_root(function, start_values=None, interval=None, method='newton-raphson', threshold=1e-8, max_iter=2000, verbose=False):
+def find_root(function, start_values=None, interval=None, method='newton-raphson', threshold=1e-8, max_iter=2000):
     """Returns the root of a function defined using the autodiffcc.ADmath methods
 
     INPUTS
@@ -386,7 +374,6 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
     method: Root-finding algorithm to use ['newton-raphson', 'newton-fourier', 'bisection']
     threshold: Minimum threshold to declare convergence for the newton-raphson and newton-fourier methods
     max_iter: Maximum number of iterations taken for the algorithm to converge
-    verbose: Boolean. Whether or not to print intermediate iteration values in the bisection algorithm.
 
     RETURNS
     ========
@@ -414,7 +401,7 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
         return _newton_raphson(function, values, threshold, max_iter)
 
     if method.lower() in ['bisect', 'bisection', 'b']:
-        interval_start, interval_end = _check_interval(interval=interval, signature=signature, verbose=verbose)
+        interval_start, interval_end = _check_interval(interval=interval, signature=signature)
         return _bisect(function, interval_start, interval_end, max_iter, signature)
 
     if method.lower() in ['newton-fourier', 'n-f']:
