@@ -19,6 +19,32 @@ Our package **AutoDiffCC** provides is an easy to use package that computes deri
 We invite you to take a look at our repo and use **AutoDiffCC**!
 
 ### Installation Guide
-### How To Use 
 
+AutoDiffCC supports package installation via `pip`. Users can install the package in the command line with the following command.
+
+```buildoutcfg
+pip install autodiffcc
+```
+
+### How To Use 
+To use **AutoDiffCC** you first have to import it. If you already have it installed, you can do it by just running:
+
+```
+# Import the autodiffcc package
+>>> import autodiffcc as ad 
+```
+
+#### Basic Applications
+There are several ways in which you can take advantage of **AutoDiffCC**. A simple example using overloaded operators is described below. If you would like to evaluate ``f = x * x`` at ``x = 2``, first initiate an AD object ``x`` with ``x = ad.AD(2.0, 1.0)``, where ``2`` is the value and ``1`` is the derivative. Then simply define your function ``f = x * x`` and enjoy the results. You can see this example implemented below. 
+
+``` 
+# Overload basic arithmetic operations
+>>> x = ad.AD(2.0, 1.0) 
+>>> f = x * x
+>>> print(f.val, f.der)
+4.0 4.0
+```
+
+
+#### Offered Extentions
 
