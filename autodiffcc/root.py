@@ -374,7 +374,6 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
     method: Root-finding algorithm to use ['newton-raphson', 'newton-fourier', 'bisection']
     threshold: Minimum threshold to declare convergence for the newton-raphson and newton-fourier methods
     max_iter: Maximum number of iterations taken for the algorithm to converge
-    verbose: Boolean. Whether or not to print intermediate iteration values in the bisection algorithm.
 
     RETURNS
     ========
@@ -402,7 +401,7 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
         return _newton_raphson(function, values, threshold, max_iter)
 
     if method.lower() in ['bisect', 'bisection', 'b']:
-        interval_start, interval_end = _check_interval(interval=interval, signature=signature, verbose=verbose)
+        interval_start, interval_end = _check_interval(interval=interval, signature=signature)
         return _bisect(function, interval_start, interval_end, max_iter, signature)
 
     if method.lower() in ['newton-fourier', 'n-f']:
