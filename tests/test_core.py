@@ -137,7 +137,7 @@ def test_truediv():
     assert t4.der.tolist() == [-0.265625, -0.296875]
 
 
-def test_rsub():
+def test_rtruediv():
     t1 = 3 / AD(val=3, der=1)
     assert t1.val == 1
     assert t1.der == pytest.approx(-0.3333333333333333)
@@ -171,7 +171,9 @@ def test_rpow():
     t2 = 0 ** AD(val=3, der=1)
     assert t2.val == 0
     assert t2.der == 0
-
+    t2 = 1 ** AD(val=0, der=1)
+    assert t2.val == 1
+    assert t2.der == 0
 
 def test_eq():
     t1 = AD(val=3, der=1)
@@ -303,4 +305,13 @@ def test_differentiate_args_issues():
     with pytest.raises(KeyError):
         dfdx(x=2, y=3, z=3)
 
+def test_differentiate_scalar_function_0_der():
+    def f(x):
+        return 2
+    assert np.isclose(differentiate(f)(3), 0)
+
+def test_differentiate_vector_function_0_der():
+    def f(x, y):
+        return 2, 3
+    assert np.allclose(differentiate(f)(3,1), 0)
 

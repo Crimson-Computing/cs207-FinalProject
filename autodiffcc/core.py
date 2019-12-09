@@ -514,15 +514,21 @@ def differentiate(base_func):
         # run base_func on input values now keeping track of derivative
         result = base_func(*variables)
 
+        # if base_func returns a scalar and not an AD object
+        if np.isscalar(result):
+            return AD(result, der=0).der
         # if base_func is a scalar function, return 1-D flat derivative (combining multiple vector-valued inputs)
-        if type(result) == AD:
+        if isinstance(result, AD):
             return result.der.flatten()
-        
+
         # if base_func is vector function, return 2-D Jacobian where each row is f1, f2, ...
         n_fn_dim = len(result)
         final_der = []
         for ad_obj in result:
-            final_der.append(ad_obj.der.flatten())
+            if not isinstance(ad_obj, AD):
+                final_der.append(np.zeros(n_vars_inner))
+            else:
+                final_der.append(ad_obj.der.flatten())
 
         return np.array(final_der)
 

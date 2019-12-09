@@ -1,6 +1,7 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
+omit = autodiffcc/Equation/* 
 
 [report]
 # Regexes for lines to exclude from consideration
@@ -24,3 +25,4 @@ ignore_errors = True
 
 [html]
 directory = coverage_html_report
+

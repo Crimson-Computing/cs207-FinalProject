@@ -9,12 +9,12 @@ def _check_start_values(start_values, signature):
     """ A service that checks the shape of start_values and reformats them for the specific method
     INPUTS
     =======
-    start_values: a list or dictionary of start values provided to the root finder
-    signature: a signature of a function provided to the root finder
+    start_values: List or dictionary of start values provided to the root finder
+    signature: Signature of the function
 
     RETURNS
     ========
-    returns an array of values to pass to the specific root finding method
+    Returns an array of values to pass to the specific root finding method
     """
     if not start_values:
         raise ValueError("Must include start_values as dict or list/array for this method.")
@@ -51,12 +51,12 @@ def _check_interval(interval, signature):
 
     INPUTS
     =======
-    intevral: a list/array or a list of two dictionaries [interval_start, interval_end] provided to the root finder
-    signature: a signature of a function provided to the root finder
+    interval: List/array or a list of two dictionaries [interval_start, interval_end] provided to the root finder
+    signature: Signature of the function
 
     RETURNS
     ========
-    returns two arrays interval_start, interval_end to pass to the specific root finding method
+    Returns two arrays interval_start, interval_end to pass to the specific root finding method
     """
 
     if interval is None:
@@ -129,15 +129,16 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
 
     INPUTS
     =======
-    function: a function using ADmath methods
-    start_values: the starting point of the root-finding method (scalar or vector)
-    interval_start: an array of the start of the interval for all variables
-    interval_end: an array of the end of the interval for all variables
-    max_iter: maximum number of iterations that algorithm will look for before quitting
-
+    function: A function defined using the autodiffcc.ADmath methods
+    interval_start: The start of the initial interval of values on which to attempt to find a root, as an array
+    interval_end: The end of the initial interval of values on which to attempt to find a root, as an array
+    threshold: Minimum threshold to declare convergence on a root
+    signature: The signature of the function
+    
     RETURNS
     ========
-    returns the approximate root
+    An approximate root of function found starting from the interval or raised Exception if none are found
+
 
     NOTES
     =====
@@ -272,29 +273,31 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
 
 
 def _newton_raphson(function, values, threshold, max_iter):
-    """Returns the root of the function found using the specified method
+
+    """Returns a root found starting from values using the Newton-Raphson method
 
     INPUTS
     =======
-    function: a function using ADmath methods
-    start_values: the starting point of the root-finding method (scalar or vector)
-    threshold: the minimum threshold for finding a root
-    max_iter: maximum number of iterations that algorithm will look for before quitting
-        - in case method does not converge
+    function: A function defined using the autodiffcc.ADmath methods
+    values: Starting point for root-finding method as a scalar or vector
+    threshold: Minimum threshold to declare convergence on a root
+    max_iter: Maximum number of iterations taken for the algorithm to converge
 
     RETURNS
     ========
-    the root of the function found using the specified method
+    A root of function found starting from values or raised Exception if none are found
 
     EXAMPLES
     =========
-    # TODO
+    >>> _newton_raphson(lambda x: x, 3, 1e-8, 2000)
+    0.
     """
     jacobian = differentiate(function)
+    output_shape = len(np.array(function(*values)).flatten())
 
     for i in range(max_iter):
         flat_variables = values.flatten()
-        if len(flat_variables) == 1:
+        if len(flat_variables) == 1 and output_shape == 1:
             flat_variables = flat_variables - function(*values) / jacobian(*values)
         else:
             flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian(*values)), function(*values))
@@ -305,20 +308,19 @@ def _newton_raphson(function, values, threshold, max_iter):
 
 
 def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarray, threshold, max_iter):
-    """Returns the root of the function found using the specified method
+    """Returns a root of the function found using the Newton-Fourier algorithm
 
     INPUTS
     =======
-    function: a function using ADmath methods
-    interval_start: an array of the start of the interval for all variables
-    interval_end: an array of the end of the interval for all variables
-    threshold: the minimum threshold for finding a root
-    max_iter: maximum number of iterations that algorithm will look for before quitting
-        - in case method does not converge
-
+    function: A function defined using the autodiffcc.ADmath methods
+    interval_start: The start of the initial interval of values on which to attempt to find a root, as an array
+    interval_end: The end of the initial interval of values on which to attempt to find a root, as an array
+    threshold: Minimum threshold to declare convergence on a root
+    max_iter: Maximum number of iterations taken for the algorithm to converge
+    
     RETURNS
     ========
-    a root of the function found using the specified method on the interval within the threshold
+    A root of function found (approximately, within the threshold) starting from the interval or raised Exception if none are found
 
     EXAMPLES
     =========
@@ -364,30 +366,34 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
 
 
 def find_root(function, start_values=None, interval=None, method='newton-raphson', threshold=1e-8, max_iter=2000):
-    """Returns the root of the function found using the specified method
+    """Returns the root of a function defined using the autodiffcc.ADmath methods
 
     INPUTS
     =======
-    function: a function using ADmath methods
-    start_values: the starting point of the root-finding method (scalar or vector)
-    interval: the starting interval of the root-finding method, either as an array or a list of two dicts
-    method: the method to do root-finding ['newton-raphson', 'newton-fourier', 'bisect']
-    threshold: the minimum threshold for finding a root
-    max_iter: maximum number of iterations that algorithm will look for before quitting
-        - in case method does not converge
+    function: A function defined using the autodiffcc.ADmath methods
+    start_values: Starting point for root-finding method as a scalar or vector; used only in newton-raphson
+    interval: Initial interval of values on which to attempt to find a root, either as an array or a list of
+              two dicts; used only in newton-fourier and bisection
+    method: Root-finding algorithm to use ['newton-raphson', 'newton-fourier', 'bisection']
+    threshold: Minimum threshold to declare convergence for the newton-raphson and newton-fourier methods
+    max_iter: Maximum number of iterations taken for the algorithm to converge
 
     RETURNS
     ========
-    the root of the function found using the specified method
+    An root of the function found or raised Exception if no root is found. If a function of multiple variables,
+    this is is returned as an array where the values correspond with the variable positions supplied to find_root.
 
     EXAMPLES
     =========
     >>> def f(x, y):
-    >>>     return 2 * x + y - 2, y+2
+    >>>     return 2 * x + y - 2, y + 2
     >>> interval = [[3, -3], [3, -3]]
     >>> my_root = find_root(f, interval=interval, method='newton-fourier', threshold=1e-8, max_iter=2000)
     >>> print(my_root)
     [ 2. -2.]
+
+    >>> find_root(lambda x: x+2, 2, method='newton')
+    -2.
     """
     # process variable inputs
     signature = inspect.signature(function).parameters.keys()

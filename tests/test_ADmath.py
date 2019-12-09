@@ -156,3 +156,7 @@ def test_log():
     assert t2.der.tolist() == [pytest.approx(3.33333333), pytest.approx(6.666666666666667)]
     t3 = log(0.3)
     assert t3 == pytest.approx(-1.2039728)
+    with pytest.raises(ValueError):
+        t4 = log(-1)
+    with pytest.raises(ValueError):
+        t4 = log(AD(val=-1, der=[1, 2]))
