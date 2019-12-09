@@ -138,30 +138,23 @@ A more complex example using custom math methods is described below. A user want
 [1.999999999999993, 98.0]
 ```
 ### Expression
-
-Two simple examples are shown as follows. In the first example, a user wants to parse ``'log(x,2) + sin(y)'``. They first instantiate an expressioncc object  ``fn`` with ``'log(x,2) + sin(y)'`` and corresponding variables in the string ``['x','y']``. Then the user can use the returned function for calculation based on ``AD`` objects. The second example is quite similar to the first one. The only change is the expression is now an equation ``'log(x,2) = -sin(y)'``
-
-``` AD Overloaded Operators Example
-# Import the autodiffcc package
->>> import autodiffcc as ad
-
-# Use expressioncc with a normal expression
->>> fn = ad.expressioncc('log(x,2) + sin(y)', ['x', 'y']).get_fn()
->>> x = AD(4, der = [1, 0])
+``` 
+>>> x = AD(2, der = [1, 0])
 >>> y = AD(3, der = [0, 1])
->>> res = fn(x,y)
->>> print(res.val)
-2.1411200080598674
->>> print(res.der)
-[ 0.36067376 -0.9899925 ]
 
-# Use expressioncc with a equation expression
->>> fn = ad.expressioncc('log(x,2) = -sin(y)', ['x', 'y']).get_fn()
->>> res = fn(x,y)
->>> print(res.val)
-2.1411200080598674
->>> print(res.der)
-[ 0.36067376 -0.9899925 ]
+# Use expressioncc to parse a normal expression
+>>> fn = ad.expressioncc('x+y+1', ['x', 'y']).get_fn()
+>>> print(fn(x,y).val)
+6.0
+>>> print(fn(x,y).der)
+[1. 1.]
+
+# Use expressioncc to parse an equation
+>>> fn = ad.expressioncc('x=-y-1', ['x', 'y']).get_fn()
+>>> print(fn(x,y).val)
+6.0
+>>> print(fn(x,y).der)
+[1. 1.]
 ```
 
 
@@ -200,6 +193,7 @@ The `autodiffcc` package will have four modules:
 |core| This is the main module, which will contain the `AD` class and methods for operator overloading (e.g., add, mult, etc.).|
 |ADmath| This module contains elementary functions, (e.g. sin, cos, sqrt, log, exp,etc.) for the `AD` class. |
 |RootFinder| This module is a placeholder for the advanced feature.|
+|Expression| This module parses a string of expression into the function object corresponding to the expression.|
 
 ### Test suite
 Our test suite is in the directory `cs207-FinalProject/tests`. We  use TravisCI to perform continuous integration, running these tests with each build pushed to GitHub. We use CodeCov to ensure that our software implementation has sufficient code covered by our test suite. Badges indicating test compliance and code coverage are included in `README.md`.
@@ -252,6 +246,6 @@ Our method works not only on functions with one variable, but it returns the roo
 
 ## Extension: Expression
 
-We also developed another extension named expression, which parse a string into a funcion for ``AD`` objects. Our implementation is build on a [previous parser](https://github.com/glenfletcher/Equation) on GitHub. We extend it for AD objects as input/outputs as well as more mathematical function such as ``arcsin`` and ``log``.
+We also developed another extension named expression, which parses a string into a funcion for ``AD`` objects. Our implementation is build on a [previous parser](https://github.com/glenfletcher/Equation) on GitHub. We extend it for AD objects as input/outputs as well as more mathematical function such as ``arcsin`` and ``log``.
 
-The input string for the parser can not be only normal expression such ``'log(x,2) + sin(y)'``, but also equation expression such as ``'log(x,2) = -sin(y)'``. The output of latter one will be the left side of the equation minus the right side of the equation, on which we can apply rooting finding for the solutions of the equation.
+The input string for the parser can be not only normal expression such ``'log(x,2) + sin(y)'``, but also equation such as ``'log(x,2) = -sin(y)'``. The output of latter one will be the left side of the equation minus the right side of that, on which we can apply rooting finding for the solutions of the equation.
