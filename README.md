@@ -48,7 +48,7 @@ A simple example using overloaded operators is described below. If you would lik
 4.0 4.0
 ```
 
-Alternativelly, if you can just proceed as follows: 
+Alternatively, you can just proceed as follows: 
 
 ``` 
 >>> def f(x):
