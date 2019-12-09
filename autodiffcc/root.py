@@ -29,15 +29,17 @@ def _check_start_values(start_values, signature):
                 raise KeyError(f"key {key} in function signature missing from start_values.")
         if len(start_values.keys()) != len(signature):
             raise KeyError("Too many keys passed in start_values dictionary.")
+        else:
+            values = np.array(values)
+
     elif isinstance(start_values, (list, np.ndarray)):
         # if list-like
-        values = start_values
+        values = np.array(start_values)
     elif np.isscalar(start_values):
-        values = [start_values]
+        values = np.array([start_values])
+
     else:
         raise TypeError("Must include start_values as dict or list/array.")
-
-    values = np.array(values)
 
     # check to make sure have correct number of variables
     if len(values) != len(signature):
@@ -83,11 +85,13 @@ def _check_interval(interval, signature):
                 interval_end_values.append(end_dict[key])
             except KeyError:
                 raise KeyError(f"key {key} in function signature missing from interval dictionary.")
-        if not len(start_dict.keys()) == len(signature):
+
+        if len(start_dict.keys()) != len(signature):
             raise KeyError("Too many keys passed in interval dictionary.")
 
-        interval_start = np.asarray(interval_start_values)
-        interval_end = np.asarray(interval_end_values)
+        else:
+            interval_start = np.asarray(interval_start_values)
+            interval_end = np.asarray(interval_end_values)
 
     else:
         # if list-like, check shape
@@ -123,7 +127,7 @@ def _norm(vector):
     =========
     >>> x = np.array([1,2,3])
     >>> _norm(x)
-    6.
+    6
     """
     return np.sum(np.abs(vector))
 
@@ -154,7 +158,7 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
     =========
 
     >>> def f(x, y):
-    >>>    return(2*x*y - 2)
+    >>>     return 2 * x * y - 2
 
     >>> _bisect(f, interval_start = [-10, 10], interval_end = [-4, 10])
     [0.12999772724065328, 7.692442177460448]
@@ -286,10 +290,11 @@ def _newton_raphson(function, values, threshold, max_iter):
 
     EXAMPLES
     =========
-    >>> _newton_raphson(lambda x: x, 3, 1e-8, 2000)
-    0.
+    >>> _newton_raphson(lambda x, y: (2 * x + y, x - 1), values=np.array([1, 2]), threshold=1e-8, max_iter=2000)
+    array([ 1., -2.])
     """
     jacobian = differentiate(function)
+
     output_shape = len(np.array(function(*values)).flatten())
 
     for i in range(max_iter):
@@ -321,13 +326,12 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
 
     EXAMPLES
     =========
-    >>> def f(x, y):
-    >>>     return 2 * x + y - 2, y+2
-    >>> interval_start = [3, -3]
-    >>> interval_end = [3, -3]
-    >>> my_root = _newton_fourier(f, interval_start=interval, interval_end=interval_end, threshold=1e-8, max_iter=2000)
+    >>> interval_start = np.asarray([3, 3])
+    >>> interval_end = np.asarray([-3, -3])
+    >>> my_root = _newton_fourier(lambda x, y: (2 * x + y - 2, y + 2), interval_start=interval_start, interval_end=interval_end, threshold=1e-8, max_iter=2000)
     >>> print(my_root)
-    [ 2. -2.]    """
+    [ 2. -2.]
+    """
     # using positional variables
     x_vars = interval_start
     z_vars = interval_end
@@ -382,15 +386,13 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
 
     EXAMPLES
     =========
-    >>> def f(x, y):
-    >>>     return 2 * x + y - 2, y + 2
     >>> interval = [[3, -3], [3, -3]]
-    >>> my_root = find_root(f, interval=interval, method='newton-fourier', threshold=1e-8, max_iter=2000)
+    >>> my_root = find_root(lambda x, y: (2 * x + y - 2, y + 2), interval=interval, method='newton-fourier', threshold=1e-8, max_iter=2000)
     >>> print(my_root)
     [ 2. -2.]
 
     >>> find_root(lambda x: x+2, 2, method='newton')
-    -2.
+    array([-2.])
     """
     # process variable inputs
     signature = inspect.signature(function).parameters.keys()
