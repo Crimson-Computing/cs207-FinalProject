@@ -29,12 +29,19 @@ def test_root_bad_inputs_newton_raphson():
 
 
 def test_root_bad_inputs_newton_fourier():
+    def f1var(x):
+        return 2 * x
+
     def f2var(x, y):
         return 2 * x + y, x - 1
 
     # Incorrect number of variables
-    with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
+    with pytest.raises(ValueError, match="Incorrect number of elements passed in interval."):
         find_root(function=f2var, method='newton-fourier', interval=[1, 2, 3])
+
+    # Incorrect number of variables
+    with pytest.raises(ValueError, match="Incorrect number of elements passed in interval."):
+        find_root(function=f1var, method='newton-fourier', interval=[1, 2, 3])
 
     # Function signature variable missing from dictionary keys
     with pytest.raises(KeyError, match="key y in function signature missing from interval dictionary."):
