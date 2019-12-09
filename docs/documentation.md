@@ -156,6 +156,7 @@ For example, consider the task of repeatedly differentiating the function `f(x) 
 ### Root finding
 Our Root Finder implementation requires that the user first define the function for which they would like to find the root, and an `interval` in which to look or `start_values` that are arbitrarily close to the real root.
 
+
 The user then passes the `function`, `method` and `interval` or `start_values` arguments to the `find_root` function. The user may also provide the optional `max_iter` and `threshold` arguments. `max_iter` specifies the maximum number of iterations the algorithm should attempt to find a converging solution, and `threshold` sets the minimum threshold to declare convergence, such that lower thresholds return finer approximations.
 
 Note that the user-defined functions do not need to explicitly use the `AD` basic or comparison operators. However, for elemental and trigonometric functions like `sin` or `log` the user would need to define their function with the `ADmath` methods `ad.sin` and `ad.log`.
@@ -176,6 +177,7 @@ See below for an example of how to find a root with `find_root` using the 'bisec
 >>> import autodiffcc as ad
 
 # Find the foot of a function with two variables using the bisection method
+
 >>> def f(x, y):
 >>>    return x + y - 100
 >>> interval  = [[1, 2], [3, 100]]
