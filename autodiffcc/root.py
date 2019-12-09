@@ -37,9 +37,7 @@ def _newton_raphson(function, values, threshold, max_iter):
         values = flat_variables.reshape(values.shape)
         if _norm(function(*values)) < threshold:
             return values
-    raise Exception()
-
-    Warning("Maximum number of iterations exceeded before converging.")
+    raise Exception("Newton-Raphson did not converge, try increasing max_iter.")
 
 
 def _method_2(function, start, threshold):
@@ -50,7 +48,7 @@ def _method_3(function, start, threshold):
     pass
 
 
-def root(function, method, start_values, threshold=1e-8, max_iter=2000):
+def find_root(function, method, start_values, threshold=1e-8, max_iter=2000):
     """Returns the root of the function found using the specified method
 
     INPUTS
