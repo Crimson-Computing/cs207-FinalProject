@@ -25,19 +25,6 @@ def test_root_bad_inputs():
     # Incorrect number of variables
     with pytest.raises(KeyError, match="Incorrect number of variables passed in start_values."):
         find_root(function=f2var, method='newton', start_values=[1,2,3])
-    
-# jacobian = differentiate(function)
-
-# for i in range(max_iter):
-#     flat_variables = values.flatten()
-#     if len(flat_variables) == 1:
-#         flat_variables = flat_variables - function(*values) / jacobian(*values)
-#     else:
-#         flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian(*values)), function(*values))
-#     values = flat_variables.reshape(values.shape)
-#     if _norm(function(*values)) < threshold:
-#         return values
-# raise Exception("Newton-Raphson did not converge, try increasing max_iter.")
 
 def test_newton_raphson_scalar():
     def f1var(x):

@@ -24,13 +24,31 @@ def _norm(vector):
 
 
 def _newton_raphson(function, values, threshold, max_iter):
-    """#TODO
+    """Returns a root found starting from values or raised Exception if none are found
+
+    INPUTS
+    =======
+    function: a function using ADmath methods
+    values: the starting point for Newton-Raphson
+    threshold: the minimum threshold for finding a root
+    max_iter: maximum number of iterations that algorithm will look for before quitting
+        - in case method does not converge
+
+    RETURNS
+    ========
+    A root of function found starting from values or raised Exception if none are found
+
+    EXAMPLES
+    =========
+    >>> _newton_raphson(lambda x: x, 3, 1e-8, 2000)
+    0.
     """
     jacobian = differentiate(function)
+    output_shape = len(np.array(function(*values)).flatten())
 
     for i in range(max_iter):
         flat_variables = values.flatten()
-        if len(flat_variables) == 1:
+        if len(flat_variables) == 1 and output_shape == 1:
             flat_variables = flat_variables - function(*values) / jacobian(*values)
         else:
             flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian(*values)), function(*values))
@@ -54,8 +72,8 @@ def find_root(function, method, start_values, threshold=1e-8, max_iter=2000):
     INPUTS
     =======
     function: a function using ADmath methods
-    start: the starting point of the root-finding method (scalar or vector)
     method: the method to do root-finding   #TODO: add list of possible methods
+    start_values: the starting point of the root-finding method (scalar or vector)
     threshold: the minimum threshold for finding a root
     max_iter: maximum number of iterations that algorithm will look for before quitting
         - in case method does not converge
@@ -66,9 +84,8 @@ def find_root(function, method, start_values, threshold=1e-8, max_iter=2000):
 
     EXAMPLES
     =========
-    >>> x = AD(val = 3, der = 1)
-    >>> 2 ** x
-    (8.0, 5.54517744)
+    >>> find_root(lambda x: x+2, 'newton', 2)
+    -2.
     """
     # process variable inputs
     signature = inspect.signature(function).parameters.keys()
