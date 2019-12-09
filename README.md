@@ -1,9 +1,10 @@
+
+<img align="right" width="100" height="100" src="https://user-images.githubusercontent.com/43005886/70481100-8919f480-1aaf-11ea-8b0e-f8a8bde5c6ef.png">
+
+
 [![Build Status](https://travis-ci.org/Crimson-Computing/cs207-FinalProject.svg?branch=master)](https://travis-ci.org/Crimson-Computing/cs207-FinalProject)
 
 [![codecov](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject/branch/master/graph/badge.svg)](https://codecov.io/gh/Crimson-Computing/cs207-FinalProject)
-
-
-<img align="right" width="100" height="100" src="https://user-images.githubusercontent.com/43005886/70481100-8919f480-1aaf-11ea-8b0e-f8a8bde5c6ef.png">
 
 
 
