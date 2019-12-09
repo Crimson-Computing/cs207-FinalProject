@@ -47,7 +47,7 @@ To use **AutoDiffCC** you first have to import it. If you already have it instal
 #### Basic Applications
 There are several ways in which you can take advantage of **AutoDiffCC**. Below we present some examples.
 
-##### Example 1  
+###### Example 1  
 A simple example using overloaded operators is described below. If you would like to evaluate ``f = x * x`` at ``x = 2``, first initiate an AD object ``x`` with ``x = ad.AD(2.0, 1.0)``, where ``2`` is the value and ``1`` is the derivative. Then simply define your function ``f = x * x`` and enjoy the results. You can see this example implemented below. 
 
 ``` python 
@@ -68,7 +68,7 @@ Alternatively, you can just proceed as follows:
 4.0 # this is the derivative value at x=2 
 ```
 
-##### Example 2
+###### Example 2
 
 To use more complex function like cos(x) follow this example using our built-in module ADmath: 
 
@@ -90,10 +90,10 @@ To use more complex function like cos(x) follow this example using our built-in 
  
 
 #### Offered Extentions
-
+##### Root Finding
 Our package offers three root finding methods. The bisection method, the newton-fourier method and the newton-raphson method.
 
-##### Example 1 
+###### Example 1 
 
 ``` python RootFinder example for the bisection method 
 # Import the autodiffcc package
@@ -109,7 +109,7 @@ Our package offers three root finding methods. The bisection method, the newton-
 [1.999999999999993, 98.0]
 ```
 
-##### Example 2
+###### Example 2
 
 ``` python
 # Import the autodiffcc package
@@ -120,7 +120,7 @@ Our package offers three root finding methods. The bisection method, the newton-
     [ 2. -2.]
 ```
 
-##### Example 3
+###### Example 3
 
 ``` python
 # Import the autodiffcc package
@@ -133,7 +133,9 @@ Our package offers three root finding methods. The bisection method, the newton-
     3.
 ```
 
-### Expression parsing
+##### Expression parsing
+
+###### Example 1
 
 Another extension we offer is expression parsing. The below are two examples of parsing string expressions to function objects `fn` corresponding to the expressions. 
 
