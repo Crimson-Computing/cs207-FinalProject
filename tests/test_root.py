@@ -169,7 +169,7 @@ def test_bisection_interval_not_in_domain():
     def asin(x):
         return arcsin(x)
 
-    with pytest.raises(ValueError, match="Values are not in the domain of arcsin [-1, 1]"):
+    with pytest.raises(ValueError):
         find_root(function=asin, method='bisect', interval=[2, 3], max_iter=1)
 
 
