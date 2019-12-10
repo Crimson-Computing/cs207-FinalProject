@@ -154,6 +154,15 @@ def test_bisect():
 
     this_root = find_root(function=f, method='bisection', interval=interval)
     assert np.allclose(this_root, [0.0, 0.0])
+    
+def test_bisect_wrong_interval():
+    def f(x)
+        return x
+    
+    with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
+        find_root(function = f, method = "bisect", interval = [[-1,2],[-1,2], [-1,2]])
+
+
 
 
 def test_bisection_no_solution():
