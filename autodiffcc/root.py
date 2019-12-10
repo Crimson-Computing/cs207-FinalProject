@@ -95,11 +95,11 @@ def _check_interval(interval, signature):
 
     else:
         # if list-like, check shape
-        values = np.asarray(interval) # 2-D array, multivar
+        values = np.asarray(interval)  # 2-D array, multivar
         if len(values.shape) == 2:
             interval_start = values[:, 0]
             interval_end = values[:, 1]
-        elif len(interval) == 2: # 1-D Array, 1 var
+        elif len(interval) == 2:  # 1-D Array, 1 var
             interval_start = np.asarray([values[0]])
             interval_end = np.asarray([values[1]])
         else:
@@ -183,6 +183,9 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
         a = interval_start
         b = interval_end
         interval = np.linspace(a, b, num=1000)
+        if np.abs(b - a) == 0 or np.abs(max(interval) - min(interval)) == 0:
+            raise Warning("Please choose a non-zero interval to see informative plot.")
+
         # corresponding y axis values
         values = function(interval)
         # plotting the points
@@ -225,6 +228,8 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
         # if signs are different
         while signchange:
             i = i + 1
+            if i >= max_iter:
+                raise Exception("Bisection did not converge, try increasing max_iter.")
             # middle points
             c = []
             for k in range(0, nParam):
@@ -243,11 +248,10 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
 
                 for n in results:
                     if (n * middlePointResult < 0):
-  
                         corner1 = list(allpoints[j])
                         corner2 = c
                     j = j + 1
-                    
+
                 # update points for intervals
                 if corner1 > corner2:
                     points = np.c_[corner2, corner1]
@@ -269,12 +273,8 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
                     # detect sign change
                     signchange = sum(((np.roll(asign, 1) - asign) != 0).astype(int)) > 0
 
-            if i >= max_iter:
-                break
-
 
 def _newton_raphson(function, values, threshold, max_iter):
-
     """Returns a root found starting from values using the Newton-Raphson method
 
     INPUTS
@@ -339,7 +339,7 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
     # Starting values for x_0, z_0
     flat_x = x_vars.flatten()
     flat_z = z_vars.flatten()
-    limit_numerator = (x_vars.flatten() - z_vars.flatten())**2
+    limit_numerator = (x_vars.flatten() - z_vars.flatten()) ** 2
 
     jacobian = differentiate(function)
 
@@ -355,7 +355,7 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
 
         limit_denominator = limit_numerator
         limit_numerator = flat_x - flat_z
-        limit = limit_numerator/limit_denominator
+        limit = limit_numerator / limit_denominator
 
         x_vars = flat_x.reshape(x_vars.shape)
         z_vars = flat_z.reshape(z_vars.shape)
