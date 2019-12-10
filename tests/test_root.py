@@ -236,6 +236,13 @@ def test_newton_fourier_no_solution():
                        match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
         find_root(function=f1var, method='newton-fourier', interval=[-1, 1])
 
+    def f2var(x, y):
+        return x**2 + y**2 +1, x**4 + 1
+
+    with pytest.raises(Exception,
+                       match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
+        find_root(function=f2var, method='n-f', interval=[[-1, -1], [0, 0]])
+
     def f3var(x, y, z):
         return x + y - z, 2 * x - sin(3 * y)
 
