@@ -144,6 +144,14 @@ def test_bisect_noroot_in_interval():
     interval = [[1, 2], [3, 1]]
     with pytest.raises(Exception, match="No change in sign, please try different intervals"):
         find_root(function=f, method='bisection', interval=interval)
+        
+        
+def test_bisect_wrong_interval():
+    def f(x)
+        return x
+    
+    with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
+        find_root(function = f, method = "bisect", interval = [[-1,2],[-1,2], [-1,2]])
 
 
 def test_bisect():
