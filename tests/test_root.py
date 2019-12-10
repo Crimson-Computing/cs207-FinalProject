@@ -177,6 +177,8 @@ def test_bisection_zero_interval():
     def f1var(x):
         return (x + 2) * (x - 3)
 
+    assert len(inspect.signature(f1var).parameters.keys()) == 1
+
     with pytest.raises(Warning,
                        match="Please choose a non-zero interval to see informative plot."):
         find_root(function=f1var, method='bisect', interval=[0, 0], max_iter=1)
