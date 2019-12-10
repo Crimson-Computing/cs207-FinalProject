@@ -65,16 +65,17 @@ def _check_interval(interval, signature):
     if not isinstance(interval, (list, np.ndarray)):
         raise TypeError("Must include interval as list of two dicts or list/array.")
 
-    elif not isinstance(interval[0], type(interval[1])):
-        raise TypeError("Must include interval as list of two dicts or numeric list/array.")
+    # Check if either value is a dict
+    elif isinstance(interval[0], dict) or isinstance(interval[1], dict):
+        if not isinstance(interval[0], type(interval[1])):
+            raise TypeError("Must include interval as list of two dicts or numeric list/array.")
+        else:
+            # turn keyword values into positional values matching function signature
+            interval_start_values = []
+            start_dict = interval[0]
 
-    elif isinstance(interval[0], dict) and isinstance(interval[1], dict):
-        # turn keyword values into positional values matching function signature
-        interval_start_values = []
-        start_dict = interval[0]
-
-        interval_end_values = []
-        end_dict = interval[1]
+            interval_end_values = []
+            end_dict = interval[1]
 
         if len(start_dict.keys()) != len(end_dict.keys()):
             raise KeyError("The interval_start and interval_end dictionaries must have the same number of keys.")
@@ -293,10 +294,14 @@ def _newton_raphson(function, values, threshold, max_iter):
 
     for i in range(max_iter):
         flat_variables = values.flatten()
+        jacobian_values = jacobian(*values)
         if output_shape == 1:
-            flat_variables = flat_variables - function(*values) / jacobian(*values)
+            if jacobian_values == 0:
+                raise Exception("Newton-Raphson did not converge, try increasing max_iter or changing start_values.")
+            else:
+                flat_variables = flat_variables - function(*values) / jacobian_values
         else:
-            flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian(*values)), function(*values))
+            flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian_values), function(*values))
         values = flat_variables.reshape(values.shape)
         if _norm(function(*values)) < threshold:
             return values
@@ -343,15 +348,20 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
     for i in range(max_iter):
         if output_shape == 1:
             common_jacobian = jacobian(*x_vars)
+            if common_jacobian == 0:
+                raise Exception("Newton-Fourier did not converge, try another interval or increasing max_iter.")
             flat_x = flat_x - function(*x_vars) / common_jacobian
             flat_z = flat_z - function(*z_vars) / common_jacobian
         else:
             common_jacobian = np.linalg.pinv(jacobian(*x_vars))
             flat_x = flat_x - np.matmul(common_jacobian, function(*x_vars))
             flat_z = flat_z - np.matmul(common_jacobian, function(*z_vars))
-
         limit_denominator = limit_numerator
         limit_numerator = flat_x - flat_z
+
+        if limit_denominator.any() == 0:
+            raise Exception("Newton-Fourier did not converge, try another interval or increasing max_iter.")
+
         limit = limit_numerator / limit_denominator
 
         x_vars = flat_x.reshape(x_vars.shape)
