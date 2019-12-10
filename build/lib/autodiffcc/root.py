@@ -65,16 +65,17 @@ def _check_interval(interval, signature):
     if not isinstance(interval, (list, np.ndarray)):
         raise TypeError("Must include interval as list of two dicts or list/array.")
 
-    elif not isinstance(interval[0], type(interval[1])):
-        raise TypeError("Must include interval as list of two dicts or numeric list/array.")
+    # Check if either value is a dict
+    elif isinstance(interval[0], dict) or isinstance(interval[1], dict):
+        if not isinstance(interval[0], type(interval[1])):
+            raise TypeError("Must include interval as list of two dicts or numeric list/array.")
+        else:
+            # turn keyword values into positional values matching function signature
+            interval_start_values = []
+            start_dict = interval[0]
 
-    elif isinstance(interval[0], dict) and isinstance(interval[1], dict):
-        # turn keyword values into positional values matching function signature
-        interval_start_values = []
-        start_dict = interval[0]
-
-        interval_end_values = []
-        end_dict = interval[1]
+            interval_end_values = []
+            end_dict = interval[1]
 
         if len(start_dict.keys()) != len(end_dict.keys()):
             raise KeyError("The interval_start and interval_end dictionaries must have the same number of keys.")
@@ -132,7 +133,7 @@ def _norm(vector):
     return np.sum(np.abs(vector))
 
 
-def _bisect(function, interval_start, interval_end, max_iter, signature):
+def _bisect(function, interval_start, interval_end, max_iter, threshold, signature):
     """Performs the bisection method on a function of one or more variables to find a root
 
     INPUTS
@@ -140,6 +141,7 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
     function: A function defined using the autodiffcc.ADmath methods
     interval_start: The start of the initial interval of values on which to attempt to find a root, as an array
     interval_end: The end of the initial interval of values on which to attempt to find a root, as an array
+    max_iter: Maximum number of iterations taken for the algorithm to converge
     threshold: Minimum threshold to declare convergence on a root
     signature: The signature of the function
     
@@ -212,58 +214,59 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
         signchange = sum(((np.roll(asign, 1) - asign) != 0).astype(int)) > 0
 
     # if signs are not different
-    if not signchange:
-        raise Exception("No change in sign, please try different intervals")
+    if not np.array(signchange).all():
+        raise Exception(f"No change in sign, please try different intervals. Here are which indices change signs:{signchange}")
 
-    if signchange:
+    i = 1
+    # if signs are different
+    while np.array(signchange).all():
+        i = i + 1
+        if i >= max_iter:
+            raise Exception("Bisection did not converge, try increasing max_iter.")
+        # middle points
+        c = []
+        for k in range(0, nParam):
+            c.append((points[k][0] + points[k][1]) / 2)
 
-        i = 1
-        # if signs are different
-        while signchange:
-            i = i + 1
-            if i >= max_iter:
-                raise Exception("Bisection did not converge, try increasing max_iter.")
-            # middle points
-            c = []
-            for k in range(0, nParam):
-                c.append((points[k][0] + points[k][1]) / 2)
+        middlePointResult = function(*c)
 
-            middlePointResult = function(*c)
+        # approx to 14ths decimal point
+        # if found root:
+        print(middlePointResult)
+        if _norm(middlePointResult) < threshold:
+            print("root found for ", c)
+            return (c)  # return middle as the approximate root value
+        # if did not find root yet:
+        else:
+            j = 0
 
-            # approx to 14ths decimal point
-            # if found root:
-            if (round(middlePointResult, 15) == 0):
-                print("root found for ", c)
-                return (c)  # return middle as the approximate root value
-            # if did not find root yet:
+            print('\t\tresults:',results)
+            for n in results:
+                print('\tn:',n, middlePointResult)
+                if (np.array(n) * np.array(middlePointResult) < 0).all():
+                    corner1 = list(allpoints[j])
+                    corner2 = c
+                j = j + 1
+
+            # update points for intervals
+            if corner1 > corner2:
+                points = np.asarray(np.c_[corner2, corner1])
             else:
-                j = 0
+                points = np.asarray(np.c_[corner1, corner2])
 
-                for n in results:
-                    if (n * middlePointResult < 0):
-                        corner1 = list(allpoints[j])
-                        corner2 = c
-                    j = j + 1
+            matrix = np.empty((nParam, 2))
 
-                # update points for intervals
-                if corner1 > corner2:
-                    points = np.asarray(np.c_[corner2, corner1])
-                else:
-                    points = np.asarray(np.c_[corner1, corner2])
+            for p in range(0, nParam):
+                matrix[p] = points[p]
+            allpoints = list(itertools.product(*matrix))
 
-                matrix = np.empty((nParam, 2))
-
-                for p in range(0, nParam):
-                    matrix[p] = points[p]
-                allpoints = list(itertools.product(*matrix))
-
-                # check sign change
-                results = []
-                for elements in allpoints:
-                    results.append(function(*elements))
-                    asign = np.sign(results)
-                    # detect sign change
-                    signchange = sum(((np.roll(asign, 1) - asign) != 0).astype(int)) > 0
+            # check sign change
+            results = []
+            for elements in allpoints:
+                results.append(function(*elements))
+                asign = np.sign(results)
+                # detect sign change
+                signchange = sum(((np.roll(asign, 1) - asign) != 0).astype(int)) > 0
 
 
 def _newton_raphson(function, values, threshold, max_iter):
@@ -291,14 +294,18 @@ def _newton_raphson(function, values, threshold, max_iter):
 
     for i in range(max_iter):
         flat_variables = values.flatten()
-        if len(flat_variables) == 1 and output_shape == 1:
-            flat_variables = flat_variables - function(*values) / jacobian(*values)
+        jacobian_values = jacobian(*values)
+        if output_shape == 1:
+            if jacobian_values == 0:
+                raise Exception("Newton-Raphson did not converge, try increasing max_iter or changing start_values.")
+            else:
+                flat_variables = flat_variables - function(*values) / jacobian_values
         else:
-            flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian(*values)), function(*values))
+            flat_variables = flat_variables - np.matmul(np.linalg.pinv(jacobian_values), function(*values))
         values = flat_variables.reshape(values.shape)
         if _norm(function(*values)) < threshold:
             return values
-    raise Exception("Newton-Raphson did not converge, try increasing max_iter.")
+    raise Exception("Newton-Raphson did not converge, try increasing max_iter or changing start_values.")
 
 
 def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarray, threshold, max_iter):
@@ -328,25 +335,33 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
     x_vars = interval_start
     z_vars = interval_end
 
+    output_shape = len(np.array(function(*x_vars)).flatten())
+
     # Starting values for x_0, z_0
     flat_x = x_vars.flatten()
     flat_z = z_vars.flatten()
+    # numerator of the limit for termination of Newton-Fourier
     limit_numerator = (x_vars.flatten() - z_vars.flatten()) ** 2
 
     jacobian = differentiate(function)
 
     for i in range(max_iter):
-        if len(flat_x) == 1:
+        if output_shape == 1:
             common_jacobian = jacobian(*x_vars)
+            if common_jacobian == 0:
+                raise Exception("Newton-Fourier did not converge, try another interval or increasing max_iter.")
             flat_x = flat_x - function(*x_vars) / common_jacobian
             flat_z = flat_z - function(*z_vars) / common_jacobian
         else:
             common_jacobian = np.linalg.pinv(jacobian(*x_vars))
             flat_x = flat_x - np.matmul(common_jacobian, function(*x_vars))
             flat_z = flat_z - np.matmul(common_jacobian, function(*z_vars))
-
         limit_denominator = limit_numerator
         limit_numerator = flat_x - flat_z
+
+        if limit_denominator.any() == 0:
+            raise Exception("Newton-Fourier did not converge, try another interval or increasing max_iter.")
+
         limit = limit_numerator / limit_denominator
 
         x_vars = flat_x.reshape(x_vars.shape)
@@ -355,6 +370,8 @@ def _newton_fourier(function, interval_start: np.ndarray, interval_end: np.ndarr
         if limit.all() < threshold:
             return np.mean(np.vstack([x_vars, z_vars]), axis=0)
 
+    if _norm(function(*x_vars)) < threshold and _norm(function(*z_vars)) < threshold:
+        raise Exception(f"Newton-Fourier did not converge, but two roots were found: {x_vars} and {z_vars}. Try narrowing the interval.")
     raise Exception("Newton-Fourier did not converge, try another interval or increasing max_iter.")
 
 
@@ -396,7 +413,7 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
 
     elif method.lower() in ['bisect', 'bisection', 'b']:
         interval_start, interval_end = _check_interval(interval=interval, signature=signature)
-        return _bisect(function, interval_start, interval_end, max_iter, signature)
+        return _bisect(function, interval_start, interval_end, max_iter, threshold, signature)
 
     elif method.lower() in ['newton-fourier', 'n-f']:
         interval_start, interval_end = _check_interval(interval=interval, signature=signature)
