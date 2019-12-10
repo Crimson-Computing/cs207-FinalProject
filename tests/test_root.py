@@ -135,24 +135,53 @@ def test_check_interval_output():
     # Check 1-D interval is np.array
     with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
         interval_start, interval_end = _check_interval(interval1var, signature2var)
-        
+
+
 def test_bisect_noroot_in_interval():
-    
     def f(x, y):
-        return(x+y-100)
-        
-    interval  = [[1, 2], [3, 1]]
-    with pytest.raises(Exception, match= "No change in sign, please try different intervals"):
+        return x + y - 100
+
+    interval = [[1, 2], [3, 1]]
+    with pytest.raises(Exception, match="No change in sign, please try different intervals"):
         find_root(function=f, method='bisection', interval=interval)
-    
+
+
 def test_bisect():
     def f(x, y):
         return x + y
-    interval  = [[-1, 1], [-1, 1]]
+
+    interval = [[-1, 1], [-1, 1]]
 
     this_root = find_root(function=f, method='bisection', interval=interval)
     assert np.allclose(this_root, [0.0, 0.0])
-       
+
+
+def test_bisection_no_solution():
+    def f(x, y):
+        return x + y
+
+    with pytest.raises(Exception,
+                       match="Bisection did not converge, try increasing max_iter."):
+        find_root(function=f, method='bisect', interval=[[-1, 1], [-1, 1]], max_iter=1)
+
+
+def test_bisection_interval_not_in_domain():
+    def asin(x):
+        return arcsin(x)
+
+    with pytest.raises(ValueError):
+        find_root(function=asin, method='bisect', interval=[2, 3], max_iter=1)
+
+
+def test_bisection_zero_interval():
+    def f1var(x):
+        return (x + 2) * (x - 3)
+
+    assert np.isclose(f1var(1), -6.)
+
+    with pytest.raises(Warning,
+                       match="Please choose a non-zero interval to see informative plot."):
+        find_root(function=f1var, method='bisect', interval=[0, 0], max_iter=1)
 
 
 def test_newton_fourier_scalar():
@@ -167,7 +196,7 @@ def test_newton_fourier_vector():
     def f2var(x, y):
         return 2 * x + y, x - 1
 
-    this_root = find_root(function=f2var, method='newton-fourier', interval=[[1, 2], [3, 4]])
+    this_root = find_root(function=f2var, method='n-f', interval=[[1, 2], [3, 4]])
     assert np.allclose(this_root, np.array([1, -2]))
 
 
@@ -178,3 +207,8 @@ def test_newton_fourier_no_solution():
     with pytest.raises(Exception,
                        match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
         find_root(function=f1var, method='newton-fourier', interval=[-1, 1])
+
+
+def test_invalid_method():
+    with pytest.raises(ValueError, match="Invalid method supplied. See documentation for accepted methods."):
+        find_root(function=lambda x: x ** 2 + 1, method='n', interval=[-1, 1])
