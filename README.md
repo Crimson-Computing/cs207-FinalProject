@@ -141,18 +141,22 @@ Our package offers three root finding methods. The bisection method, the newton-
 Another extension we offer is expression parsing. The below are two examples of parsing string expressions to function objects `fn` corresponding to the expressions. 
 
 ``` python 
->>> x = AD(val=2, der=[1, 0])
->>> y = AD(val=3, der=[0, 1])
+# Import the autodiffcc package 
+>>> import autodiffcc as ad
+>>> from autodiffcc.parser import expressioncc
+
+>>> x = ad.AD(2, der = [1, 0])
+>>> y = ad.AD(3, der = [0, 1])
 
 # Use expressioncc to parse a normal expression
->>> fn = ad.expressioncc('x+y+1', ['x', 'y']).get_fn()
+>>> fn = expressioncc('x+y+1', ['x', 'y']).get_fn()
 >>> print(fn(x,y).val)
 6.0
 >>> print(fn(x,y).der)
 [1. 1.]
 
 # Use expressioncc to parse an equation (left - right)
->>> fn = ad.expressioncc('x = -y-1', ['x', 'y']).get_fn()
+>>> fn = expressioncc('x = -y-1', ['x', 'y']).get_fn()
 >>> print(fn(x,y).val)
 6.0
 >>> print(fn(x,y).der)
