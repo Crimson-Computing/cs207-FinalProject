@@ -237,13 +237,17 @@ def _bisect(function, interval_start, interval_end, max_iter, threshold, signatu
 
         # approx to 14ths decimal point
         # if found root:
+        print(middlePointResult)
         if _norm(middlePointResult) < threshold:
             print("root found for ", c)
             return (c)  # return middle as the approximate root value
         # if did not find root yet:
         else:
             j = 0
+
+            print('\t\tresults:',results)
             for n in results:
+                print('\tn:',n, middlePointResult)
                 if (np.array(n) * np.array(middlePointResult) < 0).all():
                     corner1 = list(allpoints[j])
                     corner2 = c
