@@ -5,12 +5,10 @@ AutoDiffCC.egg-info/SOURCES.txt
 AutoDiffCC.egg-info/dependency_links.txt
 AutoDiffCC.egg-info/top_level.txt
 autodiffcc/ADmath.py
-autodiffcc/Matt's Tests.py
 autodiffcc/__init__.py
 autodiffcc/core.py
+autodiffcc/parser.py
 autodiffcc/root.py
-autodiffcc/roottemp.py
-autodiffcc/solver.py
 autodiffcc/Equation/__init__.py
 autodiffcc/Equation/_info.py
 autodiffcc/Equation/core.py
@@ -21,3 +19,5 @@ autodiffcc/Equation/util.py
 tests/__init__.py
 tests/test_ADmath.py
 tests/test_core.py
+tests/test_parser.py
+tests/test_root.py
