@@ -177,7 +177,12 @@ def _bisect(function, interval_start, interval_end, max_iter, threshold, signatu
     # y       3               10
     # z      -2               0
 
-    points = np.c_[interval_start, interval_end]
+    points = np.asarray(np.c_[interval_start, interval_end])
+
+    output_shape = len(np.array(function(*interval_start)).flatten())
+
+    if output_shape > 1:
+        raise Exception("The bisection method only supports functions with a single output dimension.")
 
     #### PLOT if can do 2D graph
     if nParam == 1:
@@ -384,7 +389,8 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
     start_values: Starting point for root-finding method as a scalar or vector; used only in newton-raphson
     interval: Initial interval of values on which to attempt to find a root, either as an array or a list of
               two dicts; used only in newton-fourier and bisection
-    method: Root-finding algorithm to use ['newton-raphson', 'newton-fourier', 'bisection']
+    method: Root-finding algorithm to use ['newton-raphson', 'newton-fourier', 'bisection']. The bisection method only
+            supports functions with a single output dimension.
     threshold: Minimum threshold to declare convergence for the newton-raphson and newton-fourier methods
     max_iter: Maximum number of iterations taken for the algorithm to converge
 
