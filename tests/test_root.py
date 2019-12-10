@@ -180,7 +180,7 @@ def test_bisect_wrong_interval():
     with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
         find_root(function=f, method="bisect", interval=[[-1, 2], [-1, 2], [-1, 2]])
 
-
+        
 def test_bisect():
     def f(x, y):
         return x + y
