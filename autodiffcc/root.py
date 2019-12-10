@@ -247,13 +247,12 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
 
                 # update points for intervals
                 if corner1 > corner2:
-                    points = np.c_[corner2, corner1]
+                    points = np.asarray(np.c_[corner2, corner1])
                 else:
-                    points = np.c_[corner1, corner2]
-
-                points = np.asarray(points)
+                    points = np.asarray(np.c_[corner1, corner2])
 
                 matrix = np.empty((nParam, 2))
+
                 for p in range(0, nParam):
                     matrix[p] = points[p]
                 allpoints = list(itertools.product(*matrix))
