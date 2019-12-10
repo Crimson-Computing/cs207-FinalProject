@@ -177,7 +177,7 @@ def test_bisection_zero_interval():
     def f1var(x):
         return (x + 2) * (x - 3)
 
-    assert len(inspect.signature(f1var).parameters.keys()) == 1
+    assert callable(f1var)
 
     with pytest.raises(Warning,
                        match="Please choose a non-zero interval to see informative plot."):
