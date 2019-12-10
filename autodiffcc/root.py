@@ -186,19 +186,12 @@ def _bisect(function, interval_start, interval_end, max_iter, signature):
         if np.abs(b - a) == 0 or np.abs(max(interval) - min(interval)) == 0:
             raise Warning("Please choose a non-zero interval to see informative plot.")
 
-        # corresponding y axis values
-        values = function(interval)
-        # plotting the points
-        plt.plot(interval, values, color='green', linestyle='dashed', linewidth=0.5,
-                 marker='o', markerfacecolor='blue', markersize=1)
-        # naming the x axis
-        plt.xlabel(' Interval ')
-        # naming the y axis
-        plt.ylabel(' Values ')
-        plt.axhline(y=0)
-        # giving a title to my graph
-        plt.title('Graphs function in the specified interval')
-        # function to show the plot
+        # Plot the points
+        fig, ax = plt.subplots(1, 1, subplot_kw={'title': 'Your function in the specified interval',
+                                                 'xlabel': 'Interval', 'ylabel': 'Values'})
+        ax.plot(interval, function(interval), color='green', linestyle='dashed', linewidth=0.5,
+                marker='o', markerfacecolor='blue', markersize=1)
+        ax.axhline(y=0)
         plt.show()
 
     # get the starting points of each variable
