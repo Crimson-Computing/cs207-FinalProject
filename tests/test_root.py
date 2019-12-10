@@ -110,6 +110,30 @@ def test_newton_raphson_no_solution_scalar():
         find_root(function=f1var, method='newton', start_values=1)
 
 
+def test_check_interval_bad_inputs():
+    # Some intervals and signatures to feed as inputs
+    interval1var = [1, 2]
+    signature1var = inspect.signature(lambda x: x ** 2 + 1).parameters.keys()
+    assert len(signature1var) == 1
+
+    interval2var = [[1, 2], [3, 4]]
+    signature2var = inspect.signature(lambda x, y: 2 * x + y).parameters.keys()
+    assert len(signature2var) == 2
+
+    # Interval and signature length don't match
+    with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
+        interval_start, interval_end = _check_interval(interval1var, signature2var)
+
+    # Interval passed includes float and int
+    interval_numeric_1var = [0.9, 2]
+    interval_start, interval_end = _check_interval(interval1var, signature1var)
+    assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
+
+    interval_numeric_1var = [1, 2.8]
+    interval_start, interval_end = _check_interval(interval1var, signature1var)
+    assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
+
+
 def test_check_interval_output():
     # Check 2-D interval is np.array
     interval2var = [[1, 2], [3, 4]]
@@ -132,10 +156,6 @@ def test_check_interval_output():
     interval_start, interval_end = _check_interval(interval1var, signature1var)
     assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
 
-    # Check 1-D interval is np.array
-    with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
-        interval_start, interval_end = _check_interval(interval1var, signature2var)
-
 
 def test_bisect_noroot_in_interval():
     def f(x, y):
@@ -144,14 +164,14 @@ def test_bisect_noroot_in_interval():
     interval = [[1, 2], [3, 1]]
     with pytest.raises(Exception, match="No change in sign, please try different intervals"):
         find_root(function=f, method='bisection', interval=interval)
-        
-        
+
+
 def test_bisect_wrong_interval():
-    def f(x)
+    def f(x):
         return x
-    
+
     with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
-        find_root(function = f, method = "bisect", interval = [[-1,2],[-1,2], [-1,2]])
+        find_root(function=f, method="bisect", interval=[[-1, 2], [-1, 2], [-1, 2]])
 
 
 def test_bisect():
@@ -216,13 +236,12 @@ def test_newton_fourier_no_solution():
                        match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
         find_root(function=f1var, method='newton-fourier', interval=[-1, 1])
 
-    def f3var(x,y,z):
-        return x+y-z, 2*x-sin(3*y)
+    def f3var(x, y, z):
+        return x + y - z, 2 * x - sin(3 * y)
 
     # testing if two distinct roots are found but they're not equal
     with pytest.raises(Exception, match="Newton-Fourier did not converge, but two roots were found"):
-        find_root(function=f3var, method='n-f', interval=[[0,0.1],[0.9,1],[1,1.1]])
-
+        find_root(function=f3var, method='n-f', interval=[[0, 0.1], [0.9, 1], [1, 1.1]])
 
 
 def test_invalid_method():

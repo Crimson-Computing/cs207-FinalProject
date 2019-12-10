@@ -65,16 +65,17 @@ def _check_interval(interval, signature):
     if not isinstance(interval, (list, np.ndarray)):
         raise TypeError("Must include interval as list of two dicts or list/array.")
 
-    elif not isinstance(interval[0], type(interval[1])):
-        raise TypeError("Must include interval as list of two dicts or numeric list/array.")
+    # Check if either value is a dict
+    elif isinstance(interval[0], dict) or isinstance(interval[1], dict):
+        if not isinstance(interval[0], type(interval[1])):
+            raise TypeError("Must include interval as list of two dicts or numeric list/array.")
+        else:
+            # turn keyword values into positional values matching function signature
+            interval_start_values = []
+            start_dict = interval[0]
 
-    elif isinstance(interval[0], dict) and isinstance(interval[1], dict):
-        # turn keyword values into positional values matching function signature
-        interval_start_values = []
-        start_dict = interval[0]
-
-        interval_end_values = []
-        end_dict = interval[1]
+            interval_end_values = []
+            end_dict = interval[1]
 
         if len(start_dict.keys()) != len(end_dict.keys()):
             raise KeyError("The interval_start and interval_end dictionaries must have the same number of keys.")
