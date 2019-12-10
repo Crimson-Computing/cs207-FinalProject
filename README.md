@@ -1,6 +1,7 @@
 
 <img align="right" width="100" height="100" src="https://user-images.githubusercontent.com/43005886/70481100-8919f480-1aaf-11ea-8b0e-f8a8bde5c6ef.png">
 
+<img align="right" width="150" height="100" src="https://user-images.githubusercontent.com/43005886/70541950-ed7f9700-1b35-11ea-8148-1add138908bf.png">
 
 [![Build Status](https://travis-ci.org/Crimson-Computing/cs207-FinalProject.svg?branch=master)](https://travis-ci.org/Crimson-Computing/cs207-FinalProject)
 
@@ -11,7 +12,6 @@
 
 Click [here](https://github.com/Crimson-Computing/cs207-FinalProject/blob/master/docs/documentation.md) to see full documentation
 
-![](https://i.imgur.com/IqLZeJT.png)
 
 ## Final Project - AutoDiffCC Python Package
 ## CS207: Systems Development for Computational Science in Fall 2019 
@@ -163,4 +163,8 @@ Another extension we offer is expression parsing. The below are two examples of 
 [1. 1.]
 ```
 
+## Resources
 
+
+We would like to acknowledge Glenfletcher as his contribution was used in our package.
+* Glenfletcher 2014. , DOI: https://github.com/glenfletcher/Equation/tree/master/Equation 
