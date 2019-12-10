@@ -335,7 +335,7 @@ This iteration proceeds until root is approximated to desired precision.
 
 
 
-The iteration process mathematically: 
+Mathematically: 
 
 If all the assumptions requires are satisfied: 
 
@@ -345,10 +345,6 @@ So, starting for the initial guess x<sub>0</sub>, the iteration process goes as 
 
 
 x<sub>n+1</sub> = x<sub>n</sub> - (f(t<sub>n</sub>)/f't<sub>n</sub>) until we reach an iteration where x<sub>n+1</sub> and x<sub>n</sub> are sufficiently close to each other. 
-
-
-
-
 
 
 
