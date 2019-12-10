@@ -200,6 +200,15 @@ def test_bisection_no_solution():
         find_root(function=f, method='bisect', interval=[[-1, 1], [-1, 1]], max_iter=1)
 
 
+def test_bisection_unsupported_output_shape():
+    def func(x, y):
+        return x - sin(y), y
+
+    with pytest.raises(Exception,
+                       match="The bisection method only supports functions with a single output dimension."):
+        find_root(function=func, method='bisect', interval=[[-1, 1], [-1, 1]], max_iter=1000)
+
+
 def test_bisection_interval_not_in_domain():
     def asin(x):
         return arcsin(x)
