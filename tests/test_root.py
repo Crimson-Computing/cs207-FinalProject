@@ -210,7 +210,5 @@ def test_newton_fourier_no_solution():
 
 
 def test_invalid_method():
-    with pytest.raises(ValueError,
-                       match="Invalid method supplied. Please use one of the following: ['newton-raphson', "
-                             "'newton-fourier', 'bisection']."):
+    with pytest.raises(ValueError, match="Invalid method supplied. See documentation for accepted methods."):
         find_root(function=lambda x: x ** 2 + 1, method='n', interval=[-1, 1])

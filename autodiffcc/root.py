@@ -411,5 +411,4 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
         return _newton_fourier(function, interval_start, interval_end, threshold, max_iter)
 
     else:
-        raise ValueError("Invalid method supplied. Please use one of the following: ['newton-raphson', "
-                         "'newton-fourier', 'bisection'].")
+        raise ValueError("Invalid method supplied. See documentation for accepted methods.")
