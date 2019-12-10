@@ -103,7 +103,7 @@ def test_newton_raphson_vector():
 
     with pytest.raises(Exception, match="Newton-Raphson did not converge, try increasing max_iter or changing "
                                         "start_values."):
-        find_root(function=f2var, method='newton', start_values=[1, 2], max_iter=1)
+        find_root(function=f2var, method='newton', start_values=[1, 2], max_iter=0)
 
 
 def test_newton_raphson_no_solution_scalar():
