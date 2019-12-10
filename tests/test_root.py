@@ -126,11 +126,11 @@ def test_check_interval_bad_inputs():
 
     # Interval passed includes float and int
     interval_numeric_1var = [0.9, 2]
-    interval_start, interval_end = _check_interval(interval1var, signature1var)
+    interval_start, interval_end = _check_interval(interval_numeric_1var, signature1var)
     assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
 
     interval_numeric_1var = [1, 2.8]
-    interval_start, interval_end = _check_interval(interval1var, signature1var)
+    interval_start, interval_end = _check_interval(interval_numeric_1var, signature1var)
     assert isinstance(interval_start, np.ndarray) and isinstance(interval_end, np.ndarray)
 
 
