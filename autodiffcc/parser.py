@@ -2,14 +2,15 @@ from autodiffcc.core import AD
 from autodiffcc.ADmath import *
 from autodiffcc.Equation import Expression
 
+
 class expressioncc():
-  """
+    """
   Return an AD object after calculations.
     
   ATTRIBUTES
   ==========
   line : A line of the calculation expression
-  fn_vars: Number of varriables in the line
+  fn_vars: Number of variables in the line
   fn: Function build based on the line
   
   METHODS
@@ -25,15 +26,16 @@ class expressioncc():
   #  >>> fn(AD(4, n_vars=1)) 
   #  (array(6.6569866), array([1.08202128]))
   """
-  def __init__(self, line, fn_vars):
-    self.line = line
-    self.log_parsing()
-    self.equation_parsing()
-    self.fn_vars = fn_vars
-    self.fn = Expression(self.line,self.fn_vars)
 
-  def equation_parsing(self):
-    """Returns left - right if string is equation
+    def __init__(self, line, fn_vars):
+        self.line = line
+        self.log_parsing()
+        self.equation_parsing()
+        self.fn_vars = fn_vars
+        self.fn = Expression(self.line, self.fn_vars)
+
+    def equation_parsing(self):
+        """Returns left - right if string is equation
     
     EXAMPLES
     =========
@@ -41,11 +43,11 @@ class expressioncc():
     # after parsing
     >>> self.line = 'sin(x) - x'
     """
-    if '=' in self.line:
-      self.line = self.line.replace('=','-(') + ')'
+        if '=' in self.line:
+            self.line = self.line.replace('=', '-(') + ')'
 
-  def log_parsing(self):
-    """parsing results of lof 
+    def log_parsing(self):
+        """parsing results of log
     
     EXAMPLES
     =========
@@ -53,11 +55,11 @@ class expressioncc():
     # after parsing
     >>> self.line = '(x log 2) + 5'
     """
-    self.line = self.line.replace('log', '')
-    self.line = self.line.replace(',', ' log ')
+        self.line = self.line.replace('log', '')
+        self.line = self.line.replace(',', ' log ')
 
-  def get_fn(self):
-    """Returns function of the expression 
+    def get_fn(self):
+        """Returns function of the expression
     
     RETURNS
     ========
@@ -69,4 +71,4 @@ class expressioncc():
     >>> fn(AD(4, n_vars=1)) 
     (array(6.6569866), array([1.08202128]))
     """
-    return self.fn
+        return self.fn
