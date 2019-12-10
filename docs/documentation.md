@@ -328,7 +328,18 @@ Our testing suite is dependent on the `pytest` and `coverage` libraries for test
 Our first extension is a root finding module, which leverages the `AD` class and methods to find a function or vector function's root. To find the root of a function means to find the values of its arguments for which the function's value is zero, This is, for example, useful in optimization tasks or in solving systems of equations. Over the years, a variety of methods have been proposed for this very common task. We have implemented three numerical root finding algorithms which leverage our `AD` object and `differentiate` methods: Newton-Raphson, Newton-Fourier, or Bisection algorithms.
 
 ### Newton-Raphson Method
-//// TO DO ALEX
+Newton's method, also known as the Newton–Raphson method, named after Isaac Newton and Joseph Raphson. The Newton-Raphson method is an algorithm that when applied to real-valued functions produces successively better approximations to the roots.  
+
+The most basic version of the algorithm for functions of x starts with a random value. It then evaluates the function f(x) at that value and checks if it is the root. Chances that the first guess is the root are very small. What the algorithm does if x is not the root is to find a line tangent to f(x) at x and see what for other value of x it intersects with 0. This is a new point to be evaluated. The more iterations executed, the closer we should be to the root. 
+This iteration proceeds until root is approximated to desired precision. 
+
+If all the assumptions requires are satisfied: 
+
+x<sub>1</sub> = x<sub>1</sub> - (f(t<sub>0</sub>)/f't<sub>0</sub>) is a better approximation to the root. 
+
+
+
+
 
 ///OLD TEXT BUT CAN BE USEFUL: 
 ////We will develop a RootFinder for our advanced feature. Our RootFinder will implement Newton's method to approximate the roots of a real-valued function within a given tolerance. This will be in its own module, RootFinder. At this time, we don't foresee any additional modules, or data structures, but we may implement a Root class that can support real and possibly even complex roots.
