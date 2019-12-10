@@ -11,7 +11,7 @@
 
 Click [here](https://github.com/Crimson-Computing/cs207-FinalProject/blob/master/docs/documentation.md) to see full documentation
 
-![](https://i.imgur.com/k3igp7I.png)
+![](https://i.imgur.com/IqLZeJT.png)
 
 ## Final Project - AutoDiffCC Python Package
 ## CS207: Systems Development for Computational Science in Fall 2019 
