@@ -328,12 +328,14 @@ Our testing suite is dependent on the `pytest` and `coverage` libraries for test
 Our first extension is a root finding module, which leverages the `AD` class and methods to find a function or vector function's root. To find the root of a function means to find the values of its arguments for which the function's value is zero, This is, for example, useful in optimization tasks or in solving systems of equations. Over the years, a variety of methods have been proposed for this very common task. We have implemented three numerical root finding algorithms which leverage our `AD` object and `differentiate` methods: Newton-Raphson, Newton-Fourier, or Bisection algorithms.
 
 ### Newton-Raphson Method
-Newton's method, also known as the Newton–Raphson method, named after Isaac Newton and Joseph Raphson. The Newton-Raphson method is an algorithm that when applied to real-valued functions produces successively better approximations to the roots.  
+Newton's method, also known as the Newton–Raphson method, named after Isaac Newton and Joseph Raphson. The Newton-Raphson method is an algorithm that when applied to real-valued functions produces successively better approximations to the roots. Newton's method leverages differentiation and generalizes to high-dimensional problems and complex functions.
 
 The most basic version of the algorithm for functions of x starts with a random value. It then evaluates the function f(x) at that value and checks if it is the root. Chances that the first guess is the root are very small. What the algorithm does if x is not the root is to find a line tangent to f(x) at x and see what for other value of x it intersects with 0. This is a new point to be evaluated. The more iterations executed, the closer we should be to the root. 
 This iteration proceeds until root is approximated to desired precision. 
 
-Mathematically: 
+
+
+The iteration process mathematically: 
 
 If all the assumptions requires are satisfied: 
 
@@ -344,14 +346,11 @@ So, starting for the initial guess x<sub>0</sub>, the iteration process goes as 
 
 x<sub>n+1</sub> = x<sub>n</sub> - (f(t<sub>n</sub>)/f't<sub>n</sub>) until we reach an iteration where x<sub>n+1</sub> and x<sub>n</sub> are sufficiently close to each other. 
 
-The precision 
 
 
 
-///OLD TEXT BUT CAN BE USEFUL: 
-////We will develop a RootFinder for our advanced feature. Our RootFinder will implement Newton's method to approximate the roots of a real-valued function within a given tolerance. This will be in its own module, RootFinder. At this time, we don't foresee any additional modules, or data structures, but we may implement a Root class that can support real and possibly even complex roots.
 
-///We select Newton's method for our RootFinder because it leverages differentiation and generalizes to high-dimensional problems and complex functions.  Our RootFinder, provided a function, will start by using `autodiffcc` to find the derivative of the function at an initial guess for a root. It will iterate through successively better approximations of the root along the function, taking the derivative with `autodiffcc` at each step, until it finds the root(s) within a given tolerance. An example of the potential use of the RootFinder is shown below. The user interaction is subject to change pending final implementation. 
+
 
 ### Newton-Fourier method
 The Newton Fourier method, developed by Joseph Fourier, is an generalization of the Newton-Raphson method. Like the Newton-Raphson method, it iterates to produce successively better approximations of a function's root until it reaches quadratic convergence, but differs in that it provides a bound on the absolute error of the approximations.
