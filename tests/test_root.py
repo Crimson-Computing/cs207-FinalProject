@@ -207,3 +207,10 @@ def test_newton_fourier_no_solution():
     with pytest.raises(Exception,
                        match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
         find_root(function=f1var, method='newton-fourier', interval=[-1, 1])
+
+
+def test_invalid_method():
+    with pytest.raises(ValueError,
+                       match="Invalid method supplied. Please use one of the following: ['newton-raphson', "
+                             "'newton-fourier', 'bisection']."):
+        find_root(function=lambda x: x ** 2 + 1, method='n', interval=[-1, 1])

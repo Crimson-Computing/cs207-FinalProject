@@ -402,10 +402,14 @@ def find_root(function, start_values=None, interval=None, method='newton-raphson
         values = _check_start_values(start_values=start_values, signature=signature)
         return _newton_raphson(function, values, threshold, max_iter)
 
-    if method.lower() in ['bisect', 'bisection', 'b']:
+    elif method.lower() in ['bisect', 'bisection', 'b']:
         interval_start, interval_end = _check_interval(interval=interval, signature=signature)
         return _bisect(function, interval_start, interval_end, max_iter, signature)
 
-    if method.lower() in ['newton-fourier', 'n-f']:
+    elif method.lower() in ['newton-fourier', 'n-f']:
         interval_start, interval_end = _check_interval(interval=interval, signature=signature)
         return _newton_fourier(function, interval_start, interval_end, threshold, max_iter)
+
+    else:
+        raise ValueError("Invalid method supplied. Please use one of the following: ['newton-raphson', "
+                         "'newton-fourier', 'bisection'].")
