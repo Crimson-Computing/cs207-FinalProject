@@ -161,6 +161,26 @@ The user then passes the `function`, `method` and `interval` or `start_values` a
 
 Note that the user-defined functions do not need to explicitly use the `AD` basic or comparison operators. However, for elemental and trigonometric functions like `sin` or `log` the user would need to define their function with the `ADmath` methods `ad.sin` and `ad.log`.
 
+Note that our bisection method only accepts functions with one output. 
+
+For example this will work: 
+
+``` python
+>>> def f(x, y):
+>>>    return(x + y - 100)
+>>> interval  = [[1, 2], [3, 100]]
+>>> my_root = ad.find_root(function=f, method='bisection', interval=interval)
+```
+
+Future work could look into the extension of our bisection method to functions with multi-dimensional outputs, such as this:
+
+``` python
+>>> def f(x, y):
+>>>    return(x + y - 100, x + y)
+>>> interval  = [[1, 2], [3, 100]]
+>>> my_root = ad.find_root(function=f, method='bisection', interval=interval)
+```
+
 #### Root finding algorithms implemented
  
 | Root finding algorithm | Accepted `method` strings | Required arguments |
@@ -191,10 +211,10 @@ The next example shows how to find a root with `find_root` using the 'newton-fou
 ``` python
 # Import the autodiffcc package
 >>> import autodiffcc as ad
-    >>> interval = [[3, -3], [3, -3]]
-    >>> my_root = ad.find_root(lambda x, y: (2 * x + y - 2, y + 2), interval=interval, method='newton-fourier', max_iter=150)
-    >>> print(my_root)
-    [ 2. -2.]
+>>> interval = [[3, -3], [3, -3]]
+>>> my_root = ad.find_root(lambda x, y: (2 * x + y - 2, y + 2), interval=interval, method='newton-fourier', max_iter=150)
+>>> print(my_root)
+[ 2. -2.]
 ```
 
 A final example demonstrates how a user can find a root with `find_root` using the 'newton-raphson' method and a function of one variables.
@@ -202,12 +222,12 @@ A final example demonstrates how a user can find a root with `find_root` using t
 ``` python
 # Import the autodiffcc package
 >>> import autodiffcc as ad
-    >>> def f1var(x):
-    >>>     return (x + 2) * (x - 3)
+>>> def f1var(x):
+>>>     return (x + 2) * (x - 3)
 
-    >>> my_root = ad.find_root(function=f1var, method='newton', start_values=1, threshold=1e-8)
-    >>> print(my_root)
-    3.
+>>> my_root = ad.find_root(function=f1var, method='newton', start_values=1, threshold=1e-8)
+>>> print(my_root)
+3.
 ```
 
 ### Expression parsing
