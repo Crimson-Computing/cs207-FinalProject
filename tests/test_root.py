@@ -101,12 +101,17 @@ def test_newton_raphson_vector():
     this_root = find_root(function=f2var, method='newton', start_values=[1, 2])
     assert np.allclose(this_root, np.array([1, -2]))
 
+    with pytest.raises(Exception, match="Newton-Raphson did not converge, try increasing max_iter or changing "
+                                        "start_values."):
+        find_root(function=f2var, method='newton', start_values=[1, 2], max_iter=1)
+
 
 def test_newton_raphson_no_solution_scalar():
     def f1var(x):
         return x ** 2 + 1
 
-    with pytest.raises(Exception, match="Newton-Raphson did not converge, try increasing max_iter."):
+    with pytest.raises(Exception, match="Newton-Raphson did not converge, try increasing max_iter or changing "
+                                        "start_values."):
         find_root(function=f1var, method='newton', start_values=1)
 
 
@@ -170,6 +175,8 @@ def test_bisect_wrong_interval():
     def f(x):
         return x
 
+    assert np.allclose(f(1), 1)
+
     with pytest.raises(KeyError, match="Incorrect number of variables passed in interval."):
         find_root(function=f, method="bisect", interval=[[-1, 2], [-1, 2], [-1, 2]])
 
@@ -227,6 +234,10 @@ def test_newton_fourier_vector():
     this_root = find_root(function=f2var, method='n-f', interval=[[1, 2], [3, 4]])
     assert np.allclose(this_root, np.array([1, -2]))
 
+    with pytest.raises(Exception,
+                       match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
+        find_root(function=f2var, method='n-f', interval=[[11, 21], [31, 41]], max_iter=0)
+
 
 def test_newton_fourier_no_solution():
     def f1var(x):
@@ -254,3 +265,4 @@ def test_newton_fourier_no_solution():
 def test_invalid_method():
     with pytest.raises(ValueError, match="Invalid method supplied. See documentation for accepted methods."):
         find_root(function=lambda x: x ** 2 + 1, method='n', interval=[-1, 1])
+
