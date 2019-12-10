@@ -1,7 +1,7 @@
 
 <img align="right" width="100" height="100" src="https://user-images.githubusercontent.com/43005886/70481100-8919f480-1aaf-11ea-8b0e-f8a8bde5c6ef.png">
 
-<img align="right" width="150" height="100" src="<img width="232" alt="Screenshot 2019-12-10 at 10 13 58 AM" src="https://user-images.githubusercontent.com/43005886/70541950-ed7f9700-1b35-11ea-8148-1add138908bf.png">">
+<img align="right" width="150" height="100" src="<img width="232" alt="Screenshot 2019-12-10 at 10 13 58 AM" src="https://user-images.githubusercontent.com/43005886/70541950-ed7f9700-1b35-11ea-8148-1add138908bf.png">
 
 [![Build Status](https://travis-ci.org/Crimson-Computing/cs207-FinalProject.svg?branch=master)](https://travis-ci.org/Crimson-Computing/cs207-FinalProject)
 
