@@ -208,6 +208,14 @@ def test_newton_fourier_no_solution():
                        match="Newton-Fourier did not converge, try another interval or increasing max_iter."):
         find_root(function=f1var, method='newton-fourier', interval=[-1, 1])
 
+    def f3var(x,y,z):
+        return x+y-z, 2*x-sin(3*y)
+
+    # testing if two distinct roots are found but they're not equal
+    with pytest.raises(Exception, match="Newton-Fourier did not converge, but two roots were found"):
+        find_root(function=f3var, method='n-f', interval=[[0,0.1],[0.9,1],[1,1.1]])
+
+
 
 def test_invalid_method():
     with pytest.raises(ValueError, match="Invalid method supplied. See documentation for accepted methods."):

@@ -519,7 +519,7 @@ def differentiate(base_func):
             return AD(result, der=0).der
         # if base_func is a scalar function, return 1-D flat derivative (combining multiple vector-valued inputs)
         if isinstance(result, AD):
-            return result.der.flatten()
+            return result.der.flatten().reshape(1,-1)
 
         # if base_func is vector function, return 2-D Jacobian where each row is f1, f2, ...
         n_fn_dim = len(result)
