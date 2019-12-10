@@ -49,11 +49,11 @@ To use **AutoDiffCC** you first have to import it. If you already have it instal
 There are several ways in which you can take advantage of **AutoDiffCC**. Below we present some examples.
 
 ###### Example 1  
-A simple example using overloaded operators is described below. If you would like to evaluate ``f = x * x`` at ``x = 2``, first initiate an AD object ``x`` with ``x = ad.AD(2.0, 1.0)``, where ``2`` is the value and ``1`` is the derivative. Then simply define your function ``f = x * x`` and enjoy the results. You can see this example implemented below. 
+A simple example using overloaded operators is described below. If you would like to evaluate ``f = x * x`` at ``x = 2``, first initiate an AD object ``x`` with ``x = ad.AD(val=2.0, der=1.0)``, where ``2`` is the value and ``1`` is the derivative. Then simply define your function ``f = x * x`` and enjoy the results. You can see this example implemented below. 
 
 ``` python 
 # Overload basic arithmetic operations
->>> x = ad.AD(val = 2.0, 1.0) 
+>>> x = ad.AD(val=2.0, der=1.0) 
 >>> f = x * x
 >>> print(f.val, f.der)
 4.0 4.0
@@ -65,7 +65,7 @@ Alternatively, you can just proceed as follows:
 >>> def f(x):
 >>>   return x*x
 >>> dfdx = differentiate(f)
->>> dfdx(x= 2.0)
+>>> dfdx(x=2.0)
 4.0 # this is the derivative value at x=2 
 ```
 
@@ -74,7 +74,7 @@ Alternatively, you can just proceed as follows:
 To use more complex function like cos(x) follow this example using our built-in module ADmath: 
 
 ``` python 
->>> x = AD(val = 3.0, der = 1.0)
+>>> x = AD(val=3.0, der=1.0)
 >>> ADmath.cos(x) 
 (array(-0.9899924966004454), array(-0.1411200080598672))
  ```    
@@ -85,7 +85,7 @@ To use more complex function like cos(x) follow this example using our built-in 
 >>> def f(x):
 >>>   return ADmath.cos(x) 
 >>> dfdx = differentiate(f)
->>> dfdx( x = 3.0)
+>>> dfdx( x=3.0)
 -0.1411200080598672 # this is the derivative value evaluated at 3.0.
 ```
  
@@ -104,7 +104,7 @@ Our package offers three root finding methods. The bisection method, the newton-
 
 >>> def f(x, y):
 >>>    return x + y - 100
->>> interval  = [[1, 2], [3, 100]]
+>>> interval = [[1, 2], [3, 100]]
 >>> my_root = ad.find_root(function=f, method='bisection', interval=interval)
 >>> print(my_root)
 [1.999999999999993, 98.0]
@@ -141,8 +141,8 @@ Our package offers three root finding methods. The bisection method, the newton-
 Another extension we offer is expression parsing. The below are two examples of parsing string expressions to function objects `fn` corresponding to the expressions. 
 
 ``` python 
->>> x = AD(2, der = [1, 0])
->>> y = AD(3, der = [0, 1])
+>>> x = AD(val=2, der=[1, 0])
+>>> y = AD(val=3, der=[0, 1])
 
 # Use expressioncc to parse a normal expression
 >>> fn = ad.expressioncc('x+y+1', ['x', 'y']).get_fn()
