@@ -333,11 +333,18 @@ Newton's method, also known as the Newton–Raphson method, named after Isaac Ne
 The most basic version of the algorithm for functions of x starts with a random value. It then evaluates the function f(x) at that value and checks if it is the root. Chances that the first guess is the root are very small. What the algorithm does if x is not the root is to find a line tangent to f(x) at x and see what for other value of x it intersects with 0. This is a new point to be evaluated. The more iterations executed, the closer we should be to the root. 
 This iteration proceeds until root is approximated to desired precision. 
 
+Mathematically: 
+
 If all the assumptions requires are satisfied: 
 
-x<sub>1</sub> = x<sub>1</sub> - (f(t<sub>0</sub>)/f't<sub>0</sub>) is a better approximation to the root. 
+x<sub>1</sub> = x<sub>0</sub> - (f(t<sub>0</sub>)/f't<sub>0</sub>) is a better approximation to the root. 
+
+So, starting for the initial guess x<sub>0</sub>, the iteration process goes as follows:
 
 
+x<sub>n+1</sub> = x<sub>n</sub> - (f(t<sub>n</sub>)/f't<sub>n</sub>) until we reach an iteration where x<sub>n+1</sub> and x<sub>n</sub> are sufficiently close to each other. 
+
+The precision 
 
 
 
