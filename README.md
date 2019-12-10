@@ -166,5 +166,5 @@ Another extension we offer is expression parsing. The below are two examples of 
 ## Resources
 * Kikinis R, Pieper SD, Vosburgh K (2014) [3D Slicer: a platform for subject-specific image analysis, visualization, and clinical support] (https://link.springer.com/chapter/10.1007/978-1-4614-7657-3_19). [Intraoperative Imaging Image-Guided Therapy] (https://link.springer.com/book/10.1007/978-1-4614-7657-3), Ferenc A. Jolesz, Editor 3(19):277–289 ISBN: 978-1-4614-7656-6 (Print) 978-1-4614-7657-3 (Online)
 
-We would like to acknowledge Glenfletcher as his contribution was used in our package
+We would like to acknowledge Glenfletcher as his contribution was used in our package.
 * Glenfletcher 2014. , DOI: https://github.com/glenfletcher/Equation/tree/master/Equation 
